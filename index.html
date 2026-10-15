@@ -5,6 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Zakaria Dou Portfolio</title>
 <meta name="description" content="Portfolio of Zakaria Dou, visual identity and UI/UX designer.">
+<meta name="theme-color" content="#f1f2ee" id="metaThemeColor">
+<script>
+  (function(){
+    try {
+      var s = localStorage.getItem('theme');
+      var d = s === 'dark' || s === 'light' ? s : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', d);
+      if (d === 'dark') {
+        var m = document.getElementById('metaThemeColor');
+        if (m) m.setAttribute('content', '#0f1211');
+      }
+    } catch(e) {}
+  })();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600&display=swap">
@@ -21,6 +35,15 @@
   :root:not([data-theme="light"]){ --bg:#0f1211; --surface:#171b19; --ink:#eceee8; --muted:#959d98; --line:#272c2a; --accent:#98a2ff; --on-accent:#0f1211; color-scheme:dark }
 }
 :root[data-theme="dark"]{ --bg:#0f1211; --surface:#171b19; --ink:#eceee8; --muted:#959d98; --line:#272c2a; --accent:#98a2ff; --on-accent:#0f1211; color-scheme:dark }
+:root[data-theme="light"]{ --bg:#f1f2ee; --surface:#fafaf7; --ink:#15181a; --muted:#596060; --line:#d5d9d1; --accent:#2a38f0; --on-accent:#ffffff; color-scheme:light }
+
+/* Smooth theme transition */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after{
+  transition: background-color .3s ease, border-color .3s ease, color .3s ease, fill .3s ease, stroke .3s ease, box-shadow .3s ease !important;
+}
 
 [hidden]{display:none!important}
 *,*::before,*::after{box-sizing:border-box}
@@ -237,6 +260,34 @@ h1,h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.03em;l
 .lang{min-height:36px;padding:0 14px;border:1.5px solid var(--line);border-radius:999px;background:transparent;font-size:14px;font-weight:600;cursor:pointer}
 .lang:hover{border-color:var(--ink)}
 .top .tools{display:flex;align-items:center;gap:clamp(12px,2.4vw,28px)}
+.header-actions{display:flex;align-items:center;gap:8px}
+
+/* theme toggle button */
+.theme-toggle{width:36px;height:36px;border-radius:999px;border:1.5px solid var(--line);background:transparent;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;padding:0;cursor:pointer;transition:border-color .2s ease,background-color .2s ease,transform .2s ease,color .2s ease;flex-shrink:0}
+.theme-toggle:hover{border-color:var(--ink);background:color-mix(in srgb,var(--ink) 8%,transparent);transform:scale(1.05)}
+.theme-toggle:active{transform:scale(0.95)}
+.theme-toggle .theme-icon{width:18px;height:18px;transition:transform .4s cubic-bezier(0.16,1,0.3,1),opacity .2s ease}
+.theme-toggle .icon-sun{display:none}
+.theme-toggle .icon-moon{display:block}
+:root[data-theme="dark"] .theme-toggle .icon-sun{display:block}
+:root[data-theme="dark"] .theme-toggle .icon-moon{display:none}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .theme-toggle .icon-sun{display:block}
+  :root:not([data-theme="light"]) .theme-toggle .icon-moon{display:none}
+}
+
+/* dark mode adjustments */
+:root[data-theme="dark"] .contact{background:#050706;color:var(--ink);border-top:1px solid var(--line)}
+:root[data-theme="dark"] .contact .reach .item{border-top-color:var(--line)}
+:root[data-theme="dark"] .contact .copy{color:var(--ink);border-color:color-mix(in srgb,var(--ink) 40%,transparent)}
+:root[data-theme="dark"] .contact .copy:hover{background:var(--ink);color:var(--bg)}
+:root[data-theme="dark"] .srv-page-bottom-cta{background:#050706;color:var(--ink);border:1px solid var(--line)}
+:root[data-theme="dark"] .srv-page-bottom-cta .btn{border-color:var(--ink);color:var(--ink)}
+:root[data-theme="dark"] .srv-page-bottom-cta .btn:hover{background:var(--ink);color:var(--bg)}
+:root[data-theme="dark"] .order-card{box-shadow:0 16px 40px -12px rgba(0,0,0,0.4)}
+:root[data-theme="dark"] .faq-item.is-open{box-shadow:0 14px 32px -10px rgba(0,0,0,0.35)}
+:root[data-theme="dark"] .srv-brief-card:hover{box-shadow:0 18px 36px -12px rgba(0,0,0,0.35)}
+:root[data-theme="dark"] .srv-pack-card:hover{box-shadow:0 16px 36px -12px rgba(0,0,0,0.35)}
 .ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
 :root[dir="rtl"]{--font-display:'IBM Plex Sans Arabic','Familjen Grotesk',Tahoma,sans-serif;--font-body:'IBM Plex Sans Arabic','Instrument Sans',Tahoma,sans-serif;--font-mono:'IBM Plex Sans Arabic','DM Mono',Tahoma,sans-serif}
 :root[dir="rtl"] *{letter-spacing:0!important}
@@ -255,6 +306,117 @@ h1,h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.03em;l
 :root[dir="rtl"] .order-perk:hover{transform:translateX(-4px)}
 :root[dir="rtl"] .order-intro h3{line-height:1.25}
 
+/* services brief section (first page) */
+.services-brief-intro{margin-bottom:clamp(24px,3.5vw,36px)}
+.services-brief-intro p{color:var(--muted);font-size:clamp(1.05rem,1.4vw,1.2rem);max-width:56ch;line-height:1.6;margin:0}
+
+.services-brief-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,2.5vw,28px);margin-bottom:clamp(32px,4vw,44px)}
+.srv-brief-card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:clamp(22px,3vw,34px);display:flex;flex-direction:column;justify-content:space-between;transition:transform .3s cubic-bezier(0.16,1,0.3,1),box-shadow .3s ease,border-color .25s ease;position:relative}
+.srv-brief-card:hover{transform:translateY(-4px);border-color:var(--ink);box-shadow:0 18px 36px -12px rgba(0,0,0,0.08)}
+.srv-brief-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.srv-brief-num{font-family:var(--font-mono);font-size:12.5px;letter-spacing:.08em;color:var(--accent);font-weight:600;padding:4px 10px;border-radius:8px;background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.srv-brief-badge{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.04em;color:var(--muted);text-transform:uppercase}
+.srv-brief-card h3{font-size:clamp(1.35rem,2.2vw,1.75rem);margin-bottom:10px;letter-spacing:-.025em}
+.srv-brief-desc{color:var(--muted);font-size:14.5px;line-height:1.55;margin:0 0 20px}
+.srv-brief-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
+.srv-brief-pill{font-size:12px;font-family:var(--font-mono);padding:4px 10px;border-radius:999px;background:var(--bg);border:1px solid var(--line);color:var(--ink)}
+.srv-brief-action{margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid var(--line)}
+.srv-brief-link{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;color:var(--ink);background:none;border:none;cursor:pointer;padding:0;transition:gap .2s ease,color .2s ease}
+.srv-brief-link:hover{gap:10px;color:var(--accent)}
+.srv-brief-link .link-arr{transition:transform .2s ease;font-size:15px;line-height:1}
+.srv-brief-link:hover .link-arr{transform:translateX(4px)}
+:root[dir="rtl"] .srv-brief-link:hover .link-arr{transform:translateX(-4px)}
+
+.services-brief-cta{background:color-mix(in srgb,var(--surface) 80%,transparent);border:1px solid var(--line);border-radius:24px;padding:clamp(24px,4vw,36px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px}
+.srv-cta-content h3{font-size:clamp(1.3rem,2.2vw,1.75rem);letter-spacing:-.025em;margin-bottom:6px}
+.srv-cta-content p{color:var(--muted);font-size:14.5px;margin:0;max-width:50ch}
+.srv-more-btn{min-height:48px;padding:0 24px;white-space:nowrap;font-size:15px}
+
+/* full services page */
+.srv-page{padding-bottom:clamp(64px,9vw,120px)}
+.srv-page-top{background:color-mix(in srgb,var(--surface) 60%,transparent);border-bottom:1px solid var(--line);padding-block:clamp(32px,5vw,60px) clamp(24px,4vw,44px)}
+.srv-page-top .in{display:flex;flex-direction:column;gap:18px}
+.srv-page-title-wrap h1{font-size:clamp(2.8rem,7.5vw,5.2rem);letter-spacing:-.045em;line-height:1;margin-block:4px 10px}
+.srv-page-desc{color:var(--muted);font-size:clamp(1.05rem,1.5vw,1.25rem);max-width:58ch;line-height:1.6;margin:0}
+
+.srv-tabs-bar{position:sticky;top:60px;z-index:15;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding-block:12px}
+.srv-tabs-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.srv-tabs-scroll::-webkit-scrollbar{display:none}
+.srv-tab-btn{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;padding:8px 18px;border-radius:999px;border:1.5px solid var(--line);background:var(--bg);color:var(--muted);font-size:13.5px;font-weight:600;cursor:pointer;transition:all .2s ease}
+.srv-tab-btn:hover{color:var(--ink);border-color:var(--ink)}
+.srv-tab-btn.active{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.srv-tab-btn .tab-count{font-size:11.5px;padding:2px 7px;border-radius:999px;background:color-mix(in srgb,var(--ink) 12%,transparent);color:inherit}
+.srv-tab-btn.active .tab-count{background:color-mix(in srgb,var(--bg) 20%,transparent)}
+
+.srv-group{margin-top:clamp(44px,6vw,68px)}
+.srv-group-head{margin-bottom:24px;border-bottom:1px solid var(--line);padding-bottom:14px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:12px}
+.srv-group-head h2{font-size:clamp(1.75rem,3.2vw,2.5rem);letter-spacing:-.03em}
+.srv-group-sub{color:var(--muted);font-size:15px;max-width:62ch;margin:6px 0 0}
+
+.srv-packs-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,2.5vw,28px)}
+.srv-pack-card{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:clamp(22px,3.2vw,32px);display:flex;flex-direction:column;justify-content:space-between;transition:transform .3s ease,box-shadow .3s ease,border-color .25s ease}
+.srv-pack-card:hover{transform:translateY(-3px);border-color:var(--ink);box-shadow:0 16px 36px -12px rgba(0,0,0,0.07)}
+.srv-pack-header{margin-bottom:16px}
+.srv-pack-badge-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.srv-pack-tag{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.05em;color:var(--accent);font-weight:600}
+.srv-pack-title{font-size:clamp(1.35rem,2.2vw,1.8rem);letter-spacing:-.025em;margin-bottom:8px}
+.srv-pack-target{color:var(--muted);font-size:13.5px;line-height:1.5;margin:0 0 16px;min-height:2.6em}
+
+.srv-deliverables{margin:0 0 22px;padding:0;list-style:none;display:grid;gap:10px}
+.srv-deliv-item{display:flex;align-items:flex-start;gap:10px;font-size:14px;line-height:1.5;color:var(--ink)}
+.srv-deliv-check{width:18px;height:18px;border-radius:50%;background:color-mix(in srgb,var(--accent) 15%,transparent);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:bold;flex-shrink:0;margin-top:2px}
+
+.srv-pack-actions{margin-top:auto;padding-top:18px;border-top:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.srv-pack-order-btn{width:100%;justify-content:center;min-height:44px;font-size:14px}
+
+/* workflow & terms cards */
+.srv-workflow-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(16px,2vw,24px)}
+.srv-workflow-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(20px,2.8vw,28px);display:flex;flex-direction:column;gap:10px}
+.srv-workflow-card h3{font-size:1.2rem;letter-spacing:-.02em;display:flex;align-items:center;gap:10px}
+.srv-workflow-card h3 .wf-num{font-family:var(--font-mono);font-size:12.5px;color:var(--accent);font-weight:600;padding:2px 8px;border-radius:6px;background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.srv-workflow-card p{color:var(--muted);font-size:14px;line-height:1.6;margin:0}
+
+/* bottom cta in services page */
+.srv-page-bottom-cta{margin-top:clamp(56px,7vw,88px);text-align:center;background:var(--ink);color:var(--bg);border-radius:28px;padding:clamp(36px,6vw,64px) clamp(20px,4vw,40px)}
+.srv-page-bottom-cta h2{font-size:clamp(2rem,4.5vw,3.5rem);margin-bottom:12px;letter-spacing:-.03em}
+.srv-page-bottom-cta p{opacity:.8;font-size:clamp(1rem,1.4vw,1.2rem);max-width:48ch;margin:0 auto 28px;line-height:1.6}
+.srv-page-bottom-cta .btn{border-color:var(--bg);color:var(--bg)}
+.srv-page-bottom-cta .btn:hover{background:var(--bg);color:var(--ink)}
+
+/* RTL adaptations */
+:root[dir="rtl"] .srv-page-title-wrap h1{direction:ltr;text-align:right}
+:root[dir="rtl"] .srv-pack-order-btn .btn-arr{transform:rotate(180deg)}
+:root[dir="rtl"] .srv-pack-order-btn:hover .btn-arr{transform:rotate(180deg) translateX(4px)}
+
+/* FAQ section */
+.faq-layout{display:grid;grid-template-columns:minmax(0,4.5fr) minmax(0,7.5fr);gap:clamp(28px,6vw,80px);align-items:start}
+.faq-side{position:sticky;top:96px}
+.faq-side h3{font-size:clamp(1.75rem,3.2vw,2.7rem);letter-spacing:-.03em;line-height:1.15;margin-bottom:16px}
+.faq-side p{color:var(--muted);font-size:clamp(1rem,1.4vw,1.18rem);line-height:1.6;margin:0 0 24px;max-width:36ch}
+.faq-contact-box{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:22px;display:flex;flex-direction:column;gap:10px}
+.faq-contact-box h4{font-size:1.1rem;margin:0;letter-spacing:-.02em}
+.faq-contact-box p{font-size:13.5px;color:var(--muted);margin:0;line-height:1.5}
+.faq-contact-box .btn{margin-top:6px;width:100%;justify-content:center}
+.faq-accordion{display:flex;flex-direction:column;gap:12px}
+.faq-item{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;transition:border-color .25s ease,box-shadow .25s ease,background-color .25s ease}
+.faq-item:hover{border-color:color-mix(in srgb,var(--ink) 40%,var(--line))}
+.faq-item.is-open{border-color:var(--ink);box-shadow:0 12px 30px -10px rgba(0,0,0,0.06)}
+.faq-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:clamp(18px,2.5vw,24px);background:transparent;border:none;cursor:pointer;text-align:left;color:var(--ink)}
+:root[dir="rtl"] .faq-trigger{text-align:right}
+.faq-q-wrap{display:flex;align-items:flex-start;gap:14px;flex:1;min-width:0}
+.faq-num{font-family:var(--font-mono);font-size:12.5px;letter-spacing:.08em;color:var(--accent);font-weight:600;padding:4px 10px;border-radius:8px;background:color-mix(in srgb,var(--accent) 12%,transparent);flex-shrink:0;margin-top:2px}
+.faq-q{font-family:var(--font-display);font-size:clamp(1.12rem,1.7vw,1.32rem);font-weight:600;letter-spacing:-.02em;line-height:1.35;color:var(--ink)}
+:root[dir="rtl"] .faq-q{font-family:'IBM Plex Sans Arabic',Tahoma,sans-serif;letter-spacing:0!important}
+.faq-icon-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--ink);transition:transform .3s cubic-bezier(0.16,1,0.3,1),background .2s ease,border-color .2s ease,color .2s ease}
+.faq-icon-svg{width:14px;height:14px;transition:transform .3s cubic-bezier(0.16,1,0.3,1)}
+.faq-item.is-open .faq-icon-btn{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.faq-item.is-open .faq-icon-svg{transform:rotate(45deg)}
+.faq-answer{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s cubic-bezier(0.16,1,0.3,1)}
+.faq-item.is-open .faq-answer{grid-template-rows:1fr}
+.faq-answer-inner{overflow:hidden}
+.faq-answer-inner p{margin:0;padding:0 clamp(18px,2.5vw,24px) clamp(20px,2.5vw,26px);color:var(--muted);font-size:clamp(.96rem,1.25vw,1.06rem);line-height:1.7}
+:root[dir="rtl"] .faq-answer-inner p{line-height:1.85}
+
 @media (max-width:980px){
   .mosaic{grid-template-columns:repeat(2,minmax(0,1fr))}
   .tile{aspect-ratio:1.3/1}
@@ -262,7 +424,12 @@ h1,h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.03em;l
   .pt{min-height:0;aspect-ratio:1.5/1}
   .about{grid-template-columns:minmax(0,1fr)}
   .about h2{position:static}
+  .faq-layout{grid-template-columns:minmax(0,1fr);gap:36px}
+  .faq-side{position:static}
   .order-layout{grid-template-columns:minmax(0,1fr);gap:40px}
+  .services-brief-grid{grid-template-columns:minmax(0,1fr)}
+  .srv-packs-grid{grid-template-columns:minmax(0,1fr)}
+  .srv-workflow-grid{grid-template-columns:minmax(0,1fr)}
 }
 @media (max-width:720px){
   body{font-size:16px}
@@ -274,13 +441,26 @@ h1,h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.03em;l
   .top .in{height:54px}
   .brand{font-size:18px}
   .top .in{gap:10px}
-  .top .tools{gap:12px}
+  .top .tools{gap:8px}
+  .header-actions{gap:6px}
+  .theme-toggle{width:32px;height:32px}
+  .theme-toggle .theme-icon{width:16px;height:16px}
   .nav{gap:12px}
   .nav a{font-size:14px}
   .lang{padding:0 10px;font-size:13px}
+  .faq-trigger{padding:16px;gap:12px}
+  .faq-q-wrap{gap:10px}
+  .faq-num{padding:2px 7px;font-size:11px}
+  .faq-q{font-size:1.02rem}
+  .faq-icon-btn{width:30px;height:30px}
+  .faq-answer-inner p{padding:0 16px 18px;font-size:.95rem}
   .f-row{grid-template-columns:minmax(0,1fr)}
   .f-actions{flex-direction:column;align-items:stretch}
   .order-submit-btn{justify-content:center;width:100%}
+  .srv-brief-card{padding:18px}
+  .srv-pack-card{padding:18px}
+  .services-brief-cta{flex-direction:column;align-items:stretch;text-align:center}
+  .srv-more-btn{justify-content:center}
 }
 .dot-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.85}
 main,#project,footer,.lb{position:relative;z-index:1}
@@ -293,8 +473,28 @@ main,#project,footer,.lb{position:relative;z-index:1}
 
 <header class="top"><div class="in">
   <button class="brand" id="brand" type="button" aria-label="Zakaria Dou, home">Zakaria Dou</button>
-  <div class="tools"><nav class="nav" aria-label="Main"><a href="#work" data-go="work" data-t="nav_work">Work</a><a href="#about" data-go="about" data-t="nav_about">About</a><a href="#order" data-go="order" data-t="nav_order">Order</a><a href="#contact" data-go="contact" data-t="nav_contact">Contact</a></nav>
-  <button class="lang" id="lang" type="button" lang="ar">العربية</button></div>
+  <div class="tools">
+    <nav class="nav" aria-label="Main"><a href="#work" data-go="work" data-t="nav_work">Work</a><a href="#services" data-go="services" data-t="nav_services">Services</a><a href="#about" data-go="about" data-t="nav_about">About</a><a href="#faq" data-go="faq" data-t="nav_faq">FAQ</a><a href="#order" data-go="order" data-t="nav_order">Order</a><a href="#contact" data-go="contact" data-t="nav_contact">Contact</a></nav>
+    <div class="header-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
+        <svg class="theme-icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2"></path>
+          <path d="M12 20v2"></path>
+          <path d="m4.93 4.93 1.41 1.41"></path>
+          <path d="m17.66 17.66 1.41 1.41"></path>
+          <path d="M2 12h2"></path>
+          <path d="M20 12h2"></path>
+          <path d="m6.34 17.66-1.41 1.41"></path>
+          <path d="m19.07 4.93-1.41 1.41"></path>
+        </svg>
+        <svg class="theme-icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+        </svg>
+      </button>
+      <button class="lang" id="lang" type="button" lang="ar">العربية</button>
+    </div>
+  </div>
 </div></header>
 
 <main id="home">
@@ -305,7 +505,7 @@ main,#project,footer,.lb{position:relative;z-index:1}
       <h2 data-t="role">Visual Identity &amp; Product Designer.</h2>
       <div>
         <p data-t="sub">Designing clear brands and intuitive interfaces where form follows function.</p>
-        <div class="cta"><a class="btn solid" href="#order" data-go="order" data-t="cta_order">Request a project</a><a class="btn" href="#work" data-go="work" data-t="cta_work">See the work</a><a class="btn" href="#contact" data-go="contact" data-t="cta_contact">Get in touch</a></div>
+        <div class="cta"><a class="btn solid" href="#order" data-go="order" data-t="cta_order">Request a project</a><a class="btn" href="#services" data-go="services" data-t="cta_services">Our services</a><a class="btn" href="#work" data-go="work" data-t="cta_work">See the work</a><a class="btn" href="#contact" data-go="contact" data-t="cta_contact">Get in touch</a></div>
       </div>
     </div>
   </section>
@@ -316,7 +516,28 @@ main,#project,footer,.lb{position:relative;z-index:1}
     <div class="cards" id="cards"></div>
   </section>
 
-  <section class="sec in reveal" id="about" style="padding-top:0">
+  <section class="sec in reveal" id="services">
+    <div class="sec-head">
+      <h2 data-t="services_h">Our Services</h2>
+      <span class="mono" data-t="services_tag">4 Disciplines · 19 Creative Packs</span>
+    </div>
+    <div class="services-brief-intro">
+      <p data-t="services_sub">A disciplined, strategic design practice delivering iconic visual identities, high-precision print packaging, social growth systems, and interactive digital interfaces.</p>
+    </div>
+    <div class="services-brief-grid" id="servicesBriefGrid"></div>
+    <div class="services-brief-cta">
+      <div class="srv-cta-content">
+        <h3 data-t="services_cta_title">Explore the Complete Services Catalog</h3>
+        <p data-t="services_cta_desc">Browse all 19 specialized packs, full deliverables breakdown, and working standards.</p>
+      </div>
+      <button type="button" class="btn solid srv-more-btn" data-open-services="all">
+        <span data-t="services_btn_more">View Full Services &amp; Details</span>
+        <span class="btn-arr" aria-hidden="true">→</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="sec in reveal" id="about">
     <div class="sec-head"><h2 data-t="about_h">About</h2><span class="mono">Zakaria Dou</span></div>
     <div class="about">
       <h2 data-t="about_t">I diagnose the friction, then design the solution.</h2>
@@ -327,6 +548,146 @@ main,#project,footer,.lb{position:relative;z-index:1}
           <div><h3 data-t="d1h">Brand Identity</h3><p data-t="d1p">Strategic logos, typography, and visual languages engineered for long-term consistency.</p></div>
           <div><h3 data-t="d2h">Print &amp; Packaging</h3><p data-t="d2p">Print collateral, packaging, and commercial signage designed for maximum shelf and street impact.</p></div>
           <div><h3 data-t="d3h">Social Media &amp; UI/UX</h3><p data-t="d3p">Scroll-stopping social campaigns and structured, easy-to-navigate web and app interfaces.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec in reveal" id="faq">
+    <div class="sec-head">
+      <h2 data-t="faq_h">Frequently Asked Questions</h2>
+      <span class="mono" data-t="faq_tag">Clear Answers · Zero Guesswork</span>
+    </div>
+    <div class="faq-layout">
+      <div class="faq-side">
+        <h3 data-t="faq_side_h">Everything you need to know before we start.</h3>
+        <p data-t="faq_side_p">Honest, transparent answers about design systems, print and digital cohesion, communication cadence, and post-launch handovers.</p>
+        <div class="faq-contact-box">
+          <h4 data-t="faq_box_h">Have a specific question not covered here?</h4>
+          <p data-t="faq_box_p">I am here to help clarify scope, deliverables, or feasibility. Reach out directly or send your project brief.</p>
+          <a class="btn solid" href="#order" data-go="order" data-t="faq_box_btn">Ask a Question / Request Project</a>
+        </div>
+      </div>
+
+      <div class="faq-accordion" id="faqAccordion">
+        <div class="faq-item is-open">
+          <button type="button" class="faq-trigger" aria-expanded="true" aria-controls="faq-ans-1">
+            <span class="faq-q-wrap">
+              <span class="faq-num" data-t="faq_num_1">01</span>
+              <span class="faq-q" data-t="faq_q1">I just need a logo (or a single screen) to start. Why do you focus on complete systems?</span>
+            </span>
+            <span class="faq-icon-btn" aria-hidden="true">
+              <svg class="faq-icon-svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <line x1="8" y1="2" x2="8" y2="14"></line>
+                <line x1="2" y1="8" x2="14" y2="8"></line>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-answer" id="faq-ans-1">
+            <div class="faq-answer-inner">
+              <p data-t="faq_a1">A standalone logo or screen can’t carry a business on its own. When a customer interacts with you—whether they are holding your packaging, reading your menu, or navigating your app—everything needs to feel connected. I design cohesive visual systems so you don’t have to pay to redesign your brand six months later when you’re ready to grow.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-trigger" aria-expanded="false" aria-controls="faq-ans-2">
+            <span class="faq-q-wrap">
+              <span class="faq-num" data-t="faq_num_2">02</span>
+              <span class="faq-q" data-t="faq_q2">My business exists both physically and online. Can you handle both?</span>
+            </span>
+            <span class="faq-icon-btn" aria-hidden="true">
+              <svg class="faq-icon-svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <line x1="8" y1="2" x2="8" y2="14"></line>
+                <line x1="2" y1="8" x2="14" y2="8"></line>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-answer" id="faq-ans-2">
+            <div class="faq-answer-inner">
+              <p data-t="faq_a2">Yes, and that is the biggest advantage of working together. Most businesses hire one designer for print/packaging and another for their website or app, which often leads to a disconnected brand. Because I specialize in both Graphic Design and UI/UX, I make sure your physical presence (packaging, signage, menus) and digital presence (websites, apps, social media) look and feel like one unified brand.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-trigger" aria-expanded="false" aria-controls="faq-ans-3">
+            <span class="faq-q-wrap">
+              <span class="faq-num" data-t="faq_num_3">03</span>
+              <span class="faq-q" data-t="faq_q3">What if I know my current brand or app isn't working, but I don't know what I want?</span>
+            </span>
+            <span class="faq-icon-btn" aria-hidden="true">
+              <svg class="faq-icon-svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <line x1="8" y1="2" x2="8" y2="14"></line>
+                <line x1="2" y1="8" x2="14" y2="8"></line>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-answer" id="faq-ans-3">
+            <div class="faq-answer-inner">
+              <p data-t="faq_a3">You don’t need to come to me with design ideas—you only need to share your business goals and what’s currently frustrating you or your customers. My job is to diagnose the problem first. Before designing anything, I research your market and show you clear visual directions so we can choose the right path together with zero guesswork.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-trigger" aria-expanded="false" aria-controls="faq-ans-4">
+            <span class="faq-q-wrap">
+              <span class="faq-num" data-t="faq_num_4">04</span>
+              <span class="faq-q" data-t="faq_q4">How involved do I need to be during the project?</span>
+            </span>
+            <span class="faq-icon-btn" aria-hidden="true">
+              <svg class="faq-icon-svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <line x1="8" y1="2" x2="8" y2="14"></line>
+                <line x1="2" y1="8" x2="14" y2="8"></line>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-answer" id="faq-ans-4">
+            <div class="faq-answer-inner">
+              <p data-t="faq_a4">As involved as you’d like, without it taking over your schedule. We will have 3 main check-ins: one at the start to align on your goals, one to review the visual direction, and one to present the full design. In between, I handle all the heavy lifting and keep you updated with clear, simple progress notes so you always know what’s happening next.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-trigger" aria-expanded="false" aria-controls="faq-ans-5">
+            <span class="faq-q-wrap">
+              <span class="faq-num" data-t="faq_num_5">05</span>
+              <span class="faq-q" data-t="faq_q5">What if you present the design and it doesn’t feel quite right?</span>
+            </span>
+            <span class="faq-icon-btn" aria-hidden="true">
+              <svg class="faq-icon-svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <line x1="8" y1="2" x2="8" y2="14"></line>
+                <line x1="2" y1="8" x2="14" y2="8"></line>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-answer" id="faq-ans-5">
+            <div class="faq-answer-inner">
+              <p data-t="faq_a5">We eliminate the risk of big surprises by agreeing on the style, mood, and direction before I build the final designs. However, your feedback is a natural part of the process. Every project includes dedicated revision rounds where we refine the details together until the design feels 100% right for your business.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button type="button" class="faq-trigger" aria-expanded="false" aria-controls="faq-ans-6">
+            <span class="faq-q-wrap">
+              <span class="faq-num" data-t="faq_num_6">06</span>
+              <span class="faq-q" data-t="faq_q6">Once the project is finished, will I be able to use everything easily on my own?</span>
+            </span>
+            <span class="faq-icon-btn" aria-hidden="true">
+              <svg class="faq-icon-svg" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                <line x1="8" y1="2" x2="8" y2="14"></line>
+                <line x1="2" y1="8" x2="14" y2="8"></line>
+              </svg>
+            </span>
+          </button>
+          <div class="faq-answer" id="faq-ans-6">
+            <div class="faq-answer-inner">
+              <p data-t="faq_a6">Absolutely. I don't just send over raw files and disappear. You’ll receive a neatly organized folder with print-ready files for your suppliers (packaging, menus, signage), ready-to-post templates for social media, or structured design files for your developers—along with a clear guide showing you exactly which file to use and when.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -481,6 +842,7 @@ main,#project,footer,.lb{position:relative;z-index:1}
 </main>
 
 <main id="project" hidden></main>
+<main id="services-page" hidden></main>
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
   <button class="x" id="lbx" type="button" aria-label="Close">&#10005;</button>
   <div class="stage"><img id="lbimg" alt=""></div>
@@ -489,20 +851,476 @@ main,#project,footer,.lb{position:relative;z-index:1}
 
 <script>
 const PROJECTS = [{"n": 1, "slug": "yasmine", "name": "Yasmine", "sector": "Refined bedding & home fragrance", "desc": "A soft, elegant identity for a brand of fine bedding and home fragrance. The logo is a woven, geometric Arabic-inspired motif, and the same motif becomes a pattern that wraps boxes, bedding and bottles, all in a calm dusty-rose palette.", "services": ["Logo & pattern", "Stationery & packaging", "Product mockups", "Social media"], "bg": "#f4e9e5", "ink": "#4a2f28", "accent": "#b8735f", "tbg": "#b8735f", "tfg": "#ffffff", "lead": "img/yasmine/box.jpg", "pos": "50% 50%", "cover": "img/yasmine/cover.png", "cw": 800, "ch": 779, "sections": [{"title": "Identity & print", "items": [{"src": "img/yasmine/logo.jpg", "alt": "Yasmine logo with the woven geometric motif", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/yasmine/cards.jpg", "alt": "Business cards with the pattern border", "w": 1600, "h": 1067, "nw": 2000, "nh": 1334}, {"src": "img/yasmine/thanks.jpg", "alt": "Thank-you card", "w": 1600, "h": 1131, "nw": 2000, "nh": 1414}, {"src": "img/yasmine/catalog.jpg", "alt": "Printed catalog and colour card", "w": 1600, "h": 1245, "nw": 2000, "nh": 1556}]}, {"title": "Products & packaging", "items": [{"src": "img/yasmine/box.jpg", "alt": "Gift box with the pattern band", "w": 1600, "h": 1200, "nw": 2000, "nh": 1500}, {"src": "img/yasmine/candle.jpg", "alt": "Candle and bottle in linen pouches", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/yasmine/pillow.jpg", "alt": "Pillows with the monogram", "w": 1600, "h": 900, "nw": 2000, "nh": 1125}, {"src": "img/yasmine/bed.jpg", "alt": "Bedding with the pattern trim", "w": 1600, "h": 1371, "nw": 2000, "nh": 1714}]}, {"title": "Social media", "items": [{"src": "img/yasmine/perfume.jpg", "alt": "Perfume range post", "w": 1000, "h": 1000, "nw": 1000, "nh": 1000}, {"src": "img/yasmine/ramadan.jpg", "alt": "Ramadan greeting post", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/yasmine/who.jpg", "alt": "Brand introduction post", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}], "ar": {"sector": "مفروشات راقية وعطور منزلية", "desc": "هوية ناعمة وأنيقة لعلامة مفروشات فاخرة وعطور منزلية. الشعار زخرفة هندسية منسوجة مستوحاة من الفن العربي، وتتحول الزخرفة نفسها إلى نمط يلفّ العلب والمفارش والزجاجات، بلوحة ألوان هادئة من الوردي الترابي.", "services": ["شعار ونمط", "قرطاسية وتغليف", "نماذج المنتجات", "وسائل التواصل الاجتماعي"], "sections": ["الهوية والمطبوعات", "المنتجات والتغليف", "وسائل التواصل الاجتماعي"], "alts": [["شعار ياسمين بالزخرفة الهندسية المنسوجة", "بطاقات عمل بإطار من النمط", "بطاقة شكر", "كتالوج مطبوع وبطاقة ألوان"], ["علبة هدايا بشريط النمط", "شمعة وزجاجة في أكياس كتّان", "وسائد عليها الشعار", "مفرش سرير بحاشية من النمط"], ["منشور مجموعة العطور", "منشور تهنئة رمضان", "منشور تعريفي بالعلامة"]]}}, {"n": 2, "slug": "rifah", "name": "Rifah", "sector": "Pastry & coffee shop", "desc": "A warm identity for a shop serving traditional and modern sweets. The logo is the word Rifah in flowing Arabic calligraphy, and the word repeats into a ribbon pattern used on boxes, cups, bags, aprons and cards, in a terracotta and peach palette.", "services": ["Logo & wordmark", "Pattern", "Packaging & stationery", "Apparel & props"], "bg": "#fee6ce", "ink": "#5a2a1c", "accent": "#d9532f", "tbg": "#d9532f", "tfg": "#fee6ce", "lead": "img/rifah/set.jpg", "pos": "50% 50%", "cover": "img/rifah/cover.png", "cw": 239, "ch": 800, "sections": [{"title": "Logo & pattern", "items": [{"src": "img/rifah/logo.jpg", "alt": "Rifah logo in Arabic calligraphy", "w": 750, "h": 1220, "nw": 750, "nh": 1220}, {"src": "img/rifah/band1.jpg", "alt": "Ribbon pattern made from the word Rifah", "w": 1600, "h": 128, "nw": 2250, "nh": 180}, {"src": "img/rifah/band2.jpg", "alt": "Ribbon pattern, second colourway", "w": 1600, "h": 114, "nw": 2250, "nh": 160}]}, {"title": "Packaging & stationery", "items": [{"src": "img/rifah/pack.jpg", "alt": "Cups, boxes and cards", "w": 1280, "h": 1175, "nw": 1280, "nh": 1175}, {"src": "img/rifah/set.jpg", "alt": "Bags, apron and stationery set", "w": 1600, "h": 1070, "nw": 2250, "nh": 1505}, {"src": "img/rifah/scene.jpg", "alt": "Card and ribbon on a table setting", "w": 1600, "h": 578, "nw": 2250, "nh": 813}]}], "ar": {"sector": "محل حلويات ومقهى", "desc": "هوية دافئة لمحل يقدّم الحلويات التقليدية والعصرية. الشعار هو كلمة «رفاه» بخط عربي متدفق، وتتكرر الكلمة لتشكّل نمط شريط يُستخدم على العلب والأكواب والأكياس والمآزر والبطاقات، بلوحة ألوان من التراكوتا والخوخي.", "services": ["شعار وكلمة مكتوبة", "نمط", "تغليف وقرطاسية", "ملابس وإكسسوارات"], "sections": ["الشعار والنمط", "التغليف والقرطاسية"], "alts": [["شعار رفاه بالخط العربي", "نمط شريط من كلمة رفاه", "نمط الشريط بتدرج لوني ثانٍ"], ["أكواب وعلب وبطاقات", "أكياس ومئزر ومجموعة قرطاسية", "بطاقة وشريط على طاولة تقديم"]]}}, {"n": 3, "slug": "excellence-sante", "name": "Excellence Santé", "sector": "Medical equipment supplier", "desc": "A calm and trustworthy identity for a company that sells medical equipment. A heart-and-drop symbol in layered blues and teal is applied to stationery, uniforms, a delivery van, signage and an exhibition booth.", "services": ["Logo", "Stationery", "Uniforms & vehicle", "Signage & exhibition"], "bg": "#edf4fa", "ink": "#0f2a43", "accent": "#0b4f8f", "tbg": "#e3f0fa", "tfg": "#0f2a43", "lead": "img/excellence-sante/wall.jpg", "pos": "50% 50%", "cover": "img/excellence-sante/cover.png", "cw": 800, "ch": 440, "sections": [{"title": "Logo & palette", "items": [{"src": "img/excellence-sante/logo.jpg", "alt": "Excellence Santé logo", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/excellence-sante/palette.jpg", "alt": "Colour palette", "w": 280, "h": 477, "nw": 280, "nh": 477}]}, {"title": "Stationery", "items": [{"src": "img/excellence-sante/stationery.jpg", "alt": "Letterhead, envelopes and cards", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}, {"title": "Uniforms, bags & caps", "items": [{"src": "img/excellence-sante/uniform.jpg", "alt": "Scrubs with the logo", "w": 991, "h": 1387, "nw": 991, "nh": 1387}, {"src": "img/excellence-sante/caps.jpg", "alt": "Caps with the symbol", "w": 747, "h": 996, "nw": 747, "nh": 996}, {"src": "img/excellence-sante/bag.jpg", "alt": "Carrier bag", "w": 1600, "h": 1066, "nw": 2000, "nh": 1333}]}, {"title": "Vehicle, signage & exhibition", "items": [{"src": "img/excellence-sante/van.jpg", "alt": "Delivery van livery", "w": 1600, "h": 910, "nw": 2000, "nh": 1137}, {"src": "img/excellence-sante/wall.jpg", "alt": "Reception wall sign", "w": 1600, "h": 1066, "nw": 2000, "nh": 1333}, {"src": "img/excellence-sante/booth.jpg", "alt": "Exhibition booth", "w": 1600, "h": 1018, "nw": 2000, "nh": 1273}]}], "ar": {"sector": "مورّد معدات طبية", "desc": "هوية هادئة وجديرة بالثقة لشركة تبيع المعدات الطبية. رمز يجمع القلب والقطرة بدرجات متراكبة من الأزرق والفيروزي، يُطبَّق على القرطاسية والزي الموحد وسيارة التوصيل واللافتات وجناح المعرض.", "services": ["شعار", "قرطاسية", "زي موحد ومركبة", "لافتات ومعارض"], "sections": ["الشعار والألوان", "القرطاسية", "الزي والأكياس والقبعات", "المركبة واللافتات والمعرض"], "alts": [["شعار إكسلانس سانتي", "لوحة الألوان"], ["ورق رسمي وأظرف وبطاقات"], ["زي طبي عليه الشعار", "قبعات عليها الرمز", "كيس حمل"], ["تصميم سيارة التوصيل", "لافتة جدار الاستقبال", "جناح المعرض"]]}}, {"n": 4, "slug": "qraya", "name": "Qraya", "sector": "Online learning platform for BAC students", "desc": "A friendly, energetic identity for an online learning platform. A rounded wordmark, expressive emoji faces and a playful pattern make a bright orange and blue system, shown here on logo versions and on the social media posts of the BAC campaign.", "services": ["Logo", "Brand identity", "Social media", "Platform UI"], "bg": "#f2f2f2", "ink": "#1a2b3f", "accent": "#ff6200", "tbg": "#ff6200", "tfg": "#ffffff", "lead": "img/qraya/s3.jpg", "pos": "50% 40%", "cover": "img/qraya/cover.png", "cw": 800, "ch": 267, "sections": [{"title": "Logo", "items": [{"src": "img/qraya/logo_orange.jpg", "alt": "Qraya wordmark", "w": 1389, "h": 543, "nw": 1389, "nh": 543}, {"src": "img/qraya/logos.jpg", "alt": "Logo colour versions", "w": 1571, "h": 1600, "nw": 2160, "nh": 2200}]}, {"title": "Brand identity", "items": [{"src": "img/qraya/brandblk0.jpg", "alt": "Emoji faces", "w": 571, "h": 335, "nw": 571, "nh": 335}, {"src": "img/qraya/brandblk1.jpg", "alt": "Colour palette", "w": 571, "h": 440, "nw": 571, "nh": 440}, {"src": "img/qraya/brandblk2.jpg", "alt": "Supporting colours", "w": 571, "h": 245, "nw": 571, "nh": 245}, {"src": "img/qraya/brandblk3.jpg", "alt": "Brand pattern", "w": 571, "h": 272, "nw": 571, "nh": 272}]}, {"title": "Social media", "items": [{"src": "img/qraya/s1.jpg", "alt": "BAC campaign post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}, {"src": "img/qraya/s2.jpg", "alt": "Teachers announcement post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}, {"src": "img/qraya/s3.jpg", "alt": "Online classes post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}, {"src": "img/qraya/s4.jpg", "alt": "Platform introduction post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}, {"src": "img/qraya/s5.jpg", "alt": "BAC 2025 post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}, {"src": "img/qraya/s6.jpg", "alt": "Subscription post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}]}], "ar": {"sector": "منصة تعليم إلكتروني لطلبة البكالوريا", "desc": "هوية ودودة ومفعمة بالحيوية لمنصة تعليم إلكتروني. كلمة بحروف مستديرة، ووجوه تعبيرية، ونمط مرح، تشكّل نظامًا برتقاليًا وأزرق ساطعًا، يظهر هنا في نسخ الشعار ومنشورات حملة البكالوريا على وسائل التواصل.", "services": ["شعار", "هوية العلامة", "وسائل التواصل الاجتماعي", "واجهة المنصة"], "sections": ["الشعار", "هوية العلامة", "وسائل التواصل الاجتماعي"], "alts": [["كلمة Qraya", "نسخ ألوان الشعار"], ["وجوه تعبيرية", "لوحة الألوان", "ألوان مساندة", "نمط العلامة"], ["منشور حملة البكالوريا", "منشور أساتذة المواد", "منشور الدروس عن بُعد", "منشور تقديم المنصة", "منشور بكالوريا 2025", "منشور الاشتراك"]]}}, {"n": 5, "slug": "brunch", "name": "Brunch", "sector": "Fast-casual food, “Eat Well, Live Well”", "desc": "A retro script logo with a long, flowing tail gives Brunch an easy, friendly voice. Deep green, terracotta and cream are applied across takeaway packaging, bags, cups, wraps and business cards, with the oversized lettering used as a pattern.", "services": ["Logo", "Packaging", "Stationery", "Brand pattern"], "bg": "#f5f0e1", "ink": "#0b3f38", "accent": "#e8572a", "tbg": "#087266", "tfg": "#f5f0e1", "lead": "img/brunch/bag.jpg", "pos": "50% 50%", "cover": "img/brunch/cover.png", "cw": 800, "ch": 370, "sections": [{"title": "Logo", "items": [{"src": "img/brunch/logo.jpg", "alt": "Brunch script logo", "w": 1600, "h": 1600, "nw": 2400, "nh": 2400}]}, {"title": "Packaging & stationery", "items": [{"src": "img/brunch/tray.jpg", "alt": "Foil tray with the lettering pattern", "w": 1600, "h": 1068, "nw": 2400, "nh": 1602}, {"src": "img/brunch/bag.jpg", "alt": "Takeaway bag, cups and boxes", "w": 1600, "h": 1067, "nw": 2400, "nh": 1600}, {"src": "img/brunch/bowl.jpg", "alt": "Bowl with a printed wrap", "w": 1600, "h": 1065, "nw": 2400, "nh": 1597}, {"src": "img/brunch/wraps.jpg", "alt": "Container wraps", "w": 1600, "h": 1067, "nw": 2400, "nh": 1600}, {"src": "img/brunch/sandwich.jpg", "alt": "Sandwich wrap and business card", "w": 1067, "h": 1600, "nw": 1601, "nh": 2400}, {"src": "img/brunch/set.jpg", "alt": "Paper bag, drink and business card", "w": 1067, "h": 1600, "nw": 1601, "nh": 2400}]}], "ar": {"sector": "وجبات سريعة راقية، «كُل جيدًا، عِش جيدًا»", "desc": "شعار بخط مائل قديم الطراز وذيل طويل منساب يمنح Brunch صوتًا مريحًا وودودًا. الأخضر الداكن والتراكوتا والكريمي تُطبَّق على عبوات الطلبات الخارجية والأكياس والأكواب واللفافات وبطاقات العمل، مع استخدام الحروف الكبيرة نمطًا للعلامة.", "services": ["شعار", "تغليف", "قرطاسية", "نمط العلامة"], "sections": ["الشعار", "التغليف والقرطاسية"], "alts": [["شعار Brunch بخط مائل"], ["صينية ألمنيوم بنمط الحروف", "كيس طلبات خارجية وأكواب وعلب", "وعاء بلفافة مطبوعة", "لفافات للعلب", "شطيرة وبطاقة عمل", "كيس ورقي ومشروب وبطاقة عمل"]]}}, {"n": 6, "slug": "oxygen-gym", "name": "Oxygen Gym", "sector": "Gym & fitness brand", "desc": "A bold, athletic identity built on a strong OG monogram that joins an oxygen symbol with a flexed arm. Fresh green on deep black-green is applied to a lightning pattern, bags, bottles and apparel, with slogans such as “Breathe Oxygen, Feel Alive”.", "services": ["Logo & monogram", "Colorways", "Pattern", "Merchandise"], "bg": "#fff7e4", "ink": "#12302a", "accent": "#6fa83a", "tbg": "#fff7e4", "tfg": "#12302a", "lead": "img/oxygen-gym/p38.jpg", "pos": "30% 50%", "cover": "img/oxygen-gym/cover.png", "cw": 800, "ch": 345, "sections": [{"title": "Logo & colorways", "items": [{"src": "img/oxygen-gym/logo_green.jpg", "alt": "Oxygen Gym logo in green", "w": 1360, "h": 660, "nw": 1360, "nh": 660}, {"src": "img/oxygen-gym/p36.jpg", "alt": "Logo colorways", "w": 1600, "h": 900, "nw": 1920, "nh": 1080}]}, {"title": "Pattern", "items": [{"src": "img/oxygen-gym/p37.jpg", "alt": "Lightning pattern and colour names", "w": 1600, "h": 892, "nw": 1920, "nh": 1070}]}, {"title": "Merchandise", "items": [{"src": "img/oxygen-gym/p38.jpg", "alt": "Jacket and boxing glove", "w": 1600, "h": 900, "nw": 1920, "nh": 1080}, {"src": "img/oxygen-gym/p39.jpg", "alt": "Gym bags", "w": 1600, "h": 900, "nw": 1920, "nh": 1080}, {"src": "img/oxygen-gym/p40.jpg", "alt": "Kettlebell and training wear", "w": 1600, "h": 900, "nw": 1920, "nh": 1080}, {"src": "img/oxygen-gym/p41.jpg", "alt": "Bottle, pouch and tank top", "w": 1600, "h": 900, "nw": 1920, "nh": 1080}]}], "ar": {"sector": "علامة صالة رياضية ولياقة", "desc": "هوية رياضية جريئة مبنية على مونوغرام OG قوي يجمع رمز الأكسجين وذراعًا مفتولة. أخضر منعش على أخضر داكن يميل للأسود يُطبَّق على نمط البرق والحقائب والقوارير والملابس، مع شعارات مثل «تنفّس الأكسجين، اشعر بالحياة».", "services": ["شعار ومونوغرام", "تدرجات لونية", "نمط", "منتجات ترويجية"], "sections": ["الشعار والتدرجات اللونية", "النمط", "المنتجات الترويجية"], "alts": [["شعار Oxygen Gym بالأخضر", "تدرجات ألوان الشعار"], ["نمط البرق وأسماء الألوان"], ["سترة وقفاز ملاكمة", "حقائب رياضية", "كرة الأثقال وملابس التدريب", "قارورة وكيس وقميص رياضي"]]}}, {"n": 7, "slug": "big-box-food", "name": "Big Box Food", "sector": "Playful fast-food brand", "desc": "A loud and cheerful identity for a fast-food brand. A cap-wearing box character gives it a face, backed by a red, yellow and blue palette and a pattern of small, expressive characters. Mockups on the following pages are concept presentations.", "services": ["Logo & mascot", "Color palette & pattern", "Menu & business cards", "Storefront & stickers"], "bg": "#fedc00", "ink": "#282457", "accent": "#ff002c", "tbg": "#fedc00", "tfg": "#282457", "lead": "img/big-box-food/store.jpg", "pos": "50% 50%", "cover": "img/big-box-food/cover.png", "cw": 800, "ch": 298, "sections": [{"title": "Logo & mascot", "items": [{"src": "img/big-box-food/logo_v.jpg", "alt": "Big Box Food stacked logo", "w": 1251, "h": 1083, "nw": 1251, "nh": 1083}, {"src": "img/big-box-food/logo_h.jpg", "alt": "Big Box Food horizontal logo", "w": 1600, "h": 628, "nw": 1800, "nh": 706}]}, {"title": "Menu & business cards (concept)", "items": [{"src": "img/big-box-food/menu.jpg", "alt": "Menu concept", "w": 1600, "h": 1118, "nw": 2000, "nh": 1398}, {"src": "img/big-box-food/cards.jpg", "alt": "Business card concept", "w": 1600, "h": 1194, "nw": 2000, "nh": 1493}]}, {"title": "Storefront & stickers (concept)", "items": [{"src": "img/big-box-food/store.jpg", "alt": "Storefront concept", "w": 1200, "h": 896, "nw": 1200, "nh": 896}, {"src": "img/big-box-food/stickers.jpg", "alt": "Sticker set concept", "w": 1195, "h": 896, "nw": 1195, "nh": 896}]}], "ar": {"sector": "علامة وجبات سريعة مرحة", "desc": "هوية صاخبة ومبهجة لعلامة وجبات سريعة. شخصية علبة ترتدي قبعة تمنحها وجهًا، مع لوحة ألوان حمراء وصفراء وزرقاء ونمط من شخصيات صغيرة معبّرة. النماذج في الأسفل عروض تصورية.", "services": ["شعار وشخصية", "لوحة الألوان والنمط", "قائمة طعام وبطاقات عمل", "واجهة متجر وملصقات"], "sections": ["الشعار والشخصية", "قائمة الطعام وبطاقات العمل (تصور)", "واجهة المتجر والملصقات (تصور)"], "alts": [["شعار Big Box Food العمودي", "شعار Big Box Food الأفقي"], ["تصور قائمة الطعام", "تصور بطاقة العمل"], ["تصور واجهة المتجر", "تصور مجموعة الملصقات"]]}}, {"n": 8, "slug": "cafe-paresta", "name": "Café Parésta", "sector": "Cakes, crêpes & drinks", "desc": "A refined new identity for an existing café, serving since 2018. A monogram of interlocking P and C in warm amber sits on deep green, in stacked, horizontal and badge versions, applied to the grand-opening post, menu cover and business card.", "services": ["Logo versions", "Opening announcement", "Menu cover", "Business card"], "bg": "#033f3f", "ink": "#f7ebd5", "accent": "#f9a93b", "tbg": "#033f3f", "tfg": "#f7ebd5", "lead": "img/cafe-paresta/card1.jpg", "pos": "50% 50%", "cover": "img/cafe-paresta/cover.png", "cw": 800, "ch": 276, "sections": [{"title": "Logo versions", "items": [{"src": "img/cafe-paresta/stacked.jpg", "alt": "Stacked logo", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/cafe-paresta/vert.jpg", "alt": "Vertical logo", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/cafe-paresta/badge.jpg", "alt": "Badge logo", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/cafe-paresta/stamp.jpg", "alt": "Stamp logo", "w": 1599, "h": 1600, "nw": 1999, "nh": 2000}, {"src": "img/cafe-paresta/horiz.jpg", "alt": "Horizontal logo", "w": 1600, "h": 638, "nw": 2000, "nh": 797}]}, {"title": "Announcement & menu", "items": [{"src": "img/cafe-paresta/opening.jpg", "alt": "Grand-opening announcement", "w": 1280, "h": 1600, "nw": 1600, "nh": 2000}, {"src": "img/cafe-paresta/menu.jpg", "alt": "Menu cover", "w": 1131, "h": 1600, "nw": 1414, "nh": 2000}]}, {"title": "Business card", "items": [{"src": "img/cafe-paresta/card1.jpg", "alt": "Business card front", "w": 1600, "h": 978, "nw": 2000, "nh": 1222}, {"src": "img/cafe-paresta/card2.jpg", "alt": "Business card back", "w": 1600, "h": 978, "nw": 2000, "nh": 1222}]}], "ar": {"sector": "كعك وكريب ومشروبات", "desc": "هوية جديدة مصقولة لمقهى قائم منذ 2018. مونوغرام من حرفي P وC متشابكين بلون كهرماني دافئ على أخضر داكن، بنسخ عمودية وأفقية وشارة، يُطبَّق على منشور الافتتاح وغلاف القائمة وبطاقة العمل.", "services": ["نسخ الشعار", "إعلان الافتتاح", "غلاف القائمة", "بطاقة عمل"], "sections": ["نسخ الشعار", "الإعلان والقائمة", "بطاقة العمل"], "alts": [["الشعار المكدّس", "الشعار العمودي", "شعار الشارة", "شعار الختم", "الشعار الأفقي"], ["إعلان الافتتاح الكبير", "غلاف القائمة"], ["الوجه الأمامي لبطاقة العمل", "الوجه الخلفي لبطاقة العمل"]]}}, {"n": 9, "slug": "di3aya", "name": "Di3aya", "sector": "Social media & advertising agency", "desc": "An identity for an advertising agency, with a bilingual Latin and Arabic wordmark and a compact monogram. Navy and fresh teal, shaped around speech bubbles, run through business cards, a roll-up banner, lanyard, keychains and the agency’s social posts.", "services": ["Logo", "Color system", "Print & merchandise", "Social media"], "bg": "#04153a", "ink": "#eaf2f2", "accent": "#5dd8c4", "tbg": "#04153a", "tfg": "#eaf2f2", "lead": "img/di3aya/banner.jpg", "pos": "50% 45%", "cover": "img/di3aya/cover.png", "cw": 800, "ch": 330, "sections": [{"title": "Logo & colors", "items": [{"src": "img/di3aya/logo_h.jpg", "alt": "Horizontal logo", "w": 1600, "h": 822, "nw": 2000, "nh": 1028}, {"src": "img/di3aya/logo_v.jpg", "alt": "Vertical logo", "w": 958, "h": 1600, "nw": 1197, "nh": 2000}, {"src": "img/di3aya/palette.jpg", "alt": "Colour palette in speech-bubble shapes", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}, {"title": "Print & merchandise", "items": [{"src": "img/di3aya/cards.jpg", "alt": "Business cards", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/di3aya/banner.jpg", "alt": "Roll-up banners", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/di3aya/lanyard.jpg", "alt": "Lanyard and badge holder", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/di3aya/keys.jpg", "alt": "Keychains", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}, {"title": "Social media", "items": [{"src": "img/di3aya/soon.jpg", "alt": "Coming soon post", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/di3aya/eid.jpg", "alt": "Eid greeting post", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/di3aya/ramadan.jpg", "alt": "Ramadan greeting post", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}], "ar": {"sector": "وكالة وسائل تواصل اجتماعي وإعلان", "desc": "هوية لوكالة إعلانات، بكلمة مزدوجة باللاتينية والعربية ومونوغرام مضغوط. الكحلي والفيروزي المنعش، بأشكال مستوحاة من فقاعات الحوار، يمتدان عبر بطاقات العمل ولافتة الرول أب والشريط الحامل والميداليات ومنشورات الوكالة الاجتماعية.", "services": ["شعار", "نظام الألوان", "مطبوعات ومنتجات ترويجية", "وسائل التواصل الاجتماعي"], "sections": ["الشعار والألوان", "المطبوعات والمنتجات الترويجية", "وسائل التواصل الاجتماعي"], "alts": [["الشعار الأفقي", "الشعار العمودي", "لوحة الألوان بأشكال فقاعات الحوار"], ["بطاقات العمل", "لافتات رول أب", "شريط حامل وحافظة بطاقة", "ميداليات مفاتيح"], ["منشور «قريبًا»", "منشور تهنئة بالعيد", "منشور تهنئة برمضان"]]}}, {"n": 10, "slug": "tourkya", "name": "Tourkya", "sector": "Shoes & fashion store", "desc": "A confident, fashion-led identity with a thin-stroke TK monogram in deep red and cream. It appears on signage, the storefront, shopping bags and shoe boxes, along with a bilingual Latin and Arabic business card.", "services": ["Logo & monogram", "Signage & storefront", "Packaging", "Business card"], "bg": "#f9f5ec", "ink": "#3a0a05", "accent": "#a61204", "tbg": "#a61204", "tfg": "#f9f5ec", "lead": "img/tourkya/store.jpg", "pos": "50% 50%", "cover": "img/tourkya/cover.png", "cw": 800, "ch": 662, "sections": [{"title": "Logo & monogram", "items": [{"src": "img/tourkya/logo.jpg", "alt": "Tourkya logo", "w": 1599, "h": 1600, "nw": 1999, "nh": 2000}, {"src": "img/tourkya/tk_cream.jpg", "alt": "TK monogram, red on cream", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/tourkya/tk_red.jpg", "alt": "TK monogram, cream on red", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}, {"title": "Signage & storefront", "items": [{"src": "img/tourkya/fascia.jpg", "alt": "Fascia sign", "w": 1600, "h": 1066, "nw": 2000, "nh": 1333}, {"src": "img/tourkya/sign.jpg", "alt": "Projecting sign", "w": 1600, "h": 1066, "nw": 2000, "nh": 1333}, {"src": "img/tourkya/store.jpg", "alt": "Storefront", "w": 1600, "h": 1145, "nw": 2000, "nh": 1431}]}, {"title": "Packaging", "items": [{"src": "img/tourkya/bag.jpg", "alt": "Shopping bag", "w": 1066, "h": 1600, "nw": 1333, "nh": 2000}, {"src": "img/tourkya/box.jpg", "alt": "Shoe box", "w": 1600, "h": 1113, "nw": 2000, "nh": 1391}]}, {"title": "Business card", "items": [{"src": "img/tourkya/card.jpg", "alt": "Bilingual business card", "w": 1064, "h": 650, "nw": 1064, "nh": 650}]}], "ar": {"sector": "متجر أحذية وأزياء", "desc": "هوية أنيقة تتجه نحو الموضة، بمونوغرام TK بخطوط رفيعة بالأحمر الداكن والكريمي. يظهر على اللافتات وواجهة المتجر وأكياس التسوق وعلب الأحذية، إضافةً إلى بطاقة عمل مزدوجة باللاتينية والعربية.", "services": ["شعار ومونوغرام", "لافتات وواجهة متجر", "تغليف", "بطاقة عمل"], "sections": ["الشعار والمونوغرام", "اللافتات وواجهة المتجر", "التغليف", "بطاقة العمل"], "alts": [["شعار Tourkya", "مونوغرام TK أحمر على كريمي", "مونوغرام TK كريمي على أحمر"], ["لافتة الواجهة", "لافتة بارزة", "واجهة المتجر"], ["كيس تسوق", "علبة حذاء"], ["بطاقة عمل ثنائية اللغة"]]}}];
+const SERVICES_DATA = [
+  {
+    id: "branding",
+    num: "01",
+    name_en: "Branding & Logo Design",
+    name_ar: "تصميم الهويات البصرية والشعارات",
+    brief_en: "Strategic visual identities, logos, guidelines, and stationery crafted for ambitious businesses and corporate brands.",
+    brief_ar: "هويات بصرية استراتيجية، شعارات، أدلة معايير وقرطاسية مؤسسية مصممة لبناء حضور قوي ومميز.",
+    target_en: "Tailored for startups, commercial brands, academies, and companies looking for a strong, authoritative professional presence.",
+    target_ar: "مناسب للمؤسسات الناشئة، العلامات التجارية، الأكاديميات، والشركات التي تبحث عن حضور قوي واحترافي.",
+    highlights_en: ["Essential Logo", "Pro Visual Identity", "Full Corporate Branding", "Logo Redesign"],
+    highlights_ar: ["باقة الشعار الأساسية", "الهوية البصرية الاحترافية", "الهوية المتكاملة للشركات", "تطوير وتحديث الشعار"],
+    form_service_en: "Brand Identity & Logo",
+    packs: [
+      {
+        id: "essential-logo",
+        title_en: "Essential Logo Pack",
+        title_ar: "باقة الشعار الأساسية",
+        tag_en: "For new ventures needing a solid logo foundation",
+        tag_ar: "للمشاريع الجديدة الراغبة في انطلاقة مميزة بشعار قوي",
+        deliverables_en: [
+          "2 innovative, bespoke logo concept proposals",
+          "2 rounds of revisions and refinements",
+          "Definition of primary color palette & core typography",
+          "Delivery of final master files in all standard formats (AI, EPS, PDF, PNG, SVG)"
+        ],
+        deliverables_ar: [
+          "اقتراحان (2) مبتكران للشعار",
+          "جولتان (2) من التعديلات",
+          "تحديد لوحة الألوان والخطوط الأساسية",
+          "تسليم الملفات النهائية بجميع الصيغ (AI, EPS, PDF, PNG, SVG)"
+        ]
+      },
+      {
+        id: "pro-visual-identity",
+        title_en: "Pro Visual Identity Pack",
+        title_ar: "باقة الهوية البصرية الاحترافية",
+        tag_en: "Complete visual identity system for growing businesses",
+        tag_ar: "نظام هوية بصرية متكامل للشركات والمؤسسات الطموحة",
+        deliverables_en: [
+          "3 strategic logo concepts + 3 rounds of revisions",
+          "Mini brand style guide / Charte Graphique (8–12 pages)",
+          "Essential corporate print stationery (business card, official letterhead, envelope)",
+          "3 realistic 3D presentation mockups"
+        ],
+        deliverables_ar: [
+          "3 اقتراحات استراتيجية للشعار + 3 جولات تعديل",
+          "دليل هوية بصرية مصغر (Charte Graphique من 8–12 صفحة)",
+          "تصميم المطبوعات الأساسية (بطاقة عمل، ورق رسمي، ظرف)",
+          "3 عروض تقديمية واقعية (3D Mockups)"
+        ]
+      },
+      {
+        id: "full-corporate-branding",
+        title_en: "Full Corporate Branding Pack",
+        title_ar: "باقة الهوية المتكاملة للشركات",
+        tag_en: "Comprehensive end-to-end branding for enterprises & institutions",
+        tag_ar: "منظومة هوية شاملة للمؤسسات والشركات الكبرى",
+        deliverables_en: [
+          "In-depth visual market & competitor research",
+          "3–4 professional concept directions + unlimited minor refinements",
+          "Comprehensive Brand Book (+20 pages)",
+          "Complete stationery package + 5 custom social media templates",
+          "Full handover of all open source files with commercial usage rights"
+        ],
+        deliverables_ar: [
+          "دراسة بصرية شاملة للسوق والمنافسين",
+          "3–4 مقترحات احترافية + تعديلات طفيفة غير محدودة",
+          "دليل هوية شامل ومفصل (Brand Book +20 صفحة)",
+          "حزمة مطبوعات كاملة + 5 قوالب لمنصات التواصل الاجتماعي",
+          "تسليم كافة الملفات المفتوحة وحقوق الاستخدام التجاري"
+        ]
+      },
+      {
+        id: "logo-redesign",
+        title_en: "Logo Redesign & Vectorization",
+        title_ar: "تطوير أو تحديث شعار حالي",
+        tag_en: "Modernizing or recreating existing brand marks with precision",
+        tag_ar: "تحديث الشعار القائم لعصرنته أو إعادة رسمه بجودة فائقة",
+        deliverables_en: [
+          "Modernizing an outdated logo or redrawing into ultra-crisp vector format",
+          "Refining geometric proportions, font balance, and color harmony",
+          "Exporting master scalable vectors ready for print and screen"
+        ],
+        deliverables_ar: [
+          "تحديث شعار قديم لعصرنته أو إعادة رسمه بجودة عالية (Vector)",
+          "ضبط النسب الهندسية وتناسق الخطوط وتوازن الألوان",
+          "تسليم ملفات فيكتور قابلة للتكبير اللانهائي للطباعة والوسائط الرقمية"
+        ]
+      }
+    ]
+  },
+  {
+    id: "print",
+    num: "02",
+    name_en: "Print, Advertising & Packaging",
+    name_ar: "تصاميم المطبوعات، الإعلانات والتغليف",
+    brief_en: "Print-ready high-precision designs from business cards and brochures to product packaging and exhibition signage.",
+    brief_ar: "تصاميم إبداعية وتجهيز احترافي للملفات للطباعة بدقة CMYK مع هوامش القص.",
+    target_en: "Creative visual designs and prepress preparation (CMYK with bleed and crop marks).",
+    target_ar: "تصاميم إبداعية وتجهيز احترافي للملفات للطباعة (CMYK مع هوامش القص).",
+    highlights_en: ["Business Cards", "Flyers & Posters", "Roll-Up Banners", "Brochures", "Catalogs", "Packaging"],
+    highlights_ar: ["بطاقات عمل", "مطويات وملصقات", "لافتات إعلانية", "بروشورات مطوية", "كتالوجات", "تغليف وملصقات"],
+    form_service_en: "Packaging & Print",
+    packs: [
+      {
+        id: "business-card",
+        title_en: "Business Card (Carte de Visite)",
+        title_ar: "بطاقة عمل (Carte de Visite)",
+        tag_en: "Executive stationery to make a lasting first impression",
+        tag_ar: "مطبوعة رسمية تترك انطباعًا أوليًا فائق الاحترافية",
+        deliverables_en: [
+          "Professional double-sided card design",
+          "2 creative concept proposals",
+          "Print-ready PDF file with bleed and crop margins"
+        ],
+        deliverables_ar: [
+          "تصميم احترافي بوجهين",
+          "اقتراحان متميزان للتصميم",
+          "ملف PDF عالي الجودة جاهز للطباعة الفورية"
+        ]
+      },
+      {
+        id: "flyer-poster",
+        title_en: "Advertising Flyer / Poster",
+        title_ar: "مطوية إعلانية / ملصق (Flyer / Affiche)",
+        tag_en: "Impactful promotional print collateral",
+        tag_ar: "تصاميم ترويجية جذابة ومؤثرة للمنتجات والخدمات",
+        deliverables_en: [
+          "Single or double-sided design in standard formats (A3, A4, A5)",
+          "Prepress print-ready CMYK file with safe margins",
+          "Optimized digital edition for web and social distribution"
+        ],
+        deliverables_ar: [
+          "تصميم بوجه أو وجهين (A3, A4, A5)",
+          "نسخة جاهزة للطباعة الورقية بهوامش القص",
+          "نسخة محسنة للنشر والتوزيع الرقمي"
+        ]
+      },
+      {
+        id: "rollup-banner",
+        title_en: "Advertising Banner / Roll-Up",
+        title_ar: "لافتة إعلانية (Roll-Up / Banner)",
+        tag_en: "Large-format visibility for stores, booths, and events",
+        tag_ar: "حضور لافت وكبير للمعارض والمتاجر والفعاليات",
+        deliverables_en: [
+          "Ultra-high-resolution design tailored for trade shows, storefronts, or events",
+          "Strategic visual layout crafted for distant readability and brand retention"
+        ],
+        deliverables_ar: [
+          "تصميم عالي الدقة للمعارض، واجهات المحلات، أو الفعاليات",
+          "وضوح بصري فائق وترتيب مدروس يضمن لفت الانتباه من مسافات بعيدة"
+        ]
+      },
+      {
+        id: "brochure",
+        title_en: "Tri-Fold Brochure (Dépliant 3 Volets)",
+        title_ar: "بروشور مطوي (Dépliant 3 Volets)",
+        tag_en: "Structured storytelling for company offerings",
+        tag_ar: "عرض متسلسل وواضح لخدمات الشركة ومنتجاتها",
+        deliverables_en: [
+          "Structured 6-panel organized layout with clean editorial flow",
+          "Custom vector icons and bespoke illustration elements",
+          "Professional typography, photo treatment, and styling"
+        ],
+        deliverables_ar: [
+          "تصميم 6 أوجه منظمة باحترافية وسلاسة في القراءة",
+          "أيقونات ورسوم توضيحية مخصصة",
+          "معالجة وتنسيق الصور لطباعة تجارية فاخرة"
+        ]
+      },
+      {
+        id: "catalog",
+        title_en: "Product Catalog / Company Profile",
+        title_ar: "كتالوج منتجات / ملف تعريفي للشركة",
+        tag_en: "Multi-page publication showcasing complete collections",
+        tag_ar: "ملف تعريفي أو كتالوج متكامل يعكس ثقل المؤسسة",
+        deliverables_en: [
+          "Custom bespoke cover design",
+          "Interior page formatting, product grid organization, and layout",
+          "Harmonious typographic hierarchy for effortless browsing"
+        ],
+        deliverables_ar: [
+          "تصميم غلاف مخصص وأنيق",
+          "تنسيق احترافي للصفحات الداخلية وعرض المنتجات",
+          "نظام شبكي متقن يسهل التصفح والقراءة المؤسسية"
+        ]
+      },
+      {
+        id: "packaging",
+        title_en: "Packaging & Label Design",
+        title_ar: "تصميم التغليف والملصقات (Packaging)",
+        tag_en: "Shelf-ready packaging engineered for manufacturing",
+        tag_ar: "تغليف مميز على الرفوف ومجهز لمعايير التصنيع",
+        deliverables_en: [
+          "Precision technical design built directly on die-line templates",
+          "Realistic 3D mockup presentation showing materials and finishes",
+          "Industrial prepress print files prepared for packaging manufacturers"
+        ],
+        deliverables_ar: [
+          "تصميم احترافي دقيق على مخطط القص الفعلي (Die-line)",
+          "عرض واقعي ثلاثي الأبعاد (3D Presentation)",
+          "إعداد ملفات الإنتاج الصناعي الجاهزة للمطابع والمعامل"
+        ]
+      }
+    ]
+  },
+  {
+    id: "social",
+    num: "03",
+    name_en: "Social Media Graphics",
+    name_ar: "تصاميم منصات التواصل الاجتماعي",
+    brief_en: "Engaging, high-converting social media creatives and monthly growth packs optimized for Instagram, Facebook, and LinkedIn.",
+    brief_ar: "تصاميم موجهة لزيادة التفاعل، جذب العملاء، وتوحيد المظهر البصري على منصات التواصل الاجتماعي.",
+    target_en: "Targeted visuals engineered to boost engagement, attract ideal clients, and unify brand presence across Instagram, Facebook, LinkedIn, and TikTok.",
+    target_ar: "تصاميم موجهة لزيادة التفاعل، جذب العملاء، وتوحيد المظهر البصري على إنستغرام، فيسبوك، لينكدإن، وتيك توك.",
+    highlights_en: ["Single Ad Posts", "Carousels", "Monthly Starter Pack", "Pro Growth Pack"],
+    highlights_ar: ["منشور إعلاني فردي", "منشور متسلسل", "باقة الانطلاق الشهرية", "باقة النمو الاحترافية"],
+    form_service_en: "Social Media Campaign",
+    packs: [
+      {
+        id: "single-post",
+        title_en: "Single Ad Post",
+        title_ar: "تصميم منشور إعلاني فردي (Single Post)",
+        tag_en: "High-impact visual for specific campaign announcements",
+        tag_ar: "تصميم مميز لحملة إعلانية أو إعلان مخصص",
+        deliverables_en: [
+          "Professional ad creative (square 1:1 or portrait 4:5)",
+          "Matching Story format (9:16) included free of charge",
+          "High-clarity export optimized for platform feed algorithms"
+        ],
+        deliverables_ar: [
+          "تصميم إعلاني احترافي (مربع 1:1 أو طولي 4:5)",
+          "مقاس ستوري (Story 9:16) متناسق مجانًا",
+          "تصدير عالي الوضوح متوافق مع خوارزميات المنصات"
+        ]
+      },
+      {
+        id: "carousel",
+        title_en: "Multi-Slide Carousel Post",
+        title_ar: "تصميم منشور متسلسل (Carousel)",
+        tag_en: "Educational & high-retention storytelling format",
+        tag_ar: "محتوى تعليمي وسردي يضاعف مدة بقاء المتابع وتفاعله",
+        deliverables_en: [
+          "Seamless continuous multi-slide layout (up to 7 slides)",
+          "Optimized for educational, storytelling, or promotional content",
+          "Visual swipe cues and retention hooks to maximize completion"
+        ],
+        deliverables_ar: [
+          "تصميم مترابط متعدد الشرائح (حتى 7 شرائح)",
+          "مهيأ للمحتوى التعليمي أو السردي أو الترويجي",
+          "عناصر توجيه وتصميم جذاب يحفز على التمرير والتفاعل"
+        ]
+      },
+      {
+        id: "starter-pack",
+        title_en: "Monthly Starter Pack",
+        title_ar: "باقة الانطلاق الشهرية (Starter Pack)",
+        tag_en: "Consistent monthly social media presence for emerging brands",
+        tag_ar: "انطلاقة شهرية متوازنة لتعزيز التواجد الرقمي",
+        deliverables_en: [
+          "8 professional static post designs",
+          "8 matching interactive story designs",
+          "Account profile avatar and cover banner update & alignment",
+          "Unified visual style and feed aesthetic consistency"
+        ],
+        deliverables_ar: [
+          "8 تصاميم احترافية لمنشورات ثابتة",
+          "8 تصاميم ستوري متوافقة مع المنشورات",
+          "تحديث وتنسيق صورة الحساب والغلاف",
+          "توحيد الطابع البصري وتناسق التغذية البصرية"
+        ]
+      },
+      {
+        id: "pro-growth-pack",
+        title_en: "Pro Growth Pack",
+        title_ar: "باقة النمو الاحترافية (Pro Growth Pack)",
+        tag_en: "Comprehensive monthly content creation for active scaling",
+        tag_ar: "تغطية تسويقية وبصرية متكاملة للنمو ومضاعفة التفاعل",
+        deliverables_en: [
+          "15 professional designs (including 3 multi-slide Carousels)",
+          "15 matching interactive stories",
+          "4 custom designed video covers for Reels and TikTok",
+          "Editable design templates upon request (Figma / PSD)"
+        ],
+        deliverables_ar: [
+          "15 تصميمًا احترافيًا (من ضمنها 3 منشورات Carousel متسلسلة)",
+          "15 تصميم ستوري متوافق",
+          "4 أغلفة مخصصة لفيديوهات الريلز وتيك توك (Reels Covers)",
+          "إمكانية تسليم قوالب قابلة للتعديل عند الطلب (Figma / PSD)"
+        ]
+      }
+    ]
+  },
+  {
+    id: "digital",
+    num: "04",
+    name_en: "UI/UX & 3D Design",
+    name_ar: "تصميم واجهات المستخدم والتجسيد ثلاثي الأبعاد",
+    brief_en: "Interactive web & mobile product interfaces, responsive Figma design systems, and hyper-realistic 3D product renders.",
+    brief_ar: "واجهات مستخدم تفاعلية لمواقع وتطبيقات الهاتف، ونماذج Figma متجاوبة، وتجسيد ثلاثي أبعاد واقعي للمنتجات.",
+    target_en: "Advanced, high-value digital solutions granting your venture visual distinction and modern technical polish.",
+    target_ar: "خدمات متقدمة وعالية القيمة تمنح مشروعك تميزًا بصريًا وتقنيًا.",
+    highlights_en: ["Landing Pages", "Full Websites", "Mobile Apps", "3D Product Renders", "3D Storefronts"],
+    highlights_ar: ["صفحات هبوط", "مواقع كاملة", "تطبيقات هاتف", "تجسيد منتجات 3D", "واجهات متاجر 3D"],
+    form_service_en: "UI/UX & Web Design",
+    packs: [
+      {
+        id: "landing-page",
+        title_en: "Landing Page UI/UX",
+        title_ar: "تصميم صفحة هبوط (Landing Page UI/UX)",
+        tag_en: "High-conversion single page built for products or services",
+        tag_ar: "صفحة هبوط مخصصة لزيادة التحويلات وجذب العملاء",
+        deliverables_en: [
+          "Information architecture planning & wireframing",
+          "Responsive desktop & mobile UI design in Figma",
+          "Interactive clickable prototype for testing and demonstration"
+        ],
+        deliverables_ar: [
+          "تخطيط وهيكلة تجربة المستخدم (Wireframing)",
+          "تصميم متجاوب وعصري للكمبيوتر والهاتف على Figma",
+          "نموذج تفاعلي (Interactive Prototype) لمعاينة التجربة"
+        ]
+      },
+      {
+        id: "full-website",
+        title_en: "Full Website UI/UX (5–8 Pages)",
+        title_ar: "تصميم موقع إلكتروني كامل (5–8 صفحات)",
+        tag_en: "Complete multi-page web platform and digital product",
+        tag_ar: "موقع إلكتروني مؤسسي أو منصة متكاملة من 5 إلى 8 صفحات",
+        deliverables_en: [
+          "Comprehensive user experience flow and page mapping",
+          "Bespoke Design System with custom UI components, colors, and typography",
+          "Complete responsive screen designs for desktop and mobile breakpoints"
+        ],
+        deliverables_ar: [
+          "تجربة مستخدم متكاملة وتخطيط معماري لكافة الصفحات",
+          "نظام تصميم مخصص (Design System) للمكونات والألوان والخطوط",
+          "واجهات متجاوبة بالكامل لكافة شاشات الكمبيوتر والأجهزة الذكية"
+        ]
+      },
+      {
+        id: "mobile-app",
+        title_en: "Mobile App UI/UX",
+        title_ar: "تصميم تطبيقات الهواتف الذكية (Mobile App UI/UX)",
+        tag_en: "Intuitive iOS & Android app experience",
+        tag_ar: "واجهات وتجربة استخدام سهلة وبديهية لتطبيقات الهواتف",
+        deliverables_en: [
+          "User journey mapping & interactive prototype",
+          "10–15 core mobile app screens with intuitive UX patterns",
+          "Design tokens and asset handoff ready for developers"
+        ],
+        deliverables_ar: [
+          "رسم مسار وتدفق المستخدم ونموذج تفاعلي للتجربة",
+          "تصميم 10–15 شاشة أساسية للتطبيق بتجربة بديهية",
+          "تجهيز ملفات التسليم وأصول التصميم للمطورين (Developer Handoff)"
+        ]
+      },
+      {
+        id: "3d-render",
+        title_en: "3D Product Render",
+        title_ar: "تجسيد ثلاثي الأبعاد للمنتجات (3D Product Render)",
+        tag_en: "Photorealistic 3D visuals for products and packaging",
+        tag_ar: "نمذجة وإخراج ثلاثي الأبعاد واقعي للمنتجات والعلب",
+        deliverables_en: [
+          "High-precision 3D modeling",
+          "Professional studio lighting and realistic materials & shaders",
+          "3 ultra-high-resolution rendered angles"
+        ],
+        deliverables_ar: [
+          "نمذجة 3D عالية الدقة للمنتج",
+          "إضاءة استوديو احترافية وخامات واقعية ملموسة",
+          "استخراج 3 زوايا تصويرية عالية الدقة للمنتج"
+        ]
+      },
+      {
+        id: "3d-storefront",
+        title_en: "3D Storefront & Exhibition Booths",
+        title_ar: "تصميم وتجسيد 3D لواجهات المحلات والأجنحة",
+        tag_en: "Spatial concept renders for retail and trade shows",
+        tag_ar: "محاكاة واقعية ثلاثية الأبعاد للمحلات التجارية وأجنحة المعارض",
+        deliverables_en: [
+          "3D spatial visualization for commercial storefronts, gym facilities, or exhibition booths",
+          "Realistic lighting simulation, material textures, and spatial brand integration"
+        ],
+        deliverables_ar: [
+          "تصور ثلاثي الأبعاد للواجهات التجارية، القاعات الرياضية، أو أجنحة المعارض",
+          "توزيع واقعي للإضاءة والهوية البصرية والمواد على المساحات"
+        ]
+      }
+    ]
+  }
+];
+
+const WORKFLOW_TERMS = [
+  {
+    num: "01",
+    title_en: "Payment Terms",
+    title_ar: "شروط الدفع",
+    desc_en: "A standard 50% non-refundable deposit is required upon booking confirmation and project kickoff. The remaining 50% balance is settled upon final milestone approval, prior to the handover of master high-resolution and production-ready source files.",
+    desc_ar: "يتم دفع عربون بنسبة 50% غير قابلة للاسترداد عند تأكيد الطلب والبدء في المشروع، ويُدفع المبلغ المتبقي (50%) عند الاعتماد النهائي وقبل إرسال الملفات الأصلية عالية الدقة."
+  },
+  {
+    num: "02",
+    title_en: "Project Schedules & Delivery",
+    title_ar: "آجال التسليم",
+    desc_en: "Agreed working timelines correspond to active design production days. Production commences once all required brand assets, project details, copy, and texts are fully provided by the client.",
+    desc_ar: "المدد الزمنية المتفق عليها تخص أيام العمل الفعلي على التصميم، ولا تشمل فترات انتظار رد العميل أو التأخر في تزويدنا بالنصوص والمعلومات المطلوبة."
+  },
+  {
+    num: "03",
+    title_en: "Revision Policy",
+    title_ar: "سياسة التعديلات",
+    desc_en: "Every service package includes structured revision rounds (2 to 3 rounds) to polish typography, colors, balance, and composition, ensuring the result fully reflects your vision and brand ambition.",
+    desc_ar: "تشمل كل خدمة من جولتين إلى 3 جولات من التعديلات المنظمة للوصول بالعمل إلى أكمل وجه وبما يحقق أهداف العميل وهويته البصرية."
+  },
+  {
+    num: "04",
+    title_en: "Express Delivery (Fast-Track)",
+    title_ar: "الطلبات المستعجلة (Express)",
+    desc_en: "Priority express delivery is available for urgent, time-sensitive launches (e.g. 24–48 hours turnaround) subject to scheduling availability and dedicated fast-track sprint coordination.",
+    desc_ar: "المشاريع التي يُطلب تسليمها في وقت قياسي تتوفر بخيار التسريع المخصص وفق الجدول الزمني وتنسيق متطلبات الإنجاز الفوري."
+  },
+  {
+    num: "05",
+    title_en: "Source & Production Files",
+    title_ar: "الملفات المفتوحة والجاهزة",
+    desc_en: "All deliverables include print-ready CMYK PDFs and ultra-high-resolution images (PNG/JPEG). Master open editable vector files (AI, PSD, Figma, 3D scenes) are fully included in comprehensive branding packages and available across all services.",
+    desc_ar: "جميع الخدمات تشمل تسليم ملفات جاهزة للطباعة (PDF) وصور عالية الدقة (JPEG/PNG). كما تُسلَّم الملفات المفتوحة (AI, PSD, Figma, 3D Scenes) مدمجة في باقات الهوية المتكاملة ومتاحة لكافة الخدمات."
+  }
+];
+
 const bySlug = Object.fromEntries(PROJECTS.map(p => [p.slug, p]));
 const $ = (s, r = document) => r.querySelector(s);
 const pad = n => String(n).padStart(2, '0');
-const home = $('#home'), proj = $('#project');
+const home = $('#home'), proj = $('#project'), servicesPage = $('#services-page');
 
 /* ---------- language ---------- */
 let L = 'en';
 try { const s = localStorage.getItem('lang'); L = s === 'ar' || s === 'en' ? s : ((navigator.language || '').toLowerCase().startsWith('ar') ? 'ar' : 'en'); } catch (e) {}
 const AR_UI = {
-  nav_work: 'الأعمال', nav_about: 'نبذة عني', nav_order: 'طلب مشروع', nav_contact: 'تواصل',
+  nav_work: 'الأعمال', nav_services: 'خدماتنا', nav_about: 'نبذة عني', nav_faq: 'الأسئلة الشائعة', nav_order: 'طلب مشروع', nav_contact: 'تواصل',
   status_avail: 'متاح لمشاريع جديدة',
   role: 'مصمم هويات بصرية ومنتجات رقمية.',
   sub: 'أصمّم علامات تجارية واضحة وواجهات سهلة الاستخدام، حيث يتبع الشكل الوظيفة.',
-  cta_order: 'اطلب مشروعك', cta_work: 'شاهد الأعمال', cta_contact: 'تواصل معي',
+  cta_order: 'اطلب مشروعك', cta_services: 'خدماتنا وباقاتنا', cta_work: 'شاهد الأعمال', cta_contact: 'تواصل معي',
+  services_h: 'خدماتنا وباقات التصميم',
+  services_tag: '4 تخصصات · 19 خدمة وباقة',
+  services_sub: 'خدمات استراتيجية متكاملة تشمل الهويات البصرية، المطبوعات والتغليف، الحملات الرقمية، وواجهات وتطبيقات الويب.',
+  services_cta_title: 'استكشف الدليل الكامل للخدمات والباقات',
+  services_cta_desc: 'اطلع على تفاصيل كافة الباقات (19 خدمة)، قائمة المخرجات بدقة، ومعايير وآلية العمل.',
+  services_btn_more: 'المزيد — تفاصيل الخدمات والباقات الكاملة',
+  srv_catalog_badge: 'دليل الخدمات الشامل',
+  srv_page_title: 'دليل الخدمات والباقات الكاملة',
+  srv_page_sub: 'نظام متكامل من الحلول الإبداعية المصممة بعناية لبناء هوية استثنائية وعلامة تجارية راسخة. اختر الباقة المناسبة لمشروعك.',
+  tab_all: 'جميع الخدمات (19)',
+  tab_branding: '01. الهويات والشعارات',
+  tab_print: '02. المطبوعات والتغليف',
+  tab_social: '03. منصات التواصل',
+  tab_digital: '04. واجهات ومجسمات 3D',
+  tab_workflow: 'آلية ومعايير العمل',
+  order_pack_btn: 'طلب هذه الباقة',
+  explore_cat_btn: 'استعراض الباقات',
+  back_to_home: 'العودة للرئيسية',
+  workflow_sec_title: 'شروط وآلية العمل والضمانات',
+  workflow_sec_sub: 'معايير احترافية واضحة تضمن سلاسة التنفيذ وجودة المخرجات لكافة المشاريع.',
+  bottom_cta_title: 'هل لديك مشروع أو تحتاج باقة مخصصة؟',
+  bottom_cta_desc: 'تواصل معي مباشرة أو أرسل تفاصيل مشروعك وسأقوم بدراسته وإرسال عرض عمل وخطة مخصصة خلال 24 ساعة.',
+  bottom_cta_btn: 'اطلب مشروعك الآن',
+  included_deliv: 'المخرجات المشمولة في الباقة:',
   work_h: 'أعمال مختارة', work_n: '10 هويات بصرية',
   about_h: 'نبذة عني', about_t: 'أشخّص مكمن المشكلة أولًا، ثم أصمّم الحل.',
   bio: 'أنا زكريا، مصمم لديه أكثر من 10 سنوات من الخبرة في الهوية البصرية والطباعة وتصميم واجهات وتجربة المستخدم. التصميم الجيد ليس جمالًا فقط، بل هو حلّ للمشكلات. أجمع بين التفكير التحليلي والتنفيذ البصري النظيف لأبني علامات تجارية تتواصل بوضوح ومنتجات رقمية يشعر المستخدم أنها طبيعية في استخدامها.',
@@ -510,6 +1328,31 @@ const AR_UI = {
   d1h: 'الهوية البصرية', d1p: 'شعارات وخطوط وأنظمة بصرية استراتيجية، مصمّمة لتبقى متّسقة على المدى الطويل.',
   d2h: 'الطباعة والتغليف', d2p: 'مطبوعات وتغليف ولافتات تجارية مصمّمة لتترك أقوى أثر على الرف وفي الشارع.',
   d3h: 'التواصل الاجتماعي وتجربة المستخدم', d3p: 'حملات اجتماعية تلفت الانتباه، وواجهات ويب وتطبيقات منظمة وسهلة التصفح.',
+  faq_h: 'الأسئلة الشائعة',
+  faq_tag: 'إجابات واضحة وشفافة',
+  faq_side_h: 'كل ما تحتاج معرفته قبل أن نبدأ العمل معًا.',
+  faq_side_p: 'إجابات واضحة ومدروسة حول منهجية العمل، التكامل بين المطبوع والرقمي، سهولة المتابعة، والضمانات التي نقدمها.',
+  faq_box_h: 'هل لديك سؤال أو استفسار خاص؟',
+  faq_box_p: 'أنا متاح للإجابة على استفساراتك أو مناقشة فكرة مشروعك بكل وضوح.',
+  faq_box_btn: 'تواصل معي / اطلب استشارة',
+  faq_num_1: '٠١',
+  faq_q1: 'أنا أحتاج فقط إلى "شعار" أو تصميم سريع للبدء، لماذا تركز على بناء نظام بصري متكامل؟',
+  faq_a1: 'الشعار وحده لا يكفي لإقناع العميل اليوم. عندما يتعامل الزبون مع مشروعك—سواء كان يمسك علبتك، أو يقرأ المنيو، أو يتصفح تطبيقك—يجب أن يشعر بترابط واحترافية في كل تفصيلة. أنا أصمم لك نظاماً بصرياً متكاملاً منذ البداية حتى لا تضطر لإعادة تصميم هويتك ودفع تكاليف إضافية عندما يتوسع مشروعك لاحقاً.',
+  faq_num_2: '٠٢',
+  faq_q2: 'مشروعي يحتاج لتصاميم مطبوعة (مثل التغليف والواجهات) وحضور رقمي (موقع أو تطبيق)، هل يمكنك جمعها معاً؟',
+  faq_a2: 'بالتأكيد، وهذه أهم ميزة أقدمها لك. أغلب أصحاب المشاريع يتعاملون مع مصمم للمطبوعات ومصمم آخر للمواقع والتطبيقات، مما يخلق تشتتاً في شكل العلامة التجارية. بحكم خبرتي لأكثر من ١٠ سنوات في التصميم الجرافيكي وتجربة المستخدم (UI/UX) معاً، أضمن لك أن تظهر مطبوعاتك، تغليف منتجاتك، وحساباتك أو تطبيقك بنفس الروح والجودة الاحترافية.',
+  faq_num_3: '٠٣',
+  faq_q3: 'أشعر أن شكل مشروعي الحالي فيه مشكلة، لكني لا أعرف بالضبط ما الذي أحتاجه، كيف ستساعدني؟',
+  faq_a3: 'لا تحتاج لأن تأتي إليّ بأفكار تصميمية جاهزة؛ كل ما أحتاجه منك هو أن تحدثني عن مشروعك، عملائك، والتحديات التي تواجهها. دوري يبدأ باكتشاف المشكلة وتشخيصها، ثم أقترح عليك توجهات بصرية واضحة ومدروسة نختار منها الأنسب قبل البدء بالتنفيذ، لتكون الرؤية واضحة أمامك تماماً منذ البداية.',
+  faq_num_4: '٠٤',
+  faq_q4: 'كم من الوقت والجهد سيتطلب مني متابعة المشروع معك؟',
+  faq_a4: 'العملية مصممة لتوفر وقتك وتترك لك التركيز على إدارة عملك. ستكون مشاركتك مطلوبة في ٣ محطات رئيسية فقط: جلسة البداية لفهم أهدافك، اعتماد التوجه البصري العام، ومراجعة العرض النهائي للتصميم. وفيما بينها، أتولى أنا كل التفاصيل الفنية وأبقيك على اطلاع برسائل واضحة ومختصرة.',
+  faq_num_5: '٠٥',
+  faq_q5: 'ماذا لو عُرض عليّ التصميم النهائي وشعرت أنه يحتاج لتغييرات؟',
+  faq_a5: 'نحن نمنع حدوث أي مفاجآت غير متوقعة لأننا نتفق على الأسلوب العام (الألوان، الطابع، والهيكل) قبل الدخول في التصميم النهائي. ومع ذلك، ملاحظاتك هي جزء أساسي من نجاح العمل؛ لذلك يتضمن كل مشروع جولات تعديل مخصصة نصقل فيها التفاصيل معاً حتى نصل لنتيجة ترضيك تماماً وتخدم أهدافك.',
+  faq_num_6: '٠٦',
+  faq_q6: 'بعد انتهاء المشروع، هل سأعرف كيف أستخدم الملفات بنفسي مع المطابع أو المبرمجين؟',
+  faq_a6: 'طبعاً. مهمتي لا تنتهي بمجرد انتهاء التصميم، بل بتسهيل استخدامك له. ستستلم مجلداً مرتباً بوضوح يحتوي على ملفات مجهزة مسبقاً للمطابع (للتغليف، المنيو، واللوحات)، وقوالب جاهزة للنشر، أو ملفات منظمة للمبرمجين (في مشاريع الـ UI/UX)، مع دليل إرشادي بسيط يشرح لك متى وكيف تستخدم كل ملف بسهولة.',
   order_h: 'طلب مشروع أو خدمة',
   order_tag: 'نموذج الطلب والمشروع',
   order_intro_h: 'لنحوّل رؤيتك إلى هوية بصرية متميزة.',
@@ -584,6 +1427,221 @@ function renderHome() {
       <span class="sector">${l.sector}</span>
       <span class="svc mono">${l.services.join(' · ')}</span></div>
   </a>`; }).join('');
+  renderServicesBrief();
+}
+
+/* ---------- services (brief & full page) ---------- */
+let curServicesCategory = 'all';
+
+function renderServicesBrief() {
+  const container = $('#servicesBriefGrid');
+  if (!container) return;
+  const isAr = L === 'ar';
+  container.innerHTML = SERVICES_DATA.map(cat => {
+    const name = isAr ? cat.name_ar : cat.name_en;
+    const brief = isAr ? cat.brief_ar : cat.brief_en;
+    const highlights = isAr ? cat.highlights_ar : cat.highlights_en;
+    const countText = isAr ? `${cat.packs.length} باقات متخصصة` : `${cat.packs.length} Specialized Packs`;
+    const btnText = isAr ? `استعراض باقات الفئة (${cat.packs.length})` : `Explore Category (${cat.packs.length})`;
+    return `
+    <div class="srv-brief-card reveal">
+      <div>
+        <div class="srv-brief-head">
+          <span class="srv-brief-num">${cat.num}</span>
+          <span class="srv-brief-badge">${countText}</span>
+        </div>
+        <h3>${name}</h3>
+        <p class="srv-brief-desc">${brief}</p>
+        <div class="srv-brief-pills">
+          ${highlights.map(h => `<span class="srv-brief-pill">${h}</span>`).join('')}
+        </div>
+      </div>
+      <div class="srv-brief-action">
+        <button type="button" class="srv-brief-link" data-open-services="${cat.id}">
+          <span>${btnText}</span>
+          <span class="link-arr" aria-hidden="true">${isAr ? '←' : '→'}</span>
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openServicesPage(push = true, category = 'all') {
+  cur = null; curSlug = null;
+  curServicesCategory = category;
+  home.hidden = true; proj.hidden = true; servicesPage.hidden = false;
+  proj.innerHTML = '';
+
+  const isAr = L === 'ar';
+  const U = UI[L];
+  const arUI = AR_UI;
+
+  const catalogBadge = isAr ? arUI.srv_catalog_badge : 'Comprehensive Service Catalog';
+  const pageTitle = isAr ? arUI.srv_page_title : 'Full Services & Creative Packs';
+  const pageSub = isAr ? arUI.srv_page_sub : 'A structured breakdown of all design solutions, packages, and deliverables crafted to build an iconic presence for your business. Select any pack to get started.';
+  const backBtnText = isAr ? arUI.back_to_home : 'Back to Home';
+  const wfTitle = isAr ? arUI.workflow_sec_title : 'Workflow, Terms & Quality Standards';
+  const wfSub = isAr ? arUI.workflow_sec_sub : 'Clear, transparent principles guaranteeing high-fidelity execution and smooth collaboration across all projects.';
+
+  const tabs = [
+    { id: 'all', label: isAr ? 'جميع الخدمات (19)' : 'All Services (19)', count: 19 },
+    { id: 'branding', label: isAr ? '01. الهويات والشعارات' : '01. Branding & Logo', count: 4 },
+    { id: 'print', label: isAr ? '02. المطبوعات والتغليف' : '02. Print & Packaging', count: 6 },
+    { id: 'social', label: isAr ? '03. منصات التواصل' : '03. Social Media', count: 4 },
+    { id: 'digital', label: isAr ? '04. واجهات ومجسمات 3D' : '04. UI/UX & 3D', count: 5 },
+    { id: 'workflow', label: isAr ? 'آلية ومعايير العمل' : 'Terms & Workflow', count: 5 }
+  ];
+
+  const filteredCategories = category === 'all' 
+    ? SERVICES_DATA 
+    : SERVICES_DATA.filter(c => c.id === category);
+
+  const showWorkflow = category === 'all' || category === 'workflow';
+  const showPacks = category !== 'workflow';
+
+  const groupsHTML = showPacks ? filteredCategories.map(cat => {
+    const catName = isAr ? cat.name_ar : cat.name_en;
+    const catTarget = isAr ? cat.target_ar : cat.target_en;
+    const countTag = isAr ? `${cat.packs.length} خدمات / باقات` : `${cat.packs.length} Services & Packs`;
+
+    const packsCards = cat.packs.map(pack => {
+      const pTitle = isAr ? pack.title_ar : pack.title_en;
+      const pTag = isAr ? pack.tag_ar : pack.tag_en;
+      const deliverables = isAr ? pack.deliverables_ar : pack.deliverables_en;
+      const orderBtnTxt = isAr ? arUI.order_pack_btn : 'Request This Pack';
+
+      return `
+      <div class="srv-pack-card">
+        <div>
+          <div class="srv-pack-header">
+            <div class="srv-pack-badge-row">
+              <span class="srv-pack-tag">${cat.num} · ${cat.id.toUpperCase()}</span>
+            </div>
+            <h3 class="srv-pack-title">${pTitle}</h3>
+            <p class="srv-pack-target">${pTag}</p>
+          </div>
+          <ul class="srv-deliverables">
+            ${deliverables.map(d => `
+              <li class="srv-deliv-item">
+                <span class="srv-deliv-check" aria-hidden="true">✓</span>
+                <span>${d}</span>
+              </li>`).join('')}
+          </ul>
+        </div>
+        <div class="srv-pack-actions">
+          <button type="button" class="btn solid srv-pack-order-btn" data-order-pack="${pack.id}" data-cat-id="${cat.id}">
+            <span>${orderBtnTxt}</span>
+            <span class="btn-arr" aria-hidden="true">${isAr ? '←' : '→'}</span>
+          </button>
+        </div>
+      </div>`;
+    }).join('');
+
+    return `
+    <section class="srv-group" id="srv-group-${cat.id}">
+      <div class="srv-group-head">
+        <div>
+          <h2>${cat.num}. ${catName}</h2>
+          <p class="srv-group-sub">${catTarget}</p>
+        </div>
+        <span class="mono">${countTag}</span>
+      </div>
+      <div class="srv-packs-grid">${packsCards}</div>
+    </section>`;
+  }).join('') : '';
+
+  const workflowHTML = showWorkflow ? `
+  <section class="srv-group" id="srv-group-workflow">
+    <div class="srv-group-head">
+      <div>
+        <h2>05. ${wfTitle}</h2>
+        <p class="srv-group-sub">${wfSub}</p>
+      </div>
+      <span class="mono">${isAr ? '5 معايير أساسية' : '5 Core Principles'}</span>
+    </div>
+    <div class="srv-workflow-grid">
+      ${WORKFLOW_TERMS.map(term => `
+        <div class="srv-workflow-card">
+          <h3><span class="wf-num">${term.num}</span> ${isAr ? term.title_ar : term.title_en}</h3>
+          <p>${isAr ? term.desc_ar : term.desc_en}</p>
+        </div>`).join('')}
+    </div>
+  </section>` : '';
+
+  servicesPage.innerHTML = `
+    <article class="srv-page">
+      <header class="srv-page-top">
+        <div class="in">
+          <button class="back" type="button" data-go="services">${U.back} ${backBtnText}</button>
+          <div class="srv-page-title-wrap">
+            <div class="hero-status"><span class="status-dot"></span><span>${catalogBadge}</span></div>
+            <h1>${pageTitle}</h1>
+            <p class="srv-page-desc">${pageSub}</p>
+          </div>
+        </div>
+      </header>
+
+      <nav class="srv-tabs-bar" aria-label="Services filter">
+        <div class="in">
+          <div class="srv-tabs-scroll" id="srvTabs">
+            ${tabs.map(t => `
+              <button type="button" class="srv-tab-btn ${category === t.id ? 'active' : ''}" data-filter-tab="${t.id}">
+                <span>${t.label}</span>
+              </button>`).join('')}
+          </div>
+        </div>
+      </nav>
+
+      <div class="in">
+        ${groupsHTML}
+        ${workflowHTML}
+
+        <div class="srv-page-bottom-cta">
+          <h2>${isAr ? arUI.bottom_cta_title : 'Ready to turn your vision into an iconic brand?'}</h2>
+          <p>${isAr ? arUI.bottom_cta_desc : 'Tell me about your project, timeline, and goals. I will review your submission and reply with a tailored proposal within 24 hours.'}</p>
+          <button type="button" class="btn solid" data-go="order">
+            <span>${isAr ? arUI.bottom_cta_btn : 'Request a Project Now'}</span>
+            <span class="btn-arr" aria-hidden="true">${isAr ? '←' : '→'}</span>
+          </button>
+        </div>
+      </div>
+    </article>
+    <footer class="in foot mono"><span>Zakaria Dou</span><span>${isAr ? arUI.role_s : 'Visual Identity &amp; Product Designer'}</span></footer>
+  `;
+
+  document.title = (isAr ? 'دليل الخدمات والباقات' : 'Services & Packages') + ' · Zakaria Dou';
+  window.scrollTo(0, 0);
+  if (push) setHash(category === 'all' ? 'services-all' : `services-cat-${category}`);
+}
+
+function orderThisPack(packId, catId) {
+  const cat = SERVICES_DATA.find(c => c.id === catId);
+  const pack = cat ? cat.packs.find(p => p.id === packId) : null;
+  showHome('order');
+
+  if (cat && cat.form_service_en && serviceChips) {
+    const chip = serviceChips.querySelector(`[data-val="${cat.form_service_en}"]`);
+    if (chip && !chip.classList.contains('active')) {
+      chip.classList.add('active');
+      const selected = [...serviceChips.querySelectorAll('.chip-btn.active')].map(b => b.dataset.val);
+      fServices.value = selected.join(', ');
+      $('#err_services').hidden = true;
+    }
+  }
+
+  const detailsInput = $('#f_details');
+  if (detailsInput && pack) {
+    const packName = L === 'ar' ? pack.title_ar : pack.title_en;
+    const catName = L === 'ar' ? cat.name_ar : cat.name_en;
+    const tagLine = L === 'ar' ? `[طلب باقة: ${packName} (${catName})]` : `[Requested Pack: ${packName} (${catName})]`;
+    const curVal = detailsInput.value.trim();
+    if (!curVal.includes(packName)) {
+      detailsInput.value = `${tagLine}\n\n` + curVal.replace(/\[Requested Pack:[^\]]*\]\n\n/g, '').replace(/\[طلب باقة:[^\]]*\]\n\n/g, '');
+    }
+    setTimeout(() => {
+      detailsInput.focus();
+    }, 150);
+  }
 }
 
 /* ---------- project page ---------- */
@@ -643,14 +1701,17 @@ function openProject(slug, push = true) {
     <a class="next" href="#${nx.slug}" data-open="${nx.slug}" style="--nbg:${nx.tbg};--nfg:${nx.tfg}"><div class="in"><div><span class="mono">${U.next} · <span class="ltr">${pad(nx.n)}</span></span><h2>${nx.name}</h2></div><span class="arr" aria-hidden="true">${U.fwd}</span></div></a>
     <footer class="in foot mono"><span>Zakaria Dou</span><span>${L === 'ar' ? AR_UI.role_s : 'Visual Identity &amp; Product Designer'}</span></footer>`;
   curSlug = slug;
-  home.hidden = true; proj.hidden = false;
+  home.hidden = true; proj.hidden = false; servicesPage.hidden = true; servicesPage.innerHTML = '';
   renderGallery();
   document.title = p.name + ' · Zakaria Dou Portfolio';
   window.scrollTo(0, 0);
   if (push) setHash(slug);
 }
 function showHome(target, push = true) {
-  cur = null; curSlug = null; proj.hidden = true; home.hidden = false; proj.innerHTML = '';
+  cur = null; curSlug = null; curServicesCategory = 'all';
+  proj.hidden = true; servicesPage.hidden = true;
+  home.hidden = false;
+  proj.innerHTML = ''; servicesPage.innerHTML = '';
   document.title = 'Zakaria Dou Portfolio';
   const el = target ? document.getElementById(target) : null;
   if (el) el.scrollIntoView({ behavior: 'smooth' }); else window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -663,12 +1724,31 @@ function setHash(h) {
 function route() {
   const h = (location.hash || '').slice(1);
   if (bySlug[h]) openProject(h, false);
-  else showHome(['work', 'about', 'order', 'contact'].includes(h) ? h : '', false);
+  else if (h === 'services-all' || h === 'services-detail') openServicesPage(false, 'all');
+  else if (h.startsWith('services-cat-')) openServicesPage(false, h.replace('services-cat-', ''));
+  else showHome(['work', 'services', 'about', 'faq', 'order', 'contact'].includes(h) ? h : '', false);
 }
 
 document.addEventListener('click', e => {
   const o = e.target.closest('[data-open]');
   if (o) { e.preventDefault(); openProject(o.dataset.open); return; }
+  const os = e.target.closest('[data-open-services]');
+  if (os) { e.preventDefault(); openServicesPage(true, os.dataset.openServices || 'all'); return; }
+  const op = e.target.closest('[data-order-pack]');
+  if (op) { e.preventDefault(); orderThisPack(op.dataset.orderPack, op.dataset.catId); return; }
+  const ft = e.target.closest('[data-filter-tab]');
+  if (ft) { e.preventDefault(); openServicesPage(true, ft.dataset.filterTab); return; }
+  const ftrig = e.target.closest('.faq-trigger');
+  if (ftrig) {
+    e.preventDefault();
+    const item = ftrig.closest('.faq-item');
+    if (item) {
+      const isOpen = item.classList.contains('is-open');
+      item.classList.toggle('is-open');
+      ftrig.setAttribute('aria-expanded', !isOpen);
+    }
+    return;
+  }
   const g = e.target.closest('[data-go]');
   if (g) { e.preventDefault(); showHome(g.dataset.go); return; }
   const s = e.target.closest('.shot');
@@ -927,14 +2007,88 @@ function applyLang(rerender = true) {
   $('#lbp').setAttribute('aria-label', U.prev); $('#lbn').setAttribute('aria-label', U.nextI);
   $('#lbx').setAttribute('aria-label', U.close); $('#lb').setAttribute('aria-label', U.viewer);
   renderHome();
+  renderServicesBrief();
   initScrollReveal();
+  updateThemeUI(getEffectiveTheme());
   if (rerender && curSlug) { const y = window.scrollY; openProject(curSlug, false); window.scrollTo(0, y); }
+  if (rerender && !servicesPage.hidden) { const y = window.scrollY; openServicesPage(false, curServicesCategory); window.scrollTo(0, y); }
 }
 $('#lang').addEventListener('click', () => {
   L = L === 'ar' ? 'en' : 'ar';
   try { localStorage.setItem('lang', L); } catch (e) {}
   applyLang();
 });
+
+/* ---------- theme (dark / light mode) ---------- */
+const themeToggle = $('#themeToggle');
+const metaThemeColor = $('#metaThemeColor');
+
+function getSystemTheme() {
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function getEffectiveTheme() {
+  const currentAttr = document.documentElement.getAttribute('data-theme');
+  if (currentAttr === 'dark' || currentAttr === 'light') return currentAttr;
+  return getSystemTheme();
+}
+
+function updateThemeUI(theme) {
+  const isDark = theme === 'dark';
+  const isAr = L === 'ar';
+  const label = isDark 
+    ? (isAr ? 'التبديل إلى الوضع الفاتح' : 'Switch to light mode') 
+    : (isAr ? 'التبديل إلى الوضع الداكن' : 'Switch to dark mode');
+  if (themeToggle) {
+    themeToggle.setAttribute('aria-label', label);
+    themeToggle.setAttribute('title', label);
+  }
+  if (metaThemeColor) {
+    metaThemeColor.setAttribute('content', isDark ? '#0f1211' : '#f1f2ee');
+  }
+}
+
+function setTheme(theme, save = true) {
+  const html = document.documentElement;
+  html.classList.add('theme-transition');
+  html.setAttribute('data-theme', theme);
+  if (save) {
+    try { localStorage.setItem('theme', theme); } catch(e) {}
+  }
+  updateThemeUI(theme);
+  if (typeof window.onThemeChanged === 'function') {
+    window.onThemeChanged(theme === 'dark');
+  }
+  setTimeout(() => {
+    html.classList.remove('theme-transition');
+  }, 350);
+}
+
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    const cur = getEffectiveTheme();
+    const next = cur === 'dark' ? 'light' : 'dark';
+    setTheme(next, true);
+  });
+}
+
+if (window.matchMedia) {
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    try {
+      if (!localStorage.getItem('theme')) {
+        setTheme(e.matches ? 'dark' : 'light', false);
+      }
+    } catch(err) {}
+  });
+}
+
+(function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem('theme'); } catch(e) {}
+  const theme = saved === 'dark' || saved === 'light' ? saved : getSystemTheme();
+  document.documentElement.setAttribute('data-theme', theme);
+  updateThemeUI(theme);
+})();
 
 applyLang(false);
 route();
@@ -1210,6 +2364,10 @@ initScrollReveal();
 
   resize();
   animId = requestAnimationFrame(render);
+  window.onThemeChanged = function(isDark) {
+    lastTheme = isDark;
+    buildGridCache(isDark);
+  };
 })();
 </script>
 
