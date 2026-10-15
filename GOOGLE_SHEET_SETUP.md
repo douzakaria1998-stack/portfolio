@@ -91,8 +91,8 @@ function doPost(e) {
       details
     ]);
     
-    // 3. Send instant email notification to douzakaria98@gmail.com
-    var targetEmail = "douzakaria98@gmail.com";
+    // 3. Send instant email notification to both your email addresses
+    var targetEmail = "douzakaria98@gmail.com, douzakaria1998@gmail.com";
     var subject = "🚀 New Client Order: " + name + " (" + services + ")";
     
     var cleanPhone = phone.replace(/[^0-9+]/g, '');
