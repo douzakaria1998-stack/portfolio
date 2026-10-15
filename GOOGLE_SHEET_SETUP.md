@@ -153,12 +153,16 @@ function doPost(e) {
       </div>
     `;
     
-    MailApp.sendEmail({
-      to: targetEmail,
-      replyTo: email,
-      subject: subject,
-      htmlBody: htmlBody
-    });
+    try {
+      MailApp.sendEmail({
+        to: targetEmail,
+        replyTo: email,
+        subject: subject,
+        htmlBody: htmlBody
+      });
+    } catch (mailErr) {
+      console.warn("Mail dispatch notice: " + mailErr.toString());
+    }
     
     return ContentService.createTextOutput(JSON.stringify({ result: "success" }))
       .setMimeType(ContentService.MimeType.JSON);
