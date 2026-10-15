@@ -208,7 +208,7 @@ function testEmail() {
 ### Step 4: Paste into your `index.html`
 Open `index.html` and look for line ~690:
 ```javascript
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbz_YOUR_WEB_APP_ID/exec';
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbxXynlmb5gg2CiLqdxDH_7-r5pgq78RpVF57n7ZkcFim0BmxNe9kOtmynUZW9podWxc/exec';
 ```
 Replace `'https://script.google.com/macros/s/AKfycbz_YOUR_WEB_APP_ID/exec'` with your actual Web App URL, save, and push to Git!
 
