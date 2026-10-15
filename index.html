@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zakaria Dou Portfolio</title>
+<meta name="description" content="Portfolio of Zakaria Dou, visual identity and UI/UX designer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Familjen+Grotesk:wght@500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout concept: a quiet type-led page. The one loud thing is a flush mosaic of ten brand-coloured tiles; each project opens as its own case page in the client's colours. */
+:root{
+  --bg:#f1f2ee; --surface:#fafaf7; --ink:#15181a; --muted:#596060; --line:#d5d9d1; --accent:#2a38f0; --on-accent:#ffffff;
+  --font-display:'Familjen Grotesk','Helvetica Neue',Arial,sans-serif;
+  --font-body:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-mono:'DM Mono',ui-monospace,Menlo,Consolas,monospace;
+  --gap:10px; --max:1360px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#0f1211; --surface:#171b19; --ink:#eceee8; --muted:#959d98; --line:#272c2a; --accent:#98a2ff; --on-accent:#0f1211; color-scheme:dark }
+}
+:root[data-theme="dark"]{ --bg:#0f1211; --surface:#171b19; --ink:#eceee8; --muted:#959d98; --line:#272c2a; --accent:#98a2ff; --on-accent:#0f1211; color-scheme:dark }
+
+[hidden]{display:none!important}
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+img{display:block}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.in{max-width:var(--max);margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.mono{font-family:var(--font-mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase}
+h1,h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .in{display:flex;align-items:center;justify-content:space-between;gap:16px;height:60px}
+.brand{white-space:nowrap;font-family:var(--font-display);font-weight:600;font-size:20px;letter-spacing:-.02em;text-decoration:none;background:none;border:0;padding:0;cursor:pointer}
+.nav{display:flex;gap:clamp(14px,3vw,34px)}
+.nav a{white-space:nowrap;text-decoration:none;font-size:15px;font-weight:500;color:var(--muted);padding:6px 0}
+.nav a:hover{color:var(--ink)}
+
+/* hero */
+.hero{padding-block:clamp(40px,7vw,96px) clamp(28px,4vw,48px)}
+.hero h1{font-size:clamp(3.4rem,13vw,10.5rem);letter-spacing:-.055em;line-height:.9}
+.hero .role{margin-top:clamp(18px,2.4vw,30px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 48px;align-items:start}
+.hero h2{font-size:clamp(1.5rem,3.2vw,2.5rem);letter-spacing:-.025em;line-height:1.08;font-weight:500}
+.hero p{margin:0;color:var(--muted);font-size:clamp(1.02rem,1.5vw,1.22rem);max-width:38ch;line-height:1.5}
+.cta{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 20px;border:1.5px solid var(--ink);border-radius:999px;text-decoration:none;font-weight:600;font-size:15px;background:transparent;cursor:pointer}
+.btn.solid{background:var(--ink);color:var(--bg)}
+.btn:hover{background:var(--ink);color:var(--bg)}
+.btn.solid:hover{background:transparent;color:var(--ink)}
+
+/* mosaic */
+.mosaic{display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.tile{position:relative;display:block;aspect-ratio:1.18/1;overflow:hidden;text-decoration:none;color:var(--tfg)}
+.tile img{position:absolute;inset:0;margin:auto;max-width:64%;max-height:52%;width:auto;height:auto;transition:transform .35s ease}
+.tile .lab{position:absolute;left:12px;right:12px;bottom:10px;display:flex;justify-content:space-between;gap:8px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;opacity:.92}
+.tile:hover img,.tile:focus-visible img{transform:scale(1.06)}
+.tile:focus-visible{outline-offset:-4px}
+
+/* sections */
+.sec{padding-block:clamp(64px,9vw,128px)}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:clamp(24px,4vw,44px);border-top:1px solid var(--ink);padding-top:14px}
+.sec-head h2{font-size:clamp(2rem,5vw,3.6rem)}
+.sec-head .mono{color:var(--muted);padding-bottom:6px;white-space:nowrap}
+
+/* work cards */
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(28px,4vw,56px) var(--gap)}
+.card{display:block;text-decoration:none}
+.card .ph{aspect-ratio:1.6/1;overflow:hidden;background:var(--c)}
+.card .ph img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.card:hover .ph img,.card:focus-visible .ph img{transform:scale(1.035)}
+.card .meta{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 16px;padding-top:14px;align-items:baseline}
+.card .no{color:var(--muted)}
+.card h3{font-size:clamp(1.5rem,2.6vw,2.1rem);letter-spacing:-.025em}
+.card .sector{grid-column:2;color:var(--muted);font-size:15.5px;line-height:1.4}
+.card .svc{grid-column:2;margin-top:6px;color:var(--muted)}
+
+/* about */
+.about{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(28px,6vw,96px)}
+.about h2{font-size:clamp(2.2rem,5.4vw,4.4rem);position:sticky;top:96px;align-self:start}
+.about .bio{font-size:clamp(1.15rem,1.9vw,1.5rem);line-height:1.45;margin:0;max-width:34em}
+.yrs{display:flex;align-items:baseline;gap:18px;margin-top:clamp(28px,4vw,48px);padding-top:18px;border-top:1px solid var(--line)}
+.yrs b{font-family:var(--font-display);font-weight:600;font-size:clamp(3.6rem,8vw,6.4rem);letter-spacing:-.05em;line-height:.9;color:var(--accent)}
+.yrs span{color:var(--muted)}
+.disc{display:grid;gap:0;margin-top:clamp(20px,3vw,36px)}
+.disc div{padding-block:20px;border-top:1px solid var(--line)}
+.disc h3{font-size:1.45rem;letter-spacing:-.02em;margin-bottom:8px}
+.disc p{margin:0;color:var(--muted);max-width:42ch}
+
+/* contact */
+.contact{background:var(--ink);color:var(--bg)}
+.contact h2{font-size:clamp(2.8rem,9vw,8rem);letter-spacing:-.05em;line-height:.92;max-width:11ch}
+.reach{margin-top:clamp(28px,5vw,56px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 var(--gap)}
+.reach .item{padding-block:18px;border-top:1px solid color-mix(in srgb,var(--bg) 30%,transparent)}
+.reach .mono{opacity:.65}
+.reach .val{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:8px}
+.reach .val span{font-family:var(--font-display);font-weight:500;font-size:clamp(1.3rem,3vw,2.2rem);letter-spacing:-.02em;overflow-wrap:anywhere;user-select:all}
+.copy{min-height:36px;padding:0 14px;border:1.5px solid color-mix(in srgb,var(--bg) 55%,transparent);border-radius:999px;background:transparent;color:var(--bg);font-size:14px;font-weight:600;cursor:pointer}
+.copy:hover{background:var(--bg);color:var(--ink)}
+.contact :focus-visible{outline-color:var(--bg)}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;padding-block:22px;color:var(--muted)}
+
+/* project page */
+.pband{background:var(--pbg);color:var(--pink)}
+.pband .in{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:clamp(28px,5vw,80px);padding-block:clamp(28px,4vw,52px) clamp(36px,6vw,80px);align-items:stretch}
+.back{display:inline-flex;align-items:center;gap:8px;background:none;border:0;padding:8px 0;cursor:pointer;font-weight:600;font-size:15px;color:inherit;margin-bottom:clamp(20px,4vw,48px)}
+.back:hover{text-decoration:underline}
+.pband h1{font-size:clamp(3rem,9vw,7.6rem);letter-spacing:-.05em;line-height:.92;overflow-wrap:anywhere}
+.pband .sector{margin-top:16px;font-size:clamp(1.1rem,1.8vw,1.4rem);font-weight:600;color:var(--pacc)}
+.pband .desc{margin-top:22px;max-width:46ch;font-size:clamp(1.02rem,1.4vw,1.15rem);line-height:1.6}
+.pband dl{margin:28px 0 0;display:grid;gap:18px}
+.pband dt{opacity:.7;margin-bottom:6px}
+.pband dd{margin:0;display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid color-mix(in srgb,var(--pink) 40%,transparent);border-radius:999px;padding:5px 14px;font-size:14.5px;font-weight:500}
+.sw{display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;padding-right:6px}
+.sw i{width:26px;height:26px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--pink) 35%,transparent);background:var(--sc)}
+.pt{position:relative;background:var(--tbg);min-height:300px;align-self:stretch}
+.pt img{position:absolute;inset:0;margin:auto;max-width:70%;max-height:62%;width:auto;height:auto}
+.gal{padding-block:clamp(36px,6vw,72px) clamp(28px,4vw,48px)}
+.gsec+.gsec{margin-top:clamp(36px,6vw,72px)}
+.gsec h2{font-size:clamp(1.2rem,2vw,1.55rem);letter-spacing:-.02em;margin-bottom:14px;display:flex;align-items:baseline;gap:14px;border-top:1px solid var(--line);padding-top:12px}
+.gsec h2 .mono{color:var(--muted);font-weight:400}
+.rows{display:grid;gap:var(--gap)}
+.row{display:flex;align-items:flex-start;gap:var(--gap);width:100%;margin-inline:auto}
+.shot{flex:var(--a) 1 0;min-width:0;aspect-ratio:var(--a);position:relative;display:block;padding:0;border:0;background:var(--pbg);cursor:zoom-in;overflow:hidden}
+.shot img{width:100%;height:100%;object-fit:cover}
+.next{display:block;text-decoration:none;background:var(--nbg);color:var(--nfg)}
+.next .in{display:flex;justify-content:space-between;align-items:center;gap:20px;padding-block:clamp(36px,6vw,72px)}
+.next .mono{opacity:.75;display:block;margin-bottom:10px}
+.next h2{font-size:clamp(2.2rem,7vw,5.6rem);letter-spacing:-.045em;overflow-wrap:anywhere}
+.next .arr{font-family:var(--font-display);font-size:clamp(2.4rem,7vw,5rem);line-height:1}
+.next:hover .arr{transform:translateX(8px)}
+.next .arr{transition:transform .25s ease}
+
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:50;background:rgba(8,10,9,.94);display:grid;grid-template-rows:1fr auto;padding:max(12px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) max(12px,env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+.lb .stage{display:flex;align-items:center;justify-content:center;min-height:0;min-width:0}
+.lb img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain}
+.lb .bar{display:flex;align-items:center;justify-content:space-between;gap:12px;color:#e9ece7;padding-top:10px}
+.lb .cap{font-size:14.5px;min-width:0;flex:1}
+.lb button{min-width:44px;min-height:44px;border-radius:999px;border:1.5px solid rgba(255,255,255,.4);background:transparent;color:#fff;font-size:20px;cursor:pointer;line-height:1}
+.lb button:hover{background:#fff;color:#111}
+.lb .x{position:absolute;top:max(10px,env(safe-area-inset-top,0px));right:max(10px,env(safe-area-inset-right,0px));z-index:2;background:rgba(8,10,9,.6)}
+.lb :focus-visible{outline-color:#fff}
+
+
+/* language toggle + Arabic (right-to-left) */
+.lang{min-height:36px;padding:0 14px;border:1.5px solid var(--line);border-radius:999px;background:transparent;font-size:14px;font-weight:600;cursor:pointer}
+.lang:hover{border-color:var(--ink)}
+.top .tools{display:flex;align-items:center;gap:clamp(12px,2.4vw,28px)}
+.ltr{direction:ltr;unicode-bidi:isolate;display:inline-block}
+:root[dir="rtl"]{--font-display:'IBM Plex Sans Arabic','Familjen Grotesk',Tahoma,sans-serif;--font-body:'IBM Plex Sans Arabic','Instrument Sans',Tahoma,sans-serif;--font-mono:'IBM Plex Sans Arabic','DM Mono',Tahoma,sans-serif}
+:root[dir="rtl"] *{letter-spacing:0!important}
+:root[dir="rtl"] .mono,:root[dir="rtl"] .tile .lab,:root[dir="rtl"] .sw{text-transform:none;font-size:13.5px}
+:root[dir="rtl"] :is(h2,h3){line-height:1.3}
+:root[dir="rtl"] .hero h1,:root[dir="rtl"] .pband h1,:root[dir="rtl"] .next h2,:root[dir="rtl"] .brand,:root[dir="rtl"] .card h3{font-family:'Familjen Grotesk','Helvetica Neue',Arial,sans-serif;letter-spacing:-.04em!important}
+:root[dir="rtl"] .hero h1{direction:ltr;text-align:right}
+:root[dir="rtl"] .pband h1,:root[dir="rtl"] .next h2{direction:ltr;text-align:right}
+:root[dir="rtl"] .card h3{direction:ltr;text-align:right}
+:root[dir="rtl"] .hero h2{line-height:1.25}
+:root[dir="rtl"] .hero p,:root[dir="rtl"] .about .bio,:root[dir="rtl"] .pband .desc{line-height:1.8}
+:root[dir="rtl"] .next:hover .arr{transform:translateX(-8px)}
+:root[dir="rtl"] .yrs b{font-family:'Familjen Grotesk',sans-serif}
+:root[dir="rtl"] .contact h2{max-width:none}
+:root[dir="rtl"] .lb .cap{text-align:right}
+
+@media (max-width:980px){
+  .mosaic{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .tile{aspect-ratio:1.3/1}
+  .pband .in{grid-template-columns:minmax(0,1fr)}
+  .pt{min-height:0;aspect-ratio:1.5/1}
+  .about{grid-template-columns:minmax(0,1fr)}
+  .about h2{position:static}
+}
+@media (max-width:720px){
+  body{font-size:16px}
+  .hero .role{grid-template-columns:minmax(0,1fr)}
+  .cards{grid-template-columns:minmax(0,1fr)}
+  .reach{grid-template-columns:minmax(0,1fr)}
+  .sec-head .mono{display:none}
+  .tile .lab{left:10px;right:10px;font-size:10.5px}
+  .top .in{height:54px}
+  .brand{font-size:18px}
+  .top .in{gap:10px}
+  .top .tools{gap:12px}
+  .nav{gap:12px}
+  .nav a{font-size:14px}
+  .lang{padding:0 10px;font-size:13px}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important;scroll-behavior:auto!important} }
+</style>
+</head>
+<body>
+
+
+<header class="top"><div class="in">
+  <button class="brand" id="brand" type="button" aria-label="Zakaria Dou, home">Zakaria Dou</button>
+  <div class="tools"><nav class="nav" aria-label="Main"><a href="#work" data-go="work" data-t="nav_work">Work</a><a href="#about" data-go="about" data-t="nav_about">About</a><a href="#contact" data-go="contact" data-t="nav_contact">Contact</a></nav>
+  <button class="lang" id="lang" type="button" lang="ar">العربية</button></div>
+</div></header>
+
+<main id="home">
+  <section class="hero in" id="top">
+    <h1>Zakaria Dou</h1>
+    <div class="role">
+      <h2 data-t="role">Visual Identity &amp; Product Designer.</h2>
+      <div>
+        <p data-t="sub">Designing clear brands and intuitive interfaces where form follows function.</p>
+        <div class="cta"><a class="btn solid" href="#work" data-go="work" data-t="cta_work">See the work</a><a class="btn" href="#contact" data-go="contact" data-t="cta_contact">Get in touch</a></div>
+      </div>
+    </div>
+  </section>
+  <div class="in"><div class="mosaic" id="mosaic"></div></div>
+
+  <section class="sec in" id="work">
+    <div class="sec-head"><h2 data-t="work_h">Selected work</h2><span class="mono" data-t="work_n">10 brand identities</span></div>
+    <div class="cards" id="cards"></div>
+  </section>
+
+  <section class="sec in" id="about" style="padding-top:0">
+    <div class="sec-head"><h2 data-t="about_h">About</h2><span class="mono">Zakaria Dou</span></div>
+    <div class="about">
+      <h2 data-t="about_t">I diagnose the friction, then design the solution.</h2>
+      <div>
+        <p class="bio" data-t="bio">I’m Zakaria, a designer with 10+ years of experience across brand identity, print, and UI/UX. Great design isn’t just about aesthetics; it’s about problem-solving. I combine analytical thinking with clean visual execution to build brands that communicate clearly and digital products that feel natural to use.</p>
+        <div class="yrs"><b class="ltr">10+</b><span data-t="yrs">Years of industry practice</span></div>
+        <div class="disc">
+          <div><h3 data-t="d1h">Brand Identity</h3><p data-t="d1p">Strategic logos, typography, and visual languages engineered for long-term consistency.</p></div>
+          <div><h3 data-t="d2h">Print &amp; Packaging</h3><p data-t="d2p">Print collateral, packaging, and commercial signage designed for maximum shelf and street impact.</p></div>
+          <div><h3 data-t="d3h">Social Media &amp; UI/UX</h3><p data-t="d3p">Scroll-stopping social campaigns and structured, easy-to-navigate web and app interfaces.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="in" style="padding-block:clamp(64px,9vw,128px) clamp(40px,6vw,72px)">
+      <h2 data-t="contact_h">Let’s make something clear.</h2>
+      <div class="reach">
+        <div class="item"><span class="mono" data-t="email_l">Email</span>
+          <div class="val"><span id="mail" class="ltr">douzakaria98@gmail.com</span><button class="copy" type="button" data-copy="mail">Copy</button></div></div>
+        <div class="item"><span class="mono" data-t="phone_l">Phone</span>
+          <div class="val"><span id="tel" class="ltr">+213 770 71 39 21</span><button class="copy" type="button" data-copy="tel">Copy</button></div></div>
+      </div>
+    </div>
+  </section>
+  <footer class="in foot mono"><span>Zakaria Dou</span><span data-t="role_s">Visual Identity &amp; Product Designer</span></footer>
+</main>
+
+<main id="project" hidden></main>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+  <button class="x" id="lbx" type="button" aria-label="Close">&#10005;</button>
+  <div class="stage"><img id="lbimg" alt=""></div>
+  <div class="bar"><button id="lbp" type="button" aria-label="Previous image">&#8592;</button><div class="cap mono" id="lbc"></div><button id="lbn" type="button" aria-label="Next image">&#8594;</button></div>
+</div>
+
+<script>
+const PROJECTS = [{"n": 1, "slug": "yasmine", "name": "Yasmine", "sector": "Refined bedding & home fragrance", "desc": "A soft, elegant identity for a brand of fine bedding and home fragrance. The logo is a woven, geometric Arabic-inspired motif, and the same motif becomes a pattern that wraps boxes, bedding and bottles, all in a calm dusty-rose palette.", "services": ["Logo & pattern", "Stationery & packaging", "Product mockups", "Social media"], "bg": "#f4e9e5", "ink": "#4a2f28", "accent": "#b8735f", "tbg": "#b8735f", "tfg": "#ffffff", "lead": "img/yasmine/box.jpg", "pos": "50% 50%", "cover": "img/yasmine/cover.png", "cw": 800, "ch": 779, "sections": [{"title": "Identity & print", "items": [{"src": "img/yasmine/logo.jpg", "alt": "Yasmine logo with the woven geometric motif", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/yasmine/cards.jpg", "alt": "Business cards with the pattern border", "w": 1600, "h": 1067, "nw": 2000, "nh": 1334}, {"src": "img/yasmine/thanks.jpg", "alt": "Thank-you card", "w": 1600, "h": 1131, "nw": 2000, "nh": 1414}, {"src": "img/yasmine/catalog.jpg", "alt": "Printed catalog and colour card", "w": 1600, "h": 1245, "nw": 2000, "nh": 1556}]}, {"title": "Products & packaging", "items": [{"src": "img/yasmine/box.jpg", "alt": "Gift box with the pattern band", "w": 1600, "h": 1200, "nw": 2000, "nh": 1500}, {"src": "img/yasmine/candle.jpg", "alt": "Candle and bottle in linen pouches", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/yasmine/pillow.jpg", "alt": "Pillows with the monogram", "w": 1600, "h": 900, "nw": 2000, "nh": 1125}, {"src": "img/yasmine/bed.jpg", "alt": "Bedding with the pattern trim", "w": 1600, "h": 1371, "nw": 2000, "nh": 1714}]}, {"title": "Social media", "items": [{"src": "img/yasmine/perfume.jpg", "alt": "Perfume range post", "w": 1000, "h": 1000, "nw": 1000, "nh": 1000}, {"src": "img/yasmine/ramadan.jpg", "alt": "Ramadan greeting post", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/yasmine/who.jpg", "alt": "Brand introduction post", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}], "ar": {"sector": "مفروشات راقية وعطور منزلية", "desc": "هوية ناعمة وأنيقة لعلامة مفروشات فاخرة وعطور منزلية. الشعار زخرفة هندسية منسوجة مستوحاة من الفن العربي، وتتحول الزخرفة نفسها إلى نمط يلفّ العلب والمفارش والزجاجات، بلوحة ألوان هادئة من الوردي الترابي.", "services": ["شعار ونمط", "قرطاسية وتغليف", "نماذج المنتجات", "وسائل التواصل الاجتماعي"], "sections": ["الهوية والمطبوعات", "المنتجات والتغليف", "وسائل التواصل الاجتماعي"], "alts": [["شعار ياسمين بالزخرفة الهندسية المنسوجة", "بطاقات عمل بإطار من النمط", "بطاقة شكر", "كتالوج مطبوع وبطاقة ألوان"], ["علبة هدايا بشريط النمط", "شمعة وزجاجة في أكياس كتّان", "وسائد عليها الشعار", "مفرش سرير بحاشية من النمط"], ["منشور مجموعة العطور", "منشور تهنئة رمضان", "منشور تعريفي بالعلامة"]]}}, {"n": 2, "slug": "rifah", "name": "Rifah", "sector": "Pastry & coffee shop", "desc": "A warm identity for a shop serving traditional and modern sweets. The logo is the word Rifah in flowing Arabic calligraphy, and the word repeats into a ribbon pattern used on boxes, cups, bags, aprons and cards, in a terracotta and peach palette.", "services": ["Logo & wordmark", "Pattern", "Packaging & stationery", "Apparel & props"], "bg": "#fee6ce", "ink": "#5a2a1c", "accent": "#d9532f", "tbg": "#d9532f", "tfg": "#fee6ce", "lead": "img/rifah/set.jpg", "pos": "50% 50%", "cover": "img/rifah/cover.png", "cw": 239, "ch": 800, "sections": [{"title": "Logo & pattern", "items": [{"src": "img/rifah/logo.jpg", "alt": "Rifah logo in Arabic calligraphy", "w": 750, "h": 1220, "nw": 750, "nh": 1220}, {"src": "img/rifah/band1.jpg", "alt": "Ribbon pattern made from the word Rifah", "w": 1600, "h": 128, "nw": 2250, "nh": 180}, {"src": "img/rifah/band2.jpg", "alt": "Ribbon pattern, second colourway", "w": 1600, "h": 114, "nw": 2250, "nh": 160}]}, {"title": "Packaging & stationery", "items": [{"src": "img/rifah/pack.jpg", "alt": "Cups, boxes and cards", "w": 1280, "h": 1175, "nw": 1280, "nh": 1175}, {"src": "img/rifah/set.jpg", "alt": "Bags, apron and stationery set", "w": 1600, "h": 1070, "nw": 2250, "nh": 1505}, {"src": "img/rifah/scene.jpg", "alt": "Card and ribbon on a table setting", "w": 1600, "h": 578, "nw": 2250, "nh": 813}]}], "ar": {"sector": "محل حلويات ومقهى", "desc": "هوية دافئة لمحل يقدّم الحلويات التقليدية والعصرية. الشعار هو كلمة «رفاه» بخط عربي متدفق، وتتكرر الكلمة لتشكّل نمط شريط يُستخدم على العلب والأكواب والأكياس والمآزر والبطاقات، بلوحة ألوان من التراكوتا والخوخي.", "services": ["شعار وكلمة مكتوبة", "نمط", "تغليف وقرطاسية", "ملابس وإكسسوارات"], "sections": ["الشعار والنمط", "التغليف والقرطاسية"], "alts": [["شعار رفاه بالخط العربي", "نمط شريط من كلمة رفاه", "نمط الشريط بتدرج لوني ثانٍ"], ["أكواب وعلب وبطاقات", "أكياس ومئزر ومجموعة قرطاسية", "بطاقة وشريط على طاولة تقديم"]]}}, {"n": 3, "slug": "excellence-sante", "name": "Excellence Santé", "sector": "Medical equipment supplier", "desc": "A calm and trustworthy identity for a company that sells medical equipment. A heart-and-drop symbol in layered blues and teal is applied to stationery, uniforms, a delivery van, signage and an exhibition booth.", "services": ["Logo", "Stationery", "Uniforms & vehicle", "Signage & exhibition"], "bg": "#edf4fa", "ink": "#0f2a43", "accent": "#0b4f8f", "tbg": "#e3f0fa", "tfg": "#0f2a43", "lead": "img/excellence-sante/wall.jpg", "pos": "50% 50%", "cover": "img/excellence-sante/cover.png", "cw": 800, "ch": 440, "sections": [{"title": "Logo & palette", "items": [{"src": "img/excellence-sante/logo.jpg", "alt": "Excellence Santé logo", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/excellence-sante/palette.jpg", "alt": "Colour palette", "w": 280, "h": 477, "nw": 280, "nh": 477}]}, {"title": "Stationery", "items": [{"src": "img/excellence-sante/stationery.jpg", "alt": "Letterhead, envelopes and cards", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}, {"title": "Uniforms, bags & caps", "items": [{"src": "img/excellence-sante/uniform.jpg", "alt": "Scrubs with the logo", "w": 991, "h": 1387, "nw": 991, "nh": 1387}, {"src": "img/excellence-sante/caps.jpg", "alt": "Caps with the symbol", "w": 747, "h": 996, "nw": 747, "nh": 996}, {"src": "img/excellence-sante/bag.jpg", "alt": "Carrier bag", "w": 1600, "h": 1066, "nw": 2000, "nh": 1333}]}, {"title": "Vehicle, signage & exhibition", "items": [{"src": "img/excellence-sante/van.jpg", "alt": "Delivery van livery", "w": 1600, "h": 910, "nw": 2000, "nh": 1137}, {"src": "img/excellence-sante/wall.jpg", "alt": "Reception wall sign", "w": 1600, "h": 1066, "nw": 2000, "nh": 1333}, {"src": "img/excellence-sante/booth.jpg", "alt": "Exhibition booth", "w": 1600, "h": 1018, "nw": 2000, "nh": 1273}]}], "ar": {"sector": "مورّد معدات طبية", "desc": "هوية هادئة وجديرة بالثقة لشركة تبيع المعدات الطبية. رمز يجمع القلب والقطرة بدرجات متراكبة من الأزرق والفيروزي، يُطبَّق على القرطاسية والزي الموحد وسيارة التوصيل واللافتات وجناح المعرض.", "services": ["شعار", "قرطاسية", "زي موحد ومركبة", "لافتات ومعارض"], "sections": ["الشعار والألوان", "القرطاسية", "الزي والأكياس والقبعات", "المركبة واللافتات والمعرض"], "alts": [["شعار إكسلانس سانتي", "لوحة الألوان"], ["ورق رسمي وأظرف وبطاقات"], ["زي طبي عليه الشعار", "قبعات عليها الرمز", "كيس حمل"], ["تصميم سيارة التوصيل", "لافتة جدار الاستقبال", "جناح المعرض"]]}}, {"n": 4, "slug": "qraya", "name": "Qraya", "sector": "Online learning platform for BAC students", "desc": "A friendly, energetic identity for an online learning platform. A rounded wordmark, expressive emoji faces and a playful pattern make a bright orange and blue system, shown here on logo versions and on the social media posts of the BAC campaign.", "services": ["Logo", "Brand identity", "Social media", "Platform UI"], "bg": "#f2f2f2", "ink": "#1a2b3f", "accent": "#ff6200", "tbg": "#ff6200", "tfg": "#ffffff", "lead": "img/qraya/s3.jpg", "pos": "50% 40%", "cover": "img/qraya/cover.png", "cw": 800, "ch": 267, "sections": [{"title": "Logo", "items": [{"src": "img/qraya/logo_orange.jpg", "alt": "Qraya wordmark", "w": 1389, "h": 543, "nw": 1389, "nh": 543}, {"src": "img/qraya/logos.jpg", "alt": "Logo colour versions", "w": 1571, "h": 1600, "nw": 2160, "nh": 2200}]}, {"title": "Brand identity", "items": [{"src": "img/qraya/brandblk0.jpg", "alt": "Emoji faces", "w": 571, "h": 335, "nw": 571, "nh": 335}, {"src": "img/qraya/brandblk1.jpg", "alt": "Colour palette", "w": 571, "h": 440, "nw": 571, "nh": 440}, {"src": "img/qraya/brandblk2.jpg", "alt": "Supporting colours", "w": 571, "h": 245, "nw": 571, "nh": 245}, {"src": "img/qraya/brandblk3.jpg", "alt": "Brand pattern", "w": 571, "h": 272, "nw": 571, "nh": 272}]}, {"title": "Social media", "items": [{"src": "img/qraya/s1.jpg", "alt": "BAC campaign post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}, {"src": "img/qraya/s2.jpg", "alt": "Teachers announcement post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}, {"src": "img/qraya/s3.jpg", "alt": "Online classes post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}, {"src": "img/qraya/s4.jpg", "alt": "Platform introduction post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}, {"src": "img/qraya/s5.jpg", "alt": "BAC 2025 post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}, {"src": "img/qraya/s6.jpg", "alt": "Subscription post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}]}], "ar": {"sector": "منصة تعليم إلكتروني لطلبة البكالوريا", "desc": "هوية ودودة ومفعمة بالحيوية لمنصة تعليم إلكتروني. كلمة بحروف مستديرة، ووجوه تعبيرية، ونمط مرح، تشكّل نظامًا برتقاليًا وأزرق ساطعًا، يظهر هنا في نسخ الشعار ومنشورات حملة البكالوريا على وسائل التواصل.", "services": ["شعار", "هوية العلامة", "وسائل التواصل الاجتماعي", "واجهة المنصة"], "sections": ["الشعار", "هوية العلامة", "وسائل التواصل الاجتماعي"], "alts": [["كلمة Qraya", "نسخ ألوان الشعار"], ["وجوه تعبيرية", "لوحة الألوان", "ألوان مساندة", "نمط العلامة"], ["منشور حملة البكالوريا", "منشور أساتذة المواد", "منشور الدروس عن بُعد", "منشور تقديم المنصة", "منشور بكالوريا 2025", "منشور الاشتراك"]]}}, {"n": 5, "slug": "brunch", "name": "Brunch", "sector": "Fast-casual food, “Eat Well, Live Well”", "desc": "A retro script logo with a long, flowing tail gives Brunch an easy, friendly voice. Deep green, terracotta and cream are applied across takeaway packaging, bags, cups, wraps and business cards, with the oversized lettering used as a pattern.", "services": ["Logo", "Packaging", "Stationery", "Brand pattern"], "bg": "#f5f0e1", "ink": "#0b3f38", "accent": "#e8572a", "tbg": "#087266", "tfg": "#f5f0e1", "lead": "img/brunch/bag.jpg", "pos": "50% 50%", "cover": "img/brunch/cover.png", "cw": 800, "ch": 370, "sections": [{"title": "Logo", "items": [{"src": "img/brunch/logo.jpg", "alt": "Brunch script logo", "w": 1600, "h": 1600, "nw": 2400, "nh": 2400}]}, {"title": "Packaging & stationery", "items": [{"src": "img/brunch/tray.jpg", "alt": "Foil tray with the lettering pattern", "w": 1600, "h": 1068, "nw": 2400, "nh": 1602}, {"src": "img/brunch/bag.jpg", "alt": "Takeaway bag, cups and boxes", "w": 1600, "h": 1067, "nw": 2400, "nh": 1600}, {"src": "img/brunch/bowl.jpg", "alt": "Bowl with a printed wrap", "w": 1600, "h": 1065, "nw": 2400, "nh": 1597}, {"src": "img/brunch/wraps.jpg", "alt": "Container wraps", "w": 1600, "h": 1067, "nw": 2400, "nh": 1600}, {"src": "img/brunch/sandwich.jpg", "alt": "Sandwich wrap and business card", "w": 1067, "h": 1600, "nw": 1601, "nh": 2400}, {"src": "img/brunch/set.jpg", "alt": "Paper bag, drink and business card", "w": 1067, "h": 1600, "nw": 1601, "nh": 2400}]}], "ar": {"sector": "وجبات سريعة راقية، «كُل جيدًا، عِش جيدًا»", "desc": "شعار بخط مائل قديم الطراز وذيل طويل منساب يمنح Brunch صوتًا مريحًا وودودًا. الأخضر الداكن والتراكوتا والكريمي تُطبَّق على عبوات الطلبات الخارجية والأكياس والأكواب واللفافات وبطاقات العمل، مع استخدام الحروف الكبيرة نمطًا للعلامة.", "services": ["شعار", "تغليف", "قرطاسية", "نمط العلامة"], "sections": ["الشعار", "التغليف والقرطاسية"], "alts": [["شعار Brunch بخط مائل"], ["صينية ألمنيوم بنمط الحروف", "كيس طلبات خارجية وأكواب وعلب", "وعاء بلفافة مطبوعة", "لفافات للعلب", "شطيرة وبطاقة عمل", "كيس ورقي ومشروب وبطاقة عمل"]]}}, {"n": 6, "slug": "oxygen-gym", "name": "Oxygen Gym", "sector": "Gym & fitness brand", "desc": "A bold, athletic identity built on a strong OG monogram that joins an oxygen symbol with a flexed arm. Fresh green on deep black-green is applied to a lightning pattern, bags, bottles and apparel, with slogans such as “Breathe Oxygen, Feel Alive”.", "services": ["Logo & monogram", "Colorways", "Pattern", "Merchandise"], "bg": "#fff7e4", "ink": "#12302a", "accent": "#6fa83a", "tbg": "#fff7e4", "tfg": "#12302a", "lead": "img/oxygen-gym/p38.jpg", "pos": "30% 50%", "cover": "img/oxygen-gym/cover.png", "cw": 800, "ch": 345, "sections": [{"title": "Logo & colorways", "items": [{"src": "img/oxygen-gym/logo_green.jpg", "alt": "Oxygen Gym logo in green", "w": 1360, "h": 660, "nw": 1360, "nh": 660}, {"src": "img/oxygen-gym/p36.jpg", "alt": "Logo colorways", "w": 1600, "h": 900, "nw": 1920, "nh": 1080}]}, {"title": "Pattern", "items": [{"src": "img/oxygen-gym/p37.jpg", "alt": "Lightning pattern and colour names", "w": 1600, "h": 892, "nw": 1920, "nh": 1070}]}, {"title": "Merchandise", "items": [{"src": "img/oxygen-gym/p38.jpg", "alt": "Jacket and boxing glove", "w": 1600, "h": 900, "nw": 1920, "nh": 1080}, {"src": "img/oxygen-gym/p39.jpg", "alt": "Gym bags", "w": 1600, "h": 900, "nw": 1920, "nh": 1080}, {"src": "img/oxygen-gym/p40.jpg", "alt": "Kettlebell and training wear", "w": 1600, "h": 900, "nw": 1920, "nh": 1080}, {"src": "img/oxygen-gym/p41.jpg", "alt": "Bottle, pouch and tank top", "w": 1600, "h": 900, "nw": 1920, "nh": 1080}]}], "ar": {"sector": "علامة صالة رياضية ولياقة", "desc": "هوية رياضية جريئة مبنية على مونوغرام OG قوي يجمع رمز الأكسجين وذراعًا مفتولة. أخضر منعش على أخضر داكن يميل للأسود يُطبَّق على نمط البرق والحقائب والقوارير والملابس، مع شعارات مثل «تنفّس الأكسجين، اشعر بالحياة».", "services": ["شعار ومونوغرام", "تدرجات لونية", "نمط", "منتجات ترويجية"], "sections": ["الشعار والتدرجات اللونية", "النمط", "المنتجات الترويجية"], "alts": [["شعار Oxygen Gym بالأخضر", "تدرجات ألوان الشعار"], ["نمط البرق وأسماء الألوان"], ["سترة وقفاز ملاكمة", "حقائب رياضية", "كرة الأثقال وملابس التدريب", "قارورة وكيس وقميص رياضي"]]}}, {"n": 7, "slug": "big-box-food", "name": "Big Box Food", "sector": "Playful fast-food brand", "desc": "A loud and cheerful identity for a fast-food brand. A cap-wearing box character gives it a face, backed by a red, yellow and blue palette and a pattern of small, expressive characters. Mockups on the following pages are concept presentations.", "services": ["Logo & mascot", "Color palette & pattern", "Menu & business cards", "Storefront & stickers"], "bg": "#fedc00", "ink": "#282457", "accent": "#ff002c", "tbg": "#fedc00", "tfg": "#282457", "lead": "img/big-box-food/store.jpg", "pos": "50% 50%", "cover": "img/big-box-food/cover.png", "cw": 800, "ch": 298, "sections": [{"title": "Logo & mascot", "items": [{"src": "img/big-box-food/logo_v.jpg", "alt": "Big Box Food stacked logo", "w": 1251, "h": 1083, "nw": 1251, "nh": 1083}, {"src": "img/big-box-food/logo_h.jpg", "alt": "Big Box Food horizontal logo", "w": 1600, "h": 628, "nw": 1800, "nh": 706}]}, {"title": "Menu & business cards (concept)", "items": [{"src": "img/big-box-food/menu.jpg", "alt": "Menu concept", "w": 1600, "h": 1118, "nw": 2000, "nh": 1398}, {"src": "img/big-box-food/cards.jpg", "alt": "Business card concept", "w": 1600, "h": 1194, "nw": 2000, "nh": 1493}]}, {"title": "Storefront & stickers (concept)", "items": [{"src": "img/big-box-food/store.jpg", "alt": "Storefront concept", "w": 1200, "h": 896, "nw": 1200, "nh": 896}, {"src": "img/big-box-food/stickers.jpg", "alt": "Sticker set concept", "w": 1195, "h": 896, "nw": 1195, "nh": 896}]}], "ar": {"sector": "علامة وجبات سريعة مرحة", "desc": "هوية صاخبة ومبهجة لعلامة وجبات سريعة. شخصية علبة ترتدي قبعة تمنحها وجهًا، مع لوحة ألوان حمراء وصفراء وزرقاء ونمط من شخصيات صغيرة معبّرة. النماذج في الأسفل عروض تصورية.", "services": ["شعار وشخصية", "لوحة الألوان والنمط", "قائمة طعام وبطاقات عمل", "واجهة متجر وملصقات"], "sections": ["الشعار والشخصية", "قائمة الطعام وبطاقات العمل (تصور)", "واجهة المتجر والملصقات (تصور)"], "alts": [["شعار Big Box Food العمودي", "شعار Big Box Food الأفقي"], ["تصور قائمة الطعام", "تصور بطاقة العمل"], ["تصور واجهة المتجر", "تصور مجموعة الملصقات"]]}}, {"n": 8, "slug": "cafe-paresta", "name": "Café Parésta", "sector": "Cakes, crêpes & drinks", "desc": "A refined new identity for an existing café, serving since 2018. A monogram of interlocking P and C in warm amber sits on deep green, in stacked, horizontal and badge versions, applied to the grand-opening post, menu cover and business card.", "services": ["Logo versions", "Opening announcement", "Menu cover", "Business card"], "bg": "#033f3f", "ink": "#f7ebd5", "accent": "#f9a93b", "tbg": "#033f3f", "tfg": "#f7ebd5", "lead": "img/cafe-paresta/card1.jpg", "pos": "50% 50%", "cover": "img/cafe-paresta/cover.png", "cw": 800, "ch": 276, "sections": [{"title": "Logo versions", "items": [{"src": "img/cafe-paresta/stacked.jpg", "alt": "Stacked logo", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/cafe-paresta/vert.jpg", "alt": "Vertical logo", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/cafe-paresta/badge.jpg", "alt": "Badge logo", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/cafe-paresta/stamp.jpg", "alt": "Stamp logo", "w": 1599, "h": 1600, "nw": 1999, "nh": 2000}, {"src": "img/cafe-paresta/horiz.jpg", "alt": "Horizontal logo", "w": 1600, "h": 638, "nw": 2000, "nh": 797}]}, {"title": "Announcement & menu", "items": [{"src": "img/cafe-paresta/opening.jpg", "alt": "Grand-opening announcement", "w": 1280, "h": 1600, "nw": 1600, "nh": 2000}, {"src": "img/cafe-paresta/menu.jpg", "alt": "Menu cover", "w": 1131, "h": 1600, "nw": 1414, "nh": 2000}]}, {"title": "Business card", "items": [{"src": "img/cafe-paresta/card1.jpg", "alt": "Business card front", "w": 1600, "h": 978, "nw": 2000, "nh": 1222}, {"src": "img/cafe-paresta/card2.jpg", "alt": "Business card back", "w": 1600, "h": 978, "nw": 2000, "nh": 1222}]}], "ar": {"sector": "كعك وكريب ومشروبات", "desc": "هوية جديدة مصقولة لمقهى قائم منذ 2018. مونوغرام من حرفي P وC متشابكين بلون كهرماني دافئ على أخضر داكن، بنسخ عمودية وأفقية وشارة، يُطبَّق على منشور الافتتاح وغلاف القائمة وبطاقة العمل.", "services": ["نسخ الشعار", "إعلان الافتتاح", "غلاف القائمة", "بطاقة عمل"], "sections": ["نسخ الشعار", "الإعلان والقائمة", "بطاقة العمل"], "alts": [["الشعار المكدّس", "الشعار العمودي", "شعار الشارة", "شعار الختم", "الشعار الأفقي"], ["إعلان الافتتاح الكبير", "غلاف القائمة"], ["الوجه الأمامي لبطاقة العمل", "الوجه الخلفي لبطاقة العمل"]]}}, {"n": 9, "slug": "di3aya", "name": "Di3aya", "sector": "Social media & advertising agency", "desc": "An identity for an advertising agency, with a bilingual Latin and Arabic wordmark and a compact monogram. Navy and fresh teal, shaped around speech bubbles, run through business cards, a roll-up banner, lanyard, keychains and the agency’s social posts.", "services": ["Logo", "Color system", "Print & merchandise", "Social media"], "bg": "#04153a", "ink": "#eaf2f2", "accent": "#5dd8c4", "tbg": "#04153a", "tfg": "#eaf2f2", "lead": "img/di3aya/banner.jpg", "pos": "50% 45%", "cover": "img/di3aya/cover.png", "cw": 800, "ch": 330, "sections": [{"title": "Logo & colors", "items": [{"src": "img/di3aya/logo_h.jpg", "alt": "Horizontal logo", "w": 1600, "h": 822, "nw": 2000, "nh": 1028}, {"src": "img/di3aya/logo_v.jpg", "alt": "Vertical logo", "w": 958, "h": 1600, "nw": 1197, "nh": 2000}, {"src": "img/di3aya/palette.jpg", "alt": "Colour palette in speech-bubble shapes", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}, {"title": "Print & merchandise", "items": [{"src": "img/di3aya/cards.jpg", "alt": "Business cards", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/di3aya/banner.jpg", "alt": "Roll-up banners", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/di3aya/lanyard.jpg", "alt": "Lanyard and badge holder", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/di3aya/keys.jpg", "alt": "Keychains", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}, {"title": "Social media", "items": [{"src": "img/di3aya/soon.jpg", "alt": "Coming soon post", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/di3aya/eid.jpg", "alt": "Eid greeting post", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/di3aya/ramadan.jpg", "alt": "Ramadan greeting post", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}], "ar": {"sector": "وكالة وسائل تواصل اجتماعي وإعلان", "desc": "هوية لوكالة إعلانات، بكلمة مزدوجة باللاتينية والعربية ومونوغرام مضغوط. الكحلي والفيروزي المنعش، بأشكال مستوحاة من فقاعات الحوار، يمتدان عبر بطاقات العمل ولافتة الرول أب والشريط الحامل والميداليات ومنشورات الوكالة الاجتماعية.", "services": ["شعار", "نظام الألوان", "مطبوعات ومنتجات ترويجية", "وسائل التواصل الاجتماعي"], "sections": ["الشعار والألوان", "المطبوعات والمنتجات الترويجية", "وسائل التواصل الاجتماعي"], "alts": [["الشعار الأفقي", "الشعار العمودي", "لوحة الألوان بأشكال فقاعات الحوار"], ["بطاقات العمل", "لافتات رول أب", "شريط حامل وحافظة بطاقة", "ميداليات مفاتيح"], ["منشور «قريبًا»", "منشور تهنئة بالعيد", "منشور تهنئة برمضان"]]}}, {"n": 10, "slug": "tourkya", "name": "Tourkya", "sector": "Shoes & fashion store", "desc": "A confident, fashion-led identity with a thin-stroke TK monogram in deep red and cream. It appears on signage, the storefront, shopping bags and shoe boxes, along with a bilingual Latin and Arabic business card.", "services": ["Logo & monogram", "Signage & storefront", "Packaging", "Business card"], "bg": "#f9f5ec", "ink": "#3a0a05", "accent": "#a61204", "tbg": "#a61204", "tfg": "#f9f5ec", "lead": "img/tourkya/store.jpg", "pos": "50% 50%", "cover": "img/tourkya/cover.png", "cw": 800, "ch": 662, "sections": [{"title": "Logo & monogram", "items": [{"src": "img/tourkya/logo.jpg", "alt": "Tourkya logo", "w": 1599, "h": 1600, "nw": 1999, "nh": 2000}, {"src": "img/tourkya/tk_cream.jpg", "alt": "TK monogram, red on cream", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/tourkya/tk_red.jpg", "alt": "TK monogram, cream on red", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}, {"title": "Signage & storefront", "items": [{"src": "img/tourkya/fascia.jpg", "alt": "Fascia sign", "w": 1600, "h": 1066, "nw": 2000, "nh": 1333}, {"src": "img/tourkya/sign.jpg", "alt": "Projecting sign", "w": 1600, "h": 1066, "nw": 2000, "nh": 1333}, {"src": "img/tourkya/store.jpg", "alt": "Storefront", "w": 1600, "h": 1145, "nw": 2000, "nh": 1431}]}, {"title": "Packaging", "items": [{"src": "img/tourkya/bag.jpg", "alt": "Shopping bag", "w": 1066, "h": 1600, "nw": 1333, "nh": 2000}, {"src": "img/tourkya/box.jpg", "alt": "Shoe box", "w": 1600, "h": 1113, "nw": 2000, "nh": 1391}]}, {"title": "Business card", "items": [{"src": "img/tourkya/card.jpg", "alt": "Bilingual business card", "w": 1064, "h": 650, "nw": 1064, "nh": 650}]}], "ar": {"sector": "متجر أحذية وأزياء", "desc": "هوية أنيقة تتجه نحو الموضة، بمونوغرام TK بخطوط رفيعة بالأحمر الداكن والكريمي. يظهر على اللافتات وواجهة المتجر وأكياس التسوق وعلب الأحذية، إضافةً إلى بطاقة عمل مزدوجة باللاتينية والعربية.", "services": ["شعار ومونوغرام", "لافتات وواجهة متجر", "تغليف", "بطاقة عمل"], "sections": ["الشعار والمونوغرام", "اللافتات وواجهة المتجر", "التغليف", "بطاقة العمل"], "alts": [["شعار Tourkya", "مونوغرام TK أحمر على كريمي", "مونوغرام TK كريمي على أحمر"], ["لافتة الواجهة", "لافتة بارزة", "واجهة المتجر"], ["كيس تسوق", "علبة حذاء"], ["بطاقة عمل ثنائية اللغة"]]}}];
+const bySlug = Object.fromEntries(PROJECTS.map(p => [p.slug, p]));
+const $ = (s, r = document) => r.querySelector(s);
+const pad = n => String(n).padStart(2, '0');
+const home = $('#home'), proj = $('#project');
+
+/* ---------- language ---------- */
+let L = 'en';
+try { const s = localStorage.getItem('lang'); L = s === 'ar' || s === 'en' ? s : ((navigator.language || '').toLowerCase().startsWith('ar') ? 'ar' : 'en'); } catch (e) {}
+const AR_UI = {
+  nav_work: 'الأعمال', nav_about: 'نبذة عني', nav_contact: 'تواصل',
+  role: 'مصمم هويات بصرية ومنتجات رقمية.',
+  sub: 'أصمّم علامات تجارية واضحة وواجهات سهلة الاستخدام، حيث يتبع الشكل الوظيفة.',
+  cta_work: 'شاهد الأعمال', cta_contact: 'تواصل معي',
+  work_h: 'أعمال مختارة', work_n: '10 هويات بصرية',
+  about_h: 'نبذة عني', about_t: 'أشخّص مكمن المشكلة أولًا، ثم أصمّم الحل.',
+  bio: 'أنا زكريا، مصمم لديه أكثر من 10 سنوات من الخبرة في الهوية البصرية والطباعة وتصميم واجهات وتجربة المستخدم. التصميم الجيد ليس جمالًا فقط، بل هو حلّ للمشكلات. أجمع بين التفكير التحليلي والتنفيذ البصري النظيف لأبني علامات تجارية تتواصل بوضوح ومنتجات رقمية يشعر المستخدم أنها طبيعية في استخدامها.',
+  yrs: 'سنوات من الخبرة في المجال',
+  d1h: 'الهوية البصرية', d1p: 'شعارات وخطوط وأنظمة بصرية استراتيجية، مصمّمة لتبقى متّسقة على المدى الطويل.',
+  d2h: 'الطباعة والتغليف', d2p: 'مطبوعات وتغليف ولافتات تجارية مصمّمة لتترك أقوى أثر على الرف وفي الشارع.',
+  d3h: 'التواصل الاجتماعي وتجربة المستخدم', d3p: 'حملات اجتماعية تلفت الانتباه، وواجهات ويب وتطبيقات منظمة وسهلة التصفح.',
+  contact_h: 'لنصنع شيئًا واضحًا.', email_l: 'البريد الإلكتروني', phone_l: 'الهاتف',
+  role_s: 'مصمم هويات بصرية ومنتجات رقمية'
+};
+const UI = {
+  en: { all: 'All work', made: 'What I designed', cols: 'Colours', next: 'Next project', copy: 'Copy', copied: 'Copied', sel: 'Select and copy',
+        imgs: n => `${n} ${n === 1 ? 'image' : 'images'}`, tiles: 'Ten brand identity projects', home: 'Zakaria Dou, home',
+        back: '←', fwd: '→', prev: 'Previous image', nextI: 'Next image', close: 'Close', viewer: 'Image viewer', open: 'Open image: ', toggle: 'العربية' },
+  ar: { all: 'كل الأعمال', made: 'ما صمّمته', cols: 'الألوان', next: 'المشروع التالي', copy: 'نسخ', copied: 'تم النسخ', sel: 'حدّد وانسخ',
+        imgs: n => n === 1 ? 'صورة واحدة' : n === 2 ? 'صورتان' : n <= 10 ? `${n} صور` : `${n} صورة`, tiles: 'عشرة مشاريع للهوية البصرية', home: 'زكريا دو، الرئيسية',
+        back: '→', fwd: '←', prev: 'الصورة السابقة', nextI: 'الصورة التالية', close: 'إغلاق', viewer: 'عارض الصور', open: 'افتح الصورة: ', toggle: 'English' }
+};
+document.querySelectorAll('[data-t]').forEach(el => { el.dataset.en = el.innerHTML; });
+const loc = p => L === 'ar' ? p.ar : { sector: p.sector, desc: p.desc, services: p.services, sections: p.sections.map(s => s.title), alts: p.sections.map(s => s.items.map(i => i.alt)) };
+
+/* ---------- home ---------- */
+function renderHome() {
+  $('#mosaic').setAttribute('aria-label', UI[L].tiles);
+  $('#mosaic').innerHTML = PROJECTS.map(p => `
+  <a class="tile" href="#${p.slug}" data-open="${p.slug}" style="background:${p.tbg};--tfg:${p.tfg}" aria-label="${p.name}, ${loc(p).sector}">
+    <img src="${p.cover}" width="${p.cw}" height="${p.ch}" alt="">
+    <span class="lab"><span>${pad(p.n)}</span><span>${p.name}</span></span>
+  </a>`).join('');
+  $('#cards').innerHTML = PROJECTS.map(p => { const l = loc(p); return `
+  <a class="card" href="#${p.slug}" data-open="${p.slug}" style="--c:${p.bg}">
+    <div class="ph"><img src="${p.lead}" alt="" loading="lazy" style="object-position:${p.pos}"></div>
+    <div class="meta"><span class="no mono">${pad(p.n)}</span><h3>${p.name}</h3>
+      <span class="sector">${l.sector}</span>
+      <span class="svc mono">${l.services.join(' · ')}</span></div>
+  </a>`; }).join('');
+}
+
+/* ---------- project page ---------- */
+const GAP = 10;
+function layoutRows(items, w) {
+  const target = Math.min(3.6, Math.max(1.5, w / 360));
+  const rows = []; let cur = [], sum = 0;
+  for (const it of items) {
+    const a = it.w / it.h;
+    if (cur.length && Math.abs(sum + a - target) > Math.abs(sum - target)) { rows.push(cur); cur = []; sum = 0; }
+    cur.push(it); sum += a;
+  }
+  if (cur.length) rows.push(cur);
+  return rows;
+}
+function rowHTML(row, idxOf) {
+  const sum = row.reduce((s, it) => s + it.w / it.h, 0);
+  const capH = Math.min(720, Math.min(...row.map(it => it.nh * 1.5)));
+  const maxW = Math.round(capH * sum + GAP * (row.length - 1));
+  return `<div class="row" style="max-width:${maxW}px">` + row.map(it => {
+    const a = (it.w / it.h).toFixed(4);
+    return `<button type="button" class="shot" data-i="${idxOf.get(it)}" style="--a:${a}" aria-label="${UI[L].open}${it.alt}"><img src="${it.src}" width="${it.w}" height="${it.h}" alt="${it.alt}" loading="lazy"></button>`;
+  }).join('') + `</div>`;
+}
+let cur = null, curSlug = null, flat = [], lastW = 0;
+function renderGallery() {
+  const g = $('#gal'); if (!g || !cur) return;
+  const w = g.clientWidth; lastW = w;
+  const idxOf = new Map(flat.map((it, i) => [it, i]));
+  g.innerHTML = cur.sections.map(s => `
+    <section class="gsec"><h2>${s.title}<span class="mono">${UI[L].imgs(s.items.length)}</span></h2>
+    <div class="rows">${layoutRows(s.items, w).map(r => rowHTML(r, idxOf)).join('')}</div></section>`).join('');
+}
+function openProject(slug, push = true) {
+  const p0 = bySlug[slug]; if (!p0) return;
+  const l = loc(p0), U = UI[L];
+  cur = { ...p0, sector: l.sector, desc: l.desc, services: l.services,
+    sections: p0.sections.map((s, i) => ({ title: l.sections[i], items: s.items.map((it, j) => ({ ...it, alt: l.alts[i][j] })) })) };
+  const p = cur; flat = p.sections.flatMap(s => s.items);
+  const nx = PROJECTS[(p.n) % PROJECTS.length];
+  proj.innerHTML = `
+    <section class="pband" style="--pbg:${p.bg};--pink:${p.ink};--pacc:${p.accent}"><div class="in">
+      <div>
+        <button class="back" type="button" data-go="work">${U.back} ${U.all}</button>
+        <div class="mono" style="opacity:.7;margin-bottom:14px"><span class="ltr">${pad(p.n)} / ${PROJECTS.length}</span></div>
+        <h1>${p.name}</h1>
+        <div class="sector">${p.sector}</div>
+        <p class="desc">${p.desc}</p>
+        <dl>
+          <div><dt class="mono">${U.made}</dt><dd>${p.services.map(s => `<span class="chip">${s}</span>`).join('')}</dd></div>
+          <div><dt class="mono">${U.cols}</dt><dd>${[p.bg, p.accent, p.ink].map(c => `<span class="sw" style="--sc:${c}"><i></i><bdi>${c}</bdi></span>`).join('')}</dd></div>
+        </dl>
+      </div>
+      <div class="pt" style="--tbg:${p.tbg}"><img src="${p.cover}" width="${p.cw}" height="${p.ch}" alt="${p.name}"></div>
+    </div></section>
+    <div class="gal in" id="gal" style="--pbg:${p.bg}"></div>
+    <a class="next" href="#${nx.slug}" data-open="${nx.slug}" style="--nbg:${nx.tbg};--nfg:${nx.tfg}"><div class="in"><div><span class="mono">${U.next} · <span class="ltr">${pad(nx.n)}</span></span><h2>${nx.name}</h2></div><span class="arr" aria-hidden="true">${U.fwd}</span></div></a>
+    <footer class="in foot mono"><span>Zakaria Dou</span><span>${L === 'ar' ? AR_UI.role_s : 'Visual Identity &amp; Product Designer'}</span></footer>`;
+  curSlug = slug;
+  home.hidden = true; proj.hidden = false;
+  renderGallery();
+  document.title = p.name + ' · Zakaria Dou Portfolio';
+  window.scrollTo(0, 0);
+  if (push) setHash(slug);
+}
+function showHome(target, push = true) {
+  cur = null; curSlug = null; proj.hidden = true; home.hidden = false; proj.innerHTML = '';
+  document.title = 'Zakaria Dou Portfolio';
+  const el = target ? document.getElementById(target) : null;
+  if (el) el.scrollIntoView(); else window.scrollTo(0, 0);
+  if (push) setHash(target || '');
+}
+function setHash(h) {
+  try { if (h) { if (location.hash !== '#' + h) history.replaceState(null, '', '#' + h); } else if (location.hash) history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+}
+function route() {
+  const h = (location.hash || '').slice(1);
+  if (bySlug[h]) openProject(h, false);
+  else showHome(['work', 'about', 'contact'].includes(h) ? h : '', false);
+}
+
+document.addEventListener('click', e => {
+  const o = e.target.closest('[data-open]');
+  if (o) { e.preventDefault(); openProject(o.dataset.open); return; }
+  const g = e.target.closest('[data-go]');
+  if (g) { e.preventDefault(); showHome(g.dataset.go); return; }
+  const s = e.target.closest('.shot');
+  if (s) { openLb(+s.dataset.i); return; }
+  const c = e.target.closest('[data-copy]');
+  if (c) copyText(c);
+});
+$('#brand').addEventListener('click', () => showHome(''));
+window.addEventListener('hashchange', route);
+let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { const g = $('#gal'); if (g && Math.abs(g.clientWidth - lastW) > 40) renderGallery(); }, 150); });
+
+/* ---------- copy ---------- */
+function copyText(btn) {
+  const node = document.getElementById(btn.dataset.copy), txt = node.textContent.trim();
+  const done = ok => { btn.textContent = ok ? UI[L].copied : UI[L].sel; setTimeout(() => btn.textContent = UI[L].copy, 1800); };
+  const fallback = () => { const r = document.createRange(); r.selectNodeContents(node); const s = getSelection(); s.removeAllRanges(); s.addRange(r); done(false); };
+  try { navigator.clipboard.writeText(txt).then(() => done(true), fallback); } catch (e) { fallback(); }
+}
+
+/* ---------- lightbox ---------- */
+const lb = $('#lb'); let li = 0, opener = null;
+function showLb() { const it = flat[li]; $('#lbimg').src = it.src; $('#lbimg').alt = it.alt; $('#lbc').textContent = `${li + 1} / ${flat.length}  ·  ${it.alt}`; }
+function openLb(i) { li = i; opener = document.activeElement; showLb(); lb.hidden = false; document.body.style.overflow = 'hidden'; $('#lbx').focus(); }
+function closeLb() { lb.hidden = true; document.body.style.overflow = ''; if (opener && opener.focus) opener.focus(); }
+function stepLb(d) { li = (li + d + flat.length) % flat.length; showLb(); }
+$('#lbx').addEventListener('click', closeLb);
+$('#lbp').addEventListener('click', () => stepLb(-1));
+$('#lbn').addEventListener('click', () => stepLb(1));
+lb.addEventListener('click', e => { if (e.target === lb || e.target.classList.contains('stage')) closeLb(); });
+document.addEventListener('keydown', e => {
+  if (lb.hidden) return;
+  if (e.key === 'Escape') closeLb(); else if (e.key === 'ArrowLeft') stepLb(L === 'ar' ? 1 : -1); else if (e.key === 'ArrowRight') stepLb(L === 'ar' ? -1 : 1);
+  else if (e.key === 'Tab') { const f = [...lb.querySelectorAll('button')]; const i = f.indexOf(document.activeElement); e.preventDefault(); f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus(); }
+});
+
+function applyLang(rerender = true) {
+  const R = document.documentElement, U = UI[L];
+  R.lang = L; R.dir = L === 'ar' ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-t]').forEach(el => { el.innerHTML = L === 'ar' ? AR_UI[el.dataset.t] : el.dataset.en; });
+  document.querySelectorAll('.copy').forEach(b => { b.textContent = U.copy; });
+  $('#lang').textContent = U.toggle; $('#lang').lang = L === 'ar' ? 'en' : 'ar';
+  $('#brand').setAttribute('aria-label', U.home);
+  $('#lbp').innerHTML = U.back; $('#lbn').innerHTML = U.fwd;
+  $('#lbp').setAttribute('aria-label', U.prev); $('#lbn').setAttribute('aria-label', U.nextI);
+  $('#lbx').setAttribute('aria-label', U.close); $('#lb').setAttribute('aria-label', U.viewer);
+  renderHome();
+  if (rerender && curSlug) { const y = window.scrollY; openProject(curSlug, false); window.scrollTo(0, y); }
+}
+$('#lang').addEventListener('click', () => {
+  L = L === 'ar' ? 'en' : 'ar';
+  try { localStorage.setItem('lang', L); } catch (e) {}
+  applyLang();
+});
+
+applyLang(false);
+route();
+</script>
+
+</body>
+</html>
