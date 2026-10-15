@@ -175,6 +175,11 @@ function doGet(e) {
   return ContentService.createTextOutput(JSON.stringify({ status: "active", service: "Zakaria Dou Orders Webhook" }))
     .setMimeType(ContentService.MimeType.JSON);
 }
+
+// Run this once in Apps Script to authorize email sending:
+function testEmail() {
+  MailApp.sendEmail("douzakaria98@gmail.com", "🎉 Portfolio Notifications Active", "Your portfolio email notification system is now authorized and fully active!");
+}
 ```
 
 ---
