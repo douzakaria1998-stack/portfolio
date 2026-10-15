@@ -150,6 +150,9 @@ h1,h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.03em;l
 .f-label .mono-opt{opacity:.7;font-weight:normal;text-transform:none}
 .f-input{width:100%;height:46px;padding:0 16px;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);font-family:inherit;font-size:15px;transition:border-color .2s ease,box-shadow .2s ease;appearance:none}
 .f-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3.5px color-mix(in srgb,var(--accent) 18%,transparent)}
+.input-currency-wrap{position:relative;display:flex;align-items:center}
+.input-currency-wrap .f-input{padding-inline-end:76px}
+.currency-badge{position:absolute;inset-inline-end:10px;font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--muted);background:color-mix(in srgb,var(--surface) 90%,var(--line));padding:4px 10px;border-radius:8px;border:1px solid var(--line);pointer-events:none}
 .f-textarea{height:auto;padding:12px 16px;min-height:96px;resize:vertical}
 .f-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23596060' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px;cursor:pointer}
 :root[dir="rtl"] .f-select{background-position:left 14px center;padding-right:16px;padding-left:38px}
@@ -383,15 +386,19 @@ h1,h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.03em;l
           </div>
 
           <div class="f-group">
-            <label class="f-label mono"><span data-t="f_budget_l">2. Estimated Budget</span></label>
-            <div class="chips-grid" id="budgetChips">
-              <button type="button" class="chip-btn chip-radio" data-val="< $500">&lt; $500</button>
-              <button type="button" class="chip-btn chip-radio active" data-val="$500 - $1,500">$500 – $1,500</button>
-              <button type="button" class="chip-btn chip-radio" data-val="$1,500 - $3,000">$1,500 – $3,000</button>
-              <button type="button" class="chip-btn chip-radio" data-val="$3,000+">$3,000+</button>
-              <button type="button" class="chip-btn chip-radio" data-val="Flexible / To discuss" data-t="bgt_flex">Flexible</button>
+            <label class="f-label mono" for="f_budget_input"><span data-t="f_budget_l">2. Estimated Budget (in DZD)</span> <span class="mono-opt" data-t="opt_label">(Optional)</span></label>
+            <div class="input-currency-wrap">
+              <input type="text" id="f_budget_input" name="budget_custom" class="f-input" placeholder="Type your budget, e.g. 80,000 DZD" data-t-ph="f_budget_ph">
+              <span class="currency-badge" data-t="curr_unit">DZD</span>
             </div>
-            <input type="hidden" name="budget" id="f_budget" value="$500 - $1,500">
+            <div class="chips-grid" id="budgetChips" style="margin-top:4px">
+              <button type="button" class="chip-btn" data-val="30,000 – 60,000 DZD">30,000 – 60,000 <span data-t="curr_unit">DZD</span></button>
+              <button type="button" class="chip-btn" data-val="60,000 – 120,000 DZD">60,000 – 120,000 <span data-t="curr_unit">DZD</span></button>
+              <button type="button" class="chip-btn" data-val="120,000 – 250,000 DZD">120,000 – 250,000 <span data-t="curr_unit">DZD</span></button>
+              <button type="button" class="chip-btn" data-val="+250,000 DZD">+250,000 <span data-t="curr_unit">DZD</span></button>
+              <button type="button" class="chip-btn" data-val="Flexible / To discuss" data-t="bgt_flex">Flexible</button>
+            </div>
+            <input type="hidden" name="budget" id="f_budget">
           </div>
 
           <div class="f-row">
@@ -517,7 +524,9 @@ const AR_UI = {
   srv_social: 'حملات وسائل التواصل',
   srv_sign: 'واجهات ولافتات تجارية',
   srv_other: 'استشارة / خدمات أخرى',
-  f_budget_l: '2. الميزانية التقديرية',
+  f_budget_l: '2. الميزانية التقديرية (بالدينار الجزائري)',
+  f_budget_ph: 'اكتب ميزانيتك، مثلاً: 80,000 د.ج',
+  curr_unit: 'د.ج',
   bgt_flex: 'مرنة / للمناقشة',
   f_name_l: 'الاسم أو الشركة',
   f_name_ph: 'مثل: محمد أحمد أو اسم الشركة',
@@ -720,13 +729,26 @@ if (serviceChips) {
   });
 }
 
+const fBudgetInput = $('#f_budget_input');
+
+if (fBudgetInput) {
+  fBudgetInput.addEventListener('input', () => {
+    budgetChips.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+    fBudget.value = fBudgetInput.value.trim();
+  });
+}
+
 if (budgetChips) {
   budgetChips.addEventListener('click', e => {
     const btn = e.target.closest('.chip-btn');
     if (!btn) return;
     budgetChips.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    fBudget.value = btn.dataset.val;
+    const val = btn.dataset.val;
+    fBudget.value = val;
+    if (fBudgetInput) {
+      fBudgetInput.value = val === 'Flexible / To discuss' ? (L === 'ar' ? 'مرنة / للمناقشة' : 'Flexible') : val;
+    }
   });
 }
 
@@ -779,6 +801,9 @@ if (orderForm) {
     orderBtnArr.hidden = true;
     orderBtnTxt.textContent = L === 'ar' ? AR_UI.f_submitting : 'Sending Request...';
 
+    const rawBudget = (fBudgetInput && fBudgetInput.value.trim()) || fBudget.value || '';
+    const budgetVal = rawBudget ? (rawBudget.toLowerCase().includes('dzd') || rawBudget.includes('د') ? rawBudget : `${rawBudget} ${L === 'ar' ? 'د.ج' : 'DZD'}`) : (L === 'ar' ? 'مرنة / للمناقشة' : 'Flexible / To discuss');
+
     const payload = {
       timestamp: new Date().toLocaleString(),
       name: nameVal,
@@ -786,7 +811,7 @@ if (orderForm) {
       phone: phoneInput.value.trim() || 'N/A',
       timeline: timelineInput ? timelineInput.value : 'Flexible',
       services: servicesVal,
-      budget: fBudget.value || '$500 – $1,500',
+      budget: budgetVal,
       details: detailsVal
     };
 
@@ -829,7 +854,10 @@ if (resetOrderBtn) {
   resetOrderBtn.addEventListener('click', () => {
     orderForm.reset();
     serviceChips.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+    budgetChips.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
     fServices.value = '';
+    fBudget.value = '';
+    if (fBudgetInput) fBudgetInput.value = '';
     orderSuccess.hidden = true;
     orderForm.hidden = false;
     orderForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
