@@ -281,12 +281,14 @@ h1,h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.03em;l
   .f-row{grid-template-columns:minmax(0,1fr)}
   .f-actions{flex-direction:column;align-items:stretch}
   .order-submit-btn{justify-content:center;width:100%}
-  .f-security{justify-content:center}
 }
+.dot-canvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:.85}
+main,#project,footer,.lb{position:relative;z-index:1}
 @media (prefers-reduced-motion: reduce){ *{transition:none!important;scroll-behavior:auto!important;animation:none!important} }
 </style>
 </head>
 <body>
+<canvas id="dotCanvas" class="dot-canvas" aria-hidden="true"></canvas>
 
 
 <header class="top"><div class="in">
@@ -936,6 +938,177 @@ $('#lang').addEventListener('click', () => {
 applyLang(false);
 route();
 initScrollReveal();
+
+/* ---------- interactive mouse-reactive dots canvas ---------- */
+(function initInteractiveDots() {
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const canvas = document.getElementById('dotCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let width = 0, height = 0, dpr = 1;
+  let dots = [];
+  const mouse = { x: -9999, y: -9999, radius: 155, active: false };
+
+  function resize() {
+    dpr = window.devicePixelRatio || 1;
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = width + 'px';
+    canvas.style.height = height + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    createDots();
+  }
+
+  function createDots() {
+    const targetCount = Math.min(95, Math.max(38, Math.floor((width * height) / 16000)));
+    dots = [];
+    for (let i = 0; i < targetCount; i++) {
+      dots.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.55,
+        vy: (Math.random() - 0.5) * 0.55,
+        radius: Math.random() * 1.5 + 1.2,
+        baseRadius: Math.random() * 1.5 + 1.2,
+        alpha: Math.random() * 0.3 + 0.2
+      });
+    }
+  }
+
+  window.addEventListener('mousemove', e => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+    mouse.active = true;
+  }, { passive: true });
+
+  window.addEventListener('mouseleave', () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+    mouse.active = false;
+  });
+
+  window.addEventListener('touchmove', e => {
+    if (e.touches && e.touches.length > 0) {
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
+      mouse.active = true;
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchend', () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+    mouse.active = false;
+  });
+
+  // Click ripple pulse
+  window.addEventListener('click', e => {
+    const cx = e.clientX, cy = e.clientY;
+    dots.forEach(p => {
+      const d = Math.hypot(p.x - cx, p.y - cy);
+      if (d < 180) {
+        const force = (180 - d) / 180;
+        const angle = Math.atan2(p.y - cy, p.x - cx);
+        p.vx += Math.cos(angle) * force * 3.5;
+        p.vy += Math.sin(angle) * force * 3.5;
+      }
+    });
+  });
+
+  let animId;
+  function render() {
+    ctx.clearRect(0, 0, width, height);
+
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
+      (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && document.documentElement.getAttribute('data-theme') !== 'light');
+
+    const dotColor = isDark ? '230, 235, 245' : '30, 40, 60';
+    const accentColor = isDark ? '152, 162, 255' : '42, 56, 240';
+
+    for (let i = 0; i < dots.length; i++) {
+      const p = dots[i];
+
+      // Mouse interactive deflection & connections
+      const dx = mouse.x - p.x;
+      const dy = mouse.y - p.y;
+      const dist = Math.hypot(dx, dy);
+
+      if (dist < mouse.radius) {
+        const force = (mouse.radius - dist) / mouse.radius;
+        const angle = Math.atan2(dy, dx);
+        p.x -= Math.cos(angle) * force * 2.2;
+        p.y -= Math.sin(angle) * force * 2.2;
+        p.radius = p.baseRadius * (1 + force * 1.3);
+
+        // Connect line from mouse to dot
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(mouse.x, mouse.y);
+        ctx.strokeStyle = `rgba(${accentColor}, ${(1 - dist / mouse.radius) * 0.45})`;
+        ctx.lineWidth = 0.75;
+        ctx.stroke();
+      } else {
+        p.radius += (p.baseRadius - p.radius) * 0.08;
+      }
+
+      // Natural smooth movement & velocity damping
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vx *= 0.992;
+      p.vy *= 0.992;
+
+      // Ensure minimum drift
+      if (Math.abs(p.vx) < 0.15) p.vx += (Math.random() - 0.5) * 0.1;
+      if (Math.abs(p.vy) < 0.15) p.vy += (Math.random() - 0.5) * 0.1;
+
+      // Wrap boundaries
+      if (p.x < -10) p.x = width + 10;
+      else if (p.x > width + 10) p.x = -10;
+      if (p.y < -10) p.y = height + 10;
+      else if (p.y > height + 10) p.y = -10;
+
+      // Draw particle dot
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = dist < mouse.radius
+        ? `rgba(${accentColor}, ${Math.min(1, p.alpha + 0.4)})`
+        : `rgba(${dotColor}, ${p.alpha})`;
+      ctx.fill();
+
+      // Connect with neighbor dots
+      for (let j = i + 1; j < dots.length; j++) {
+        const p2 = dots[j];
+        const nd = Math.hypot(p.x - p2.x, p.y - p2.y);
+        if (nd < 95) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = `rgba(${dotColor}, ${(1 - nd / 95) * 0.14})`;
+          ctx.lineWidth = 0.55;
+          ctx.stroke();
+        }
+      }
+    }
+
+    animId = requestAnimationFrame(render);
+  }
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(resize, 100);
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) cancelAnimationFrame(animId);
+    else animId = requestAnimationFrame(render);
+  });
+
+  resize();
+  animId = requestAnimationFrame(render);
+})();
 </script>
 
 </body>
