@@ -420,13 +420,19 @@ h1,h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.03em;l
               <input type="tel" id="f_phone" name="phone" class="f-input ltr" placeholder="+213 ...">
             </div>
             <div class="f-group">
-              <label class="f-label mono" for="f_timeline"><span data-t="f_timeline_l">Timeline / Urgency</span> <span class="mono-opt" data-t="opt_label">(Optional)</span></label>
-              <select id="f_timeline" name="timeline" class="f-input f-select">
-                <option value="Flexible" data-t="time_flex">Flexible timeline</option>
-                <option value="1 to 2 Weeks" data-t="time_urgent">Urgent (1–2 weeks)</option>
-                <option value="Within 1 Month" data-t="time_month">Within 1 month</option>
-                <option value="1 to 3 Months" data-t="time_quarter">1 to 3 months</option>
-              </select>
+              <label class="f-label mono" for="f_timeline_input"><span data-t="f_timeline_l">Timeline (in Days)</span> <span class="mono-opt" data-t="opt_label">(Optional)</span></label>
+              <div class="input-currency-wrap">
+                <input type="text" id="f_timeline_input" name="timeline_custom" class="f-input" placeholder="Type duration, e.g. 7 days" data-t-ph="f_timeline_ph">
+                <span class="currency-badge" data-t="days_unit">Days</span>
+              </div>
+              <div class="chips-grid" id="timelineChips" style="margin-top:4px">
+                <button type="button" class="chip-btn" data-val="3 Days">3 <span data-t="days_unit">Days</span></button>
+                <button type="button" class="chip-btn" data-val="7 Days">7 <span data-t="days_unit">Days</span></button>
+                <button type="button" class="chip-btn" data-val="14 Days">14 <span data-t="days_unit">Days</span></button>
+                <button type="button" class="chip-btn" data-val="30 Days">30 <span data-t="days_unit">Days</span></button>
+                <button type="button" class="chip-btn" data-val="Flexible" data-t="time_flex">Flexible</button>
+              </div>
+              <input type="hidden" name="timeline" id="f_timeline">
             </div>
           </div>
 
@@ -533,11 +539,10 @@ const AR_UI = {
   f_email_l: 'البريد الإلكتروني',
   f_email_ph: 'name@example.com',
   f_phone_l: 'الهاتف أو واتساب',
-  f_timeline_l: 'الجدول الزمني المطلوب',
-  time_flex: 'مرن / غير مستعجل',
-  time_urgent: 'مستعجل (أسبوع إلى أسبوعين)',
-  time_month: 'خلال شهر',
-  time_quarter: 'من شهر إلى 3 أشهر',
+  f_timeline_l: 'المدة المطلوبة (بالأيام)',
+  f_timeline_ph: 'اكتب المدة مثلاً: 7 أيام',
+  days_unit: 'أيام',
+  time_flex: 'مرنة / للمناقشة',
   f_details_l: 'تفاصيل المشروع وأهدافك',
   f_details_ph: 'أخبرني عن فكرة مشروعك، الجمهور المستهدف، المخرجات المطلوبة، وأي مراجع أو روابط تلهمك...',
   f_submit: 'إرسال طلب المشروع',
@@ -752,6 +757,31 @@ if (budgetChips) {
   });
 }
 
+const fTimelineInput = $('#f_timeline_input');
+const timelineChips = $('#timelineChips');
+const fTimeline = $('#f_timeline');
+
+if (fTimelineInput) {
+  fTimelineInput.addEventListener('input', () => {
+    if (timelineChips) timelineChips.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+    fTimeline.value = fTimelineInput.value.trim();
+  });
+}
+
+if (timelineChips) {
+  timelineChips.addEventListener('click', e => {
+    const btn = e.target.closest('.chip-btn');
+    if (!btn) return;
+    timelineChips.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const val = btn.dataset.val;
+    fTimeline.value = val;
+    if (fTimelineInput) {
+      fTimelineInput.value = val === 'Flexible' ? (L === 'ar' ? 'مرنة / للمناقشة' : 'Flexible') : (L === 'ar' ? val.replace('Days', 'أيام') : val);
+    }
+  });
+}
+
 if (orderForm) {
   orderForm.addEventListener('submit', async e => {
     e.preventDefault();
@@ -761,7 +791,6 @@ if (orderForm) {
     const emailInput = $('#f_email');
     const detailsInput = $('#f_details');
     const phoneInput = $('#f_phone');
-    const timelineInput = $('#f_timeline');
 
     const nameVal = nameInput.value.trim();
     if (!nameVal) { $('#err_name').hidden = false; nameInput.focus(); valid = false; } else { $('#err_name').hidden = true; }
@@ -804,12 +833,15 @@ if (orderForm) {
     const rawBudget = (fBudgetInput && fBudgetInput.value.trim()) || fBudget.value || '';
     const budgetVal = rawBudget ? (rawBudget.toLowerCase().includes('dzd') || rawBudget.includes('د') ? rawBudget : `${rawBudget} ${L === 'ar' ? 'د.ج' : 'DZD'}`) : (L === 'ar' ? 'مرنة / للمناقشة' : 'Flexible / To discuss');
 
+    const rawTimeline = (fTimelineInput && fTimelineInput.value.trim()) || (fTimeline && fTimeline.value) || '';
+    const timelineVal = rawTimeline ? (rawTimeline.toLowerCase().includes('day') || rawTimeline.includes('يوم') || rawTimeline.includes('أيام') ? rawTimeline : `${rawTimeline} ${L === 'ar' ? 'أيام' : 'Days'}`) : (L === 'ar' ? 'مرنة / للمناقشة' : 'Flexible');
+
     const payload = {
       timestamp: new Date().toLocaleString(),
       name: nameVal,
       email: emailVal,
       phone: phoneInput.value.trim() || 'N/A',
-      timeline: timelineInput ? timelineInput.value : 'Flexible',
+      timeline: timelineVal,
       services: servicesVal,
       budget: budgetVal,
       details: detailsVal
@@ -840,7 +872,7 @@ if (orderForm) {
 
     orderForm.hidden = true;
     orderSuccess.hidden = false;
-    orderSummary.innerHTML = `<span><b>${L === 'ar' ? 'العميل:' : 'Client:'}</b> ${payload.name}</span> · <span><b>${L === 'ar' ? 'الخدمات:' : 'Services:'}</b> ${payload.services}</span> · <span><b>${L === 'ar' ? 'الميزانية:' : 'Budget:'}</b> ${payload.budget}</span>`;
+    orderSummary.innerHTML = `<span><b>${L === 'ar' ? 'العميل:' : 'Client:'}</b> ${payload.name}</span> · <span><b>${L === 'ar' ? 'الخدمات:' : 'Services:'}</b> ${payload.services}</span> · <span><b>${L === 'ar' ? 'الميزانية:' : 'Budget:'}</b> ${payload.budget}</span> · <span><b>${L === 'ar' ? 'المدة:' : 'Timeline:'}</b> ${payload.timeline}</span>`;
     orderSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
     submitBtn.disabled = false;
@@ -855,9 +887,12 @@ if (resetOrderBtn) {
     orderForm.reset();
     serviceChips.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
     budgetChips.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
+    if (timelineChips) timelineChips.querySelectorAll('.chip-btn').forEach(b => b.classList.remove('active'));
     fServices.value = '';
     fBudget.value = '';
     if (fBudgetInput) fBudgetInput.value = '';
+    if (fTimeline) fTimeline.value = '';
+    if (fTimelineInput) fTimelineInput.value = '';
     orderSuccess.hidden = true;
     orderForm.hidden = false;
     orderForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
