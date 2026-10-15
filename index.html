@@ -939,15 +939,43 @@ applyLang(false);
 route();
 initScrollReveal();
 
-/* ---------- interactive mouse-reactive dots canvas ---------- */
-(function initInteractiveDots() {
+/* ---------- interactive pixel effect canvas (no dots, no lines) ---------- */
+(function initInteractivePixelEffect() {
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const canvas = document.getElementById('dotCanvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let width = 0, height = 0, dpr = 1;
-  let dots = [];
-  const mouse = { x: -9999, y: -9999, radius: 155, active: false };
+
+  const CELL_SIZE = 24;
+  let cols = 0, rows = 0;
+  let grid = [];
+  let floatPixels = [];
+  const mouse = { x: -9999, y: -9999, active: false };
+  const waves = [];
+
+  let offCanvas = null;
+  let lastTheme = null;
+
+  function buildGridCache(isDark) {
+    if (!width || !height || cols === 0 || rows === 0) return;
+    offCanvas = document.createElement('canvas');
+    offCanvas.width = canvas.width;
+    offCanvas.height = canvas.height;
+    const offCtx = offCanvas.getContext('2d');
+    offCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    const gridStroke = isDark ? 'rgba(255, 255, 255, 0.028)' : 'rgba(21, 24, 26, 0.024)';
+    offCtx.strokeStyle = gridStroke;
+    offCtx.lineWidth = 1;
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        // Faint square pixel cell outline - distinctly square, never round
+        offCtx.strokeRect(c * CELL_SIZE + 1.5, r * CELL_SIZE + 1.5, CELL_SIZE - 3, CELL_SIZE - 3);
+      }
+    }
+  }
 
   function resize() {
     dpr = window.devicePixelRatio || 1;
@@ -958,22 +986,49 @@ initScrollReveal();
     canvas.style.width = width + 'px';
     canvas.style.height = height + 'px';
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    createDots();
-  }
 
-  function createDots() {
-    const targetCount = Math.min(95, Math.max(38, Math.floor((width * height) / 16000)));
-    dots = [];
-    for (let i = 0; i < targetCount; i++) {
-      dots.push({
+    cols = Math.ceil(width / CELL_SIZE);
+    rows = Math.ceil(height / CELL_SIZE);
+    grid = new Float32Array(cols * rows);
+
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
+      (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && document.documentElement.getAttribute('data-theme') !== 'light');
+    lastTheme = isDark;
+    buildGridCache(isDark);
+
+    // Floating cyber pixel blocks (crisp squares)
+    const floatCount = Math.min(48, Math.max(20, Math.floor((width * height) / 26000)));
+    floatPixels = [];
+    for (let i = 0; i < floatCount; i++) {
+      floatPixels.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.55,
-        vy: (Math.random() - 0.5) * 0.55,
-        radius: Math.random() * 1.5 + 1.2,
-        baseRadius: Math.random() * 1.5 + 1.2,
-        alpha: Math.random() * 0.3 + 0.2
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        size: Math.random() < 0.4 ? 8 : (Math.random() < 0.75 ? 14 : 20),
+        alpha: Math.random() * 0.22 + 0.12
       });
+    }
+  }
+
+  function activatePixelsNear(cx, cy, radius, boost = 0.95) {
+    if (cx < 0 || cy < 0 || cols === 0 || rows === 0) return;
+    const minCol = Math.max(0, Math.floor((cx - radius) / CELL_SIZE));
+    const maxCol = Math.min(cols - 1, Math.floor((cx + radius) / CELL_SIZE));
+    const minRow = Math.max(0, Math.floor((cy - radius) / CELL_SIZE));
+    const maxRow = Math.min(rows - 1, Math.floor((cy + radius) / CELL_SIZE));
+
+    for (let r = minRow; r <= maxRow; r++) {
+      for (let c = minCol; c <= maxCol; c++) {
+        const px = c * CELL_SIZE + CELL_SIZE / 2;
+        const py = r * CELL_SIZE + CELL_SIZE / 2;
+        const d = Math.hypot(px - cx, py - cy);
+        if (d < radius) {
+          const power = Math.pow(1 - d / radius, 1.3) * boost;
+          const idx = r * cols + c;
+          grid[idx] = Math.min(1, Math.max(grid[idx], power));
+        }
+      }
     }
   }
 
@@ -981,6 +1036,7 @@ initScrollReveal();
     mouse.x = e.clientX;
     mouse.y = e.clientY;
     mouse.active = true;
+    activatePixelsNear(mouse.x, mouse.y, 115, 0.95);
   }, { passive: true });
 
   window.addEventListener('mouseleave', () => {
@@ -994,6 +1050,7 @@ initScrollReveal();
       mouse.x = e.touches[0].clientX;
       mouse.y = e.touches[0].clientY;
       mouse.active = true;
+      activatePixelsNear(mouse.x, mouse.y, 115, 0.95);
     }
   }, { passive: true });
 
@@ -1003,16 +1060,16 @@ initScrollReveal();
     mouse.active = false;
   });
 
-  // Click ripple pulse
+  // Click pixel wave shockwave
   window.addEventListener('click', e => {
-    const cx = e.clientX, cy = e.clientY;
-    dots.forEach(p => {
-      const d = Math.hypot(p.x - cx, p.y - cy);
+    waves.push({ x: e.clientX, y: e.clientY, r: 0, maxR: 280, speed: 8.5 });
+    floatPixels.forEach(p => {
+      const d = Math.hypot(p.x - e.clientX, p.y - e.clientY);
       if (d < 180) {
+        const angle = Math.atan2(p.y - e.clientY, p.x - e.clientX);
         const force = (180 - d) / 180;
-        const angle = Math.atan2(p.y - cy, p.x - cx);
-        p.vx += Math.cos(angle) * force * 3.5;
-        p.vy += Math.sin(angle) * force * 3.5;
+        p.vx += Math.cos(angle) * force * 5.5;
+        p.vy += Math.sin(angle) * force * 5.5;
       }
     });
   });
@@ -1024,71 +1081,110 @@ initScrollReveal();
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
       (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && document.documentElement.getAttribute('data-theme') !== 'light');
 
-    const dotColor = isDark ? '230, 235, 245' : '30, 40, 60';
-    const accentColor = isDark ? '152, 162, 255' : '42, 56, 240';
+    if (isDark !== lastTheme) {
+      lastTheme = isDark;
+      buildGridCache(isDark);
+    }
 
-    for (let i = 0; i < dots.length; i++) {
-      const p = dots[i];
+    // 1. Draw subtle digital pixel grid background
+    if (offCanvas) {
+      ctx.drawImage(offCanvas, 0, 0, width, height);
+    }
 
-      // Mouse interactive deflection & connections
+    const pixelRgb = isDark ? '152, 162, 255' : '42, 56, 240';
+    const coreRgb = isDark ? '224, 231, 255' : '99, 102, 241';
+    const subRgb = isDark ? '230, 235, 245' : '21, 24, 26';
+
+    // 2. Propagate click ripple pixel waves
+    for (let w = waves.length - 1; w >= 0; w--) {
+      const wave = waves[w];
+      wave.r += wave.speed;
+      activatePixelsNear(wave.x, wave.y, wave.r + 24, 0.75);
+      if (wave.r > wave.maxR) waves.splice(w, 1);
+    }
+
+    // 3. Ambient digital matrix twinkles (random soft pixel blinks)
+    if (Math.random() < 0.12) {
+      const randIdx = Math.floor(Math.random() * (cols * rows));
+      if (grid[randIdx] < 0.05) {
+        grid[randIdx] = Math.random() * 0.28 + 0.12;
+      }
+    }
+
+    // 4. Render illuminated square pixels (pure squares with trail decay)
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const idx = r * cols + c;
+        let intensity = grid[idx];
+
+        if (intensity > 0.015) {
+          grid[idx] = intensity * 0.92; // smooth decay trail
+
+          const px = c * CELL_SIZE + 2;
+          const py = r * CELL_SIZE + 2;
+          const size = CELL_SIZE - 4;
+
+          // Main square pixel block
+          ctx.fillStyle = `rgba(${pixelRgb}, ${intensity * 0.52})`;
+          ctx.fillRect(px, py, size, size);
+
+          // Glowing bright inner square core for intense pixels
+          if (intensity > 0.55) {
+            const coreSize = Math.round(size * 0.45);
+            const cx = px + Math.round((size - coreSize) / 2);
+            const cy = py + Math.round((size - coreSize) / 2);
+            ctx.fillStyle = `rgba(${coreRgb}, ${(intensity - 0.5) * 0.85})`;
+            ctx.fillRect(cx, cy, coreSize, coreSize);
+          }
+        } else {
+          grid[idx] = 0;
+        }
+      }
+    }
+
+    // 5. Render floating cyber pixel blocks (no lines, crisp square geometry)
+    for (let i = 0; i < floatPixels.length; i++) {
+      const p = floatPixels[i];
+
       const dx = mouse.x - p.x;
       const dy = mouse.y - p.y;
       const dist = Math.hypot(dx, dy);
 
-      if (dist < mouse.radius) {
-        const force = (mouse.radius - dist) / mouse.radius;
+      if (dist < 135) {
+        const force = (135 - dist) / 135;
         const angle = Math.atan2(dy, dx);
-        p.x -= Math.cos(angle) * force * 2.2;
-        p.y -= Math.sin(angle) * force * 2.2;
-        p.radius = p.baseRadius * (1 + force * 1.3);
-
-        // Connect line from mouse to dot
-        ctx.beginPath();
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(mouse.x, mouse.y);
-        ctx.strokeStyle = `rgba(${accentColor}, ${(1 - dist / mouse.radius) * 0.45})`;
-        ctx.lineWidth = 0.75;
-        ctx.stroke();
-      } else {
-        p.radius += (p.baseRadius - p.radius) * 0.08;
+        p.x -= Math.cos(angle) * force * 3.0;
+        p.y -= Math.sin(angle) * force * 3.0;
       }
 
-      // Natural smooth movement & velocity damping
       p.x += p.vx;
       p.y += p.vy;
-      p.vx *= 0.992;
-      p.vy *= 0.992;
+      p.vx *= 0.985;
+      p.vy *= 0.985;
 
-      // Ensure minimum drift
-      if (Math.abs(p.vx) < 0.15) p.vx += (Math.random() - 0.5) * 0.1;
-      if (Math.abs(p.vy) < 0.15) p.vy += (Math.random() - 0.5) * 0.1;
+      if (Math.abs(p.vx) < 0.08) p.vx += (Math.random() - 0.5) * 0.12;
+      if (Math.abs(p.vy) < 0.08) p.vy += (Math.random() - 0.5) * 0.12;
 
-      // Wrap boundaries
-      if (p.x < -10) p.x = width + 10;
-      else if (p.x > width + 10) p.x = -10;
-      if (p.y < -10) p.y = height + 10;
-      else if (p.y > height + 10) p.y = -10;
+      if (p.x < -30) p.x = width + 30;
+      else if (p.x > width + 30) p.x = -30;
+      if (p.y < -30) p.y = height + 30;
+      else if (p.y > height + 30) p.y = -30;
 
-      // Draw particle dot
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fillStyle = dist < mouse.radius
-        ? `rgba(${accentColor}, ${Math.min(1, p.alpha + 0.4)})`
-        : `rgba(${dotColor}, ${p.alpha})`;
-      ctx.fill();
+      const isNear = dist < 135;
+      const alpha = isNear ? Math.min(0.85, p.alpha + 0.38) : p.alpha;
+      const col = isNear ? pixelRgb : subRgb;
 
-      // Connect with neighbor dots
-      for (let j = i + 1; j < dots.length; j++) {
-        const p2 = dots[j];
-        const nd = Math.hypot(p.x - p2.x, p.y - p2.y);
-        if (nd < 95) {
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `rgba(${dotColor}, ${(1 - nd / 95) * 0.14})`;
-          ctx.lineWidth = 0.55;
-          ctx.stroke();
-        }
+      const px = Math.round(p.x - p.size / 2);
+      const py = Math.round(p.y - p.size / 2);
+
+      // Draw floating square pixel
+      ctx.fillStyle = `rgba(${col}, ${alpha})`;
+      ctx.fillRect(px, py, p.size, p.size);
+
+      // Inner pixel block for larger floating pixels
+      if (p.size >= 14) {
+        ctx.fillStyle = `rgba(${pixelRgb}, ${alpha * 0.75})`;
+        ctx.fillRect(px + 3, py + 3, p.size - 6, p.size - 6);
       }
     }
 
