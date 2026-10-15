@@ -10,3 +10,8 @@ $RECYCLE.BIN/
 .idea/
 *.swp
 *.swo
+
+# Node / npm
+node_modules/
+npm-debug.log*
+

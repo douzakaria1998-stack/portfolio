@@ -1,0 +1,10 @@
+{
+  "name": "zakaria-dou-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Zakaria Dou - Visual identity & product designer portfolio",
+  "scripts": {
+    "dev": "npx serve -l 3000",
+    "start": "npx serve -l 3000"
+  }
+}
