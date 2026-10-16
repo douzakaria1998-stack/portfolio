@@ -9,7 +9,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" href="favicon.ico">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<meta name="theme-color" content="#f1f2ee" id="metaThemeColor">
+<meta name="theme-color" content="#ffffff" id="metaThemeColor">
 <script>
   (function(){
     try {
@@ -18,7 +18,7 @@
       document.documentElement.setAttribute('data-theme', d);
       if (d === 'dark') {
         var m = document.getElementById('metaThemeColor');
-        if (m) m.setAttribute('content', '#0f1211');
+        if (m) m.setAttribute('content', '#030208');
       }
     } catch(e) {}
   })();
@@ -29,24 +29,24 @@
 <style>
 /* Layout concept: a quiet type-led page. The one loud thing is a flush mosaic of ten brand-coloured tiles; each project opens as its own case page in the client's colours. */
 :root{
-  --bg:#f1f2ee; --surface:#fafaf7; --ink:#15181a; --muted:#596060; --line:#d5d9d1; --accent:#2a38f0; --on-accent:#ffffff;
+  --bg:#ffffff; --surface:#f8f9fa; --ink:#15181a; --muted:#596060; --line:#e6e8e2; --accent:#2a38f0; --on-accent:#ffffff;
   --font-display:'Familjen Grotesk','Helvetica Neue',Arial,sans-serif;
   --font-body:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
   --font-mono:'DM Mono',ui-monospace,Menlo,Consolas,monospace;
   --gap:10px; --max:1360px;
 }
 @media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){ --bg:#0f1211; --surface:#171b19; --ink:#eceee8; --muted:#959d98; --line:#272c2a; --accent:#98a2ff; --on-accent:#0f1211; color-scheme:dark }
+  :root:not([data-theme="light"]){ --bg:#030208; --surface:#0e1014; --ink:#eceee8; --muted:#959d98; --line:#1d2128; --accent:#98a2ff; --on-accent:#030208; color-scheme:dark }
 }
-:root[data-theme="dark"]{ --bg:#0f1211; --surface:#171b19; --ink:#eceee8; --muted:#959d98; --line:#272c2a; --accent:#98a2ff; --on-accent:#0f1211; color-scheme:dark }
-:root[data-theme="light"]{ --bg:#f1f2ee; --surface:#fafaf7; --ink:#15181a; --muted:#596060; --line:#d5d9d1; --accent:#2a38f0; --on-accent:#ffffff; color-scheme:light }
+:root[data-theme="dark"]{ --bg:#030208; --surface:#0e1014; --ink:#eceee8; --muted:#959d98; --line:#1d2128; --accent:#98a2ff; --on-accent:#030208; color-scheme:dark }
+:root[data-theme="light"]{ --bg:#ffffff; --surface:#f8f9fa; --ink:#15181a; --muted:#596060; --line:#e6e8e2; --accent:#2a38f0; --on-accent:#ffffff; color-scheme:light }
 
 /* Smooth theme transition */
 html.theme-transition,
 html.theme-transition *,
 html.theme-transition *::before,
 html.theme-transition *::after{
-  transition: background-color .3s ease, border-color .3s ease, color .3s ease, fill .3s ease, stroke .3s ease, box-shadow .3s ease !important;
+  transition: background-color .3s ease, border-color .3s ease, color .3s ease, fill .3s ease, stroke .3s ease, box-shadow .3s ease, filter .3s ease !important;
 }
 
 [hidden]{display:none!important}
@@ -58,6 +58,7 @@ button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 .in{max-width:var(--max);margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .mono{font-family:var(--font-mono);font-size:12.5px;letter-spacing:.06em;text-transform:uppercase}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 h1,h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.03em;line-height:1.02;margin:0;text-wrap:balance}
 
 /* header */
@@ -69,9 +70,56 @@ h1,h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.03em;l
 .nav a:hover{color:var(--ink)}
 
 /* hero */
-.hero{padding-block:clamp(40px,7vw,96px) clamp(28px,4vw,48px)}
+.hero{padding-block:clamp(32px,5.5vw,72px) clamp(24px,3.5vw,42px)}
 .hero h1{font-size:clamp(3.4rem,13vw,10.5rem);letter-spacing:-.055em;line-height:.9}
-.hero .role{margin-top:clamp(18px,2.4vw,30px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 48px;align-items:start}
+.hero-portrait-banner{
+  position:relative;
+  width:100%;
+  aspect-ratio:2752/1536;
+  margin-block:clamp(8px,1.5vw,18px) clamp(20px,2.8vw,36px);
+  background:transparent;
+  border:none;
+  border-radius:0;
+  box-shadow:none;
+}
+:root[data-theme="dark"] .hero-portrait-banner,
+:root:not([data-theme="light"]) .hero-portrait-banner{
+  box-shadow:none;
+  border:none;
+}
+.hero-banner-img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  pointer-events:none;
+  transition:opacity .4s ease;
+}
+.hero-banner-light{
+  opacity:1;
+  mix-blend-mode:multiply;
+}
+.hero-banner-dark{
+  opacity:0;
+  mix-blend-mode:screen;
+}
+:root[data-theme="dark"] .hero-banner-light,
+:root:not([data-theme="light"]) .hero-banner-light{
+  opacity:0;
+}
+:root[data-theme="dark"] .hero-banner-dark,
+:root:not([data-theme="light"]) .hero-banner-dark{
+  opacity:1;
+}
+:root[data-theme="light"] .hero-banner-light{
+  opacity:1;
+}
+:root[data-theme="light"] .hero-banner-dark{
+  opacity:0;
+}
+.hero .role{margin-top:clamp(16px,2.2vw,28px);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px 48px;align-items:start}
 .hero h2{font-size:clamp(1.5rem,3.2vw,2.5rem);letter-spacing:-.025em;line-height:1.08;font-weight:500}
 .hero p{margin:0;color:var(--muted);font-size:clamp(1.02rem,1.5vw,1.22rem);max-width:38ch;line-height:1.5}
 .cta{margin-top:22px;display:flex;flex-wrap:wrap;gap:10px}
@@ -87,6 +135,110 @@ h1,h2,h3{font-family:var(--font-display);font-weight:600;letter-spacing:-.03em;l
 .tile .lab{position:absolute;left:12px;right:12px;bottom:10px;display:flex;justify-content:space-between;gap:8px;font-family:var(--font-mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;opacity:.92}
 .tile:hover img,.tile:focus-visible img{transform:scale(1.06)}
 .tile:focus-visible{outline-offset:-4px}
+
+/* logo ticker / infinite marquee */
+.logo-ticker-section{
+  position:relative;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding-block:clamp(16px,2.2vw,28px);
+  background:transparent;
+  overflow:hidden;
+  margin-top:clamp(10px,2vw,24px);
+}
+.logo-ticker-wrap{
+  position:relative;
+  overflow:hidden;
+  width:100%;
+  display:flex;
+  align-items:center;
+  mask-image:linear-gradient(to right,transparent 0%,black 6%,black 94%,transparent 100%);
+  -webkit-mask-image:linear-gradient(to right,transparent 0%,black 6%,black 94%,transparent 100%);
+}
+.logo-ticker-track{
+  display:flex;
+  align-items:center;
+  width:max-content;
+  direction:ltr;
+  will-change:transform;
+  animation:logoTickerMove 38s linear infinite;
+}
+.logo-ticker-wrap:hover .logo-ticker-track,
+.logo-ticker-wrap:focus-within .logo-ticker-track{
+  animation-play-state:paused;
+}
+.logo-ticker-group{
+  display:flex;
+  align-items:center;
+  flex-shrink:0;
+}
+.logo-ticker-item{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  height:clamp(56px,6.5vw,76px);
+  padding-inline:clamp(24px,3.8vw,52px);
+  flex-shrink:0;
+  text-decoration:none;
+  cursor:pointer;
+}
+.logo-ticker-img{
+  display:block;
+  height:clamp(32px,3.8vw,42px);
+  width:auto;
+  max-width:clamp(120px,14vw,170px);
+  object-fit:contain;
+  filter:brightness(0);
+  opacity:.82;
+  transition:opacity .25s ease, transform .28s cubic-bezier(0.16,1,0.3,1), filter .3s ease;
+  pointer-events:none;
+}
+.logo-ticker-img.logo-rifah{
+  height:clamp(46px,5.2vw,58px);
+}
+.logo-ticker-img.logo-excellence-sante{
+  height:clamp(36px,4.2vw,46px);
+}
+.logo-ticker-img.logo-yasmine,
+.logo-ticker-img.logo-tourkya{
+  max-width:clamp(145px,18vw,215px);
+}
+.logo-ticker-item:hover .logo-ticker-img,
+.logo-ticker-item:focus-visible .logo-ticker-img{
+  opacity:1;
+  transform:scale(1.12);
+}
+.logo-ticker-item:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:4px;
+  border-radius:6px;
+}
+
+/* Light / Dark mode dynamic color */
+:root[data-theme="light"] .logo-ticker-img{
+  filter:brightness(0);
+  opacity:.82;
+}
+:root[data-theme="dark"] .logo-ticker-img,
+:root:not([data-theme="light"]) .logo-ticker-img{
+  filter:brightness(0) invert(1);
+  opacity:.88;
+}
+
+@keyframes logoTickerMove{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .logo-ticker-track{
+    animation:none;
+    overflow-x:auto;
+    width:100%;
+    justify-content:center;
+    flex-wrap:wrap;
+  }
+}
 
 /* sections */
 .sec{padding-block:clamp(64px,9vw,128px)}
@@ -504,7 +656,11 @@ main,#project,footer,.lb{position:relative;z-index:1}
 <main id="home">
   <section class="hero in" id="top">
     <div class="hero-status"><span class="status-dot"></span><span data-t="status_avail">Available for new projects</span></div>
-    <h1>Zakaria Dou</h1>
+    <div class="hero-portrait-banner" aria-label="Hey, I'm Zakaria">
+      <h1 class="sr-only">Hey, I'm Zakaria Dou — Visual Identity &amp; Product Designer</h1>
+      <img class="hero-banner-img hero-banner-light" src="img/zakaria-profile-light.jpg" alt="Hey, I'm Zakaria" width="2752" height="1536" fetchpriority="high">
+      <img class="hero-banner-img hero-banner-dark" src="img/zakaria-profile-dark.jpg" alt="Hey, I'm Zakaria" width="2752" height="1536" fetchpriority="high">
+    </div>
     <div class="role">
       <h2 data-t="role">Visual Identity &amp; Product Designer.</h2>
       <div>
@@ -513,7 +669,11 @@ main,#project,footer,.lb{position:relative;z-index:1}
       </div>
     </div>
   </section>
-  <div class="in"><div class="mosaic reveal" id="mosaic"></div></div>
+  <section class="logo-ticker-section reveal" id="logoTickerSection" aria-label="Brand Logos">
+    <div class="logo-ticker-wrap" id="logoTickerWrap">
+      <div class="logo-ticker-track" id="logoTickerTrack"></div>
+    </div>
+  </section>
 
   <section class="sec in reveal" id="work">
     <div class="sec-head"><h2 data-t="work_h">Selected work</h2><span class="mono" data-t="work_n">10 brand identities</span></div>
@@ -854,7 +1014,7 @@ main,#project,footer,.lb{position:relative;z-index:1}
 </div>
 
 <script>
-const PROJECTS = [{"n": 1, "slug": "yasmine", "name": "Yasmine", "sector": "Refined bedding & home fragrance", "desc": "A soft, elegant identity for a brand of fine bedding and home fragrance. The logo is a woven, geometric Arabic-inspired motif, and the same motif becomes a pattern that wraps boxes, bedding and bottles, all in a calm dusty-rose palette.", "services": ["Logo & pattern", "Stationery & packaging", "Product mockups", "Social media"], "bg": "#f4e9e5", "ink": "#4a2f28", "accent": "#b8735f", "tbg": "#b8735f", "tfg": "#ffffff", "lead": "img/yasmine/box.jpg", "pos": "50% 50%", "cover": "img/yasmine/cover.png", "cw": 800, "ch": 779, "sections": [{"title": "Identity & print", "items": [{"src": "img/yasmine/logo.jpg", "alt": "Yasmine logo with the woven geometric motif", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/yasmine/cards.jpg", "alt": "Business cards with the pattern border", "w": 1600, "h": 1067, "nw": 2000, "nh": 1334}, {"src": "img/yasmine/thanks.jpg", "alt": "Thank-you card", "w": 1600, "h": 1131, "nw": 2000, "nh": 1414}, {"src": "img/yasmine/catalog.jpg", "alt": "Printed catalog and colour card", "w": 1600, "h": 1245, "nw": 2000, "nh": 1556}]}, {"title": "Products & packaging", "items": [{"src": "img/yasmine/box.jpg", "alt": "Gift box with the pattern band", "w": 1600, "h": 1200, "nw": 2000, "nh": 1500}, {"src": "img/yasmine/candle.jpg", "alt": "Candle and bottle in linen pouches", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/yasmine/pillow.jpg", "alt": "Pillows with the monogram", "w": 1600, "h": 900, "nw": 2000, "nh": 1125}, {"src": "img/yasmine/bed.jpg", "alt": "Bedding with the pattern trim", "w": 1600, "h": 1371, "nw": 2000, "nh": 1714}]}, {"title": "Social media", "items": [{"src": "img/yasmine/perfume.jpg", "alt": "Perfume range post", "w": 1000, "h": 1000, "nw": 1000, "nh": 1000}, {"src": "img/yasmine/ramadan.jpg", "alt": "Ramadan greeting post", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/yasmine/who.jpg", "alt": "Brand introduction post", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}], "ar": {"sector": "مفروشات راقية وعطور منزلية", "desc": "هوية ناعمة وأنيقة لعلامة مفروشات فاخرة وعطور منزلية. الشعار زخرفة هندسية منسوجة مستوحاة من الفن العربي، وتتحول الزخرفة نفسها إلى نمط يلفّ العلب والمفارش والزجاجات، بلوحة ألوان هادئة من الوردي الترابي.", "services": ["شعار ونمط", "قرطاسية وتغليف", "نماذج المنتجات", "وسائل التواصل الاجتماعي"], "sections": ["الهوية والمطبوعات", "المنتجات والتغليف", "وسائل التواصل الاجتماعي"], "alts": [["شعار ياسمين بالزخرفة الهندسية المنسوجة", "بطاقات عمل بإطار من النمط", "بطاقة شكر", "كتالوج مطبوع وبطاقة ألوان"], ["علبة هدايا بشريط النمط", "شمعة وزجاجة في أكياس كتّان", "وسائد عليها الشعار", "مفرش سرير بحاشية من النمط"], ["منشور مجموعة العطور", "منشور تهنئة رمضان", "منشور تعريفي بالعلامة"]]}}, {"n": 2, "slug": "rifah", "name": "Rifah", "sector": "Pastry & coffee shop", "desc": "A warm identity for a shop serving traditional and modern sweets. The logo is the word Rifah in flowing Arabic calligraphy, and the word repeats into a ribbon pattern used on boxes, cups, bags, aprons and cards, in a terracotta and peach palette.", "services": ["Logo & wordmark", "Pattern", "Packaging & stationery", "Apparel & props"], "bg": "#fee6ce", "ink": "#5a2a1c", "accent": "#d9532f", "tbg": "#d9532f", "tfg": "#fee6ce", "lead": "img/rifah/set.jpg", "pos": "50% 50%", "cover": "img/rifah/cover.png", "cw": 239, "ch": 800, "sections": [{"title": "Logo & pattern", "items": [{"src": "img/rifah/logo.jpg", "alt": "Rifah logo in Arabic calligraphy", "w": 750, "h": 1220, "nw": 750, "nh": 1220}, {"src": "img/rifah/band1.jpg", "alt": "Ribbon pattern made from the word Rifah", "w": 1600, "h": 128, "nw": 2250, "nh": 180}, {"src": "img/rifah/band2.jpg", "alt": "Ribbon pattern, second colourway", "w": 1600, "h": 114, "nw": 2250, "nh": 160}]}, {"title": "Packaging & stationery", "items": [{"src": "img/rifah/pack.jpg", "alt": "Cups, boxes and cards", "w": 1280, "h": 1175, "nw": 1280, "nh": 1175}, {"src": "img/rifah/set.jpg", "alt": "Bags, apron and stationery set", "w": 1600, "h": 1070, "nw": 2250, "nh": 1505}, {"src": "img/rifah/scene.jpg", "alt": "Card and ribbon on a table setting", "w": 1600, "h": 578, "nw": 2250, "nh": 813}]}], "ar": {"sector": "محل حلويات ومقهى", "desc": "هوية دافئة لمحل يقدّم الحلويات التقليدية والعصرية. الشعار هو كلمة «رفاه» بخط عربي متدفق، وتتكرر الكلمة لتشكّل نمط شريط يُستخدم على العلب والأكواب والأكياس والمآزر والبطاقات، بلوحة ألوان من التراكوتا والخوخي.", "services": ["شعار وكلمة مكتوبة", "نمط", "تغليف وقرطاسية", "ملابس وإكسسوارات"], "sections": ["الشعار والنمط", "التغليف والقرطاسية"], "alts": [["شعار رفاه بالخط العربي", "نمط شريط من كلمة رفاه", "نمط الشريط بتدرج لوني ثانٍ"], ["أكواب وعلب وبطاقات", "أكياس ومئزر ومجموعة قرطاسية", "بطاقة وشريط على طاولة تقديم"]]}}, {"n": 3, "slug": "excellence-sante", "name": "Excellence Santé", "sector": "Medical equipment supplier", "desc": "A calm and trustworthy identity for a company that sells medical equipment. A heart-and-drop symbol in layered blues and teal is applied to stationery, uniforms, a delivery van, signage and an exhibition booth.", "services": ["Logo", "Stationery", "Uniforms & vehicle", "Signage & exhibition"], "bg": "#edf4fa", "ink": "#0f2a43", "accent": "#0b4f8f", "tbg": "#e3f0fa", "tfg": "#0f2a43", "lead": "img/excellence-sante/wall.jpg", "pos": "50% 50%", "cover": "img/excellence-sante/cover.png", "cw": 800, "ch": 440, "sections": [{"title": "Logo & palette", "items": [{"src": "img/excellence-sante/logo.jpg", "alt": "Excellence Santé logo", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/excellence-sante/palette.jpg", "alt": "Colour palette", "w": 280, "h": 477, "nw": 280, "nh": 477}]}, {"title": "Stationery", "items": [{"src": "img/excellence-sante/stationery.jpg", "alt": "Letterhead, envelopes and cards", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}, {"title": "Uniforms, bags & caps", "items": [{"src": "img/excellence-sante/uniform.jpg", "alt": "Scrubs with the logo", "w": 991, "h": 1387, "nw": 991, "nh": 1387}, {"src": "img/excellence-sante/caps.jpg", "alt": "Caps with the symbol", "w": 747, "h": 996, "nw": 747, "nh": 996}, {"src": "img/excellence-sante/bag.jpg", "alt": "Carrier bag", "w": 1600, "h": 1066, "nw": 2000, "nh": 1333}]}, {"title": "Vehicle, signage & exhibition", "items": [{"src": "img/excellence-sante/van.jpg", "alt": "Delivery van livery", "w": 1600, "h": 910, "nw": 2000, "nh": 1137}, {"src": "img/excellence-sante/wall.jpg", "alt": "Reception wall sign", "w": 1600, "h": 1066, "nw": 2000, "nh": 1333}, {"src": "img/excellence-sante/booth.jpg", "alt": "Exhibition booth", "w": 1600, "h": 1018, "nw": 2000, "nh": 1273}]}], "ar": {"sector": "مورّد معدات طبية", "desc": "هوية هادئة وجديرة بالثقة لشركة تبيع المعدات الطبية. رمز يجمع القلب والقطرة بدرجات متراكبة من الأزرق والفيروزي، يُطبَّق على القرطاسية والزي الموحد وسيارة التوصيل واللافتات وجناح المعرض.", "services": ["شعار", "قرطاسية", "زي موحد ومركبة", "لافتات ومعارض"], "sections": ["الشعار والألوان", "القرطاسية", "الزي والأكياس والقبعات", "المركبة واللافتات والمعرض"], "alts": [["شعار إكسلانس سانتي", "لوحة الألوان"], ["ورق رسمي وأظرف وبطاقات"], ["زي طبي عليه الشعار", "قبعات عليها الرمز", "كيس حمل"], ["تصميم سيارة التوصيل", "لافتة جدار الاستقبال", "جناح المعرض"]]}}, {"n": 4, "slug": "qraya", "name": "Qraya", "sector": "Online learning platform for BAC students", "desc": "A friendly, energetic identity for an online learning platform. A rounded wordmark, expressive emoji faces and a playful pattern make a bright orange and blue system, shown here on logo versions and on the social media posts of the BAC campaign.", "services": ["Logo", "Brand identity", "Social media", "Platform UI"], "bg": "#f2f2f2", "ink": "#1a2b3f", "accent": "#ff6200", "tbg": "#ff6200", "tfg": "#ffffff", "lead": "img/qraya/s3.jpg", "pos": "50% 40%", "cover": "img/qraya/cover.png", "cw": 800, "ch": 267, "sections": [{"title": "Logo", "items": [{"src": "img/qraya/logo_orange.jpg", "alt": "Qraya wordmark", "w": 1389, "h": 543, "nw": 1389, "nh": 543}, {"src": "img/qraya/logos.jpg", "alt": "Logo colour versions", "w": 1571, "h": 1600, "nw": 2160, "nh": 2200}]}, {"title": "Brand identity", "items": [{"src": "img/qraya/brandblk0.jpg", "alt": "Emoji faces", "w": 571, "h": 335, "nw": 571, "nh": 335}, {"src": "img/qraya/brandblk1.jpg", "alt": "Colour palette", "w": 571, "h": 440, "nw": 571, "nh": 440}, {"src": "img/qraya/brandblk2.jpg", "alt": "Supporting colours", "w": 571, "h": 245, "nw": 571, "nh": 245}, {"src": "img/qraya/brandblk3.jpg", "alt": "Brand pattern", "w": 571, "h": 272, "nw": 571, "nh": 272}]}, {"title": "Social media", "items": [{"src": "img/qraya/s1.jpg", "alt": "BAC campaign post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}, {"src": "img/qraya/s2.jpg", "alt": "Teachers announcement post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}, {"src": "img/qraya/s3.jpg", "alt": "Online classes post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}, {"src": "img/qraya/s4.jpg", "alt": "Platform introduction post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}, {"src": "img/qraya/s5.jpg", "alt": "BAC 2025 post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}, {"src": "img/qraya/s6.jpg", "alt": "Subscription post", "w": 1500, "h": 1500, "nw": 1500, "nh": 1500}]}], "ar": {"sector": "منصة تعليم إلكتروني لطلبة البكالوريا", "desc": "هوية ودودة ومفعمة بالحيوية لمنصة تعليم إلكتروني. كلمة بحروف مستديرة، ووجوه تعبيرية، ونمط مرح، تشكّل نظامًا برتقاليًا وأزرق ساطعًا، يظهر هنا في نسخ الشعار ومنشورات حملة البكالوريا على وسائل التواصل.", "services": ["شعار", "هوية العلامة", "وسائل التواصل الاجتماعي", "واجهة المنصة"], "sections": ["الشعار", "هوية العلامة", "وسائل التواصل الاجتماعي"], "alts": [["كلمة Qraya", "نسخ ألوان الشعار"], ["وجوه تعبيرية", "لوحة الألوان", "ألوان مساندة", "نمط العلامة"], ["منشور حملة البكالوريا", "منشور أساتذة المواد", "منشور الدروس عن بُعد", "منشور تقديم المنصة", "منشور بكالوريا 2025", "منشور الاشتراك"]]}}, {"n": 5, "slug": "brunch", "name": "Brunch", "sector": "Fast-casual food, “Eat Well, Live Well”", "desc": "A retro script logo with a long, flowing tail gives Brunch an easy, friendly voice. Deep green, terracotta and cream are applied across takeaway packaging, bags, cups, wraps and business cards, with the oversized lettering used as a pattern.", "services": ["Logo", "Packaging", "Stationery", "Brand pattern"], "bg": "#f5f0e1", "ink": "#0b3f38", "accent": "#e8572a", "tbg": "#087266", "tfg": "#f5f0e1", "lead": "img/brunch/bag.jpg", "pos": "50% 50%", "cover": "img/brunch/cover.png", "cw": 800, "ch": 370, "sections": [{"title": "Logo", "items": [{"src": "img/brunch/logo.jpg", "alt": "Brunch script logo", "w": 1600, "h": 1600, "nw": 2400, "nh": 2400}]}, {"title": "Packaging & stationery", "items": [{"src": "img/brunch/tray.jpg", "alt": "Foil tray with the lettering pattern", "w": 1600, "h": 1068, "nw": 2400, "nh": 1602}, {"src": "img/brunch/bag.jpg", "alt": "Takeaway bag, cups and boxes", "w": 1600, "h": 1067, "nw": 2400, "nh": 1600}, {"src": "img/brunch/bowl.jpg", "alt": "Bowl with a printed wrap", "w": 1600, "h": 1065, "nw": 2400, "nh": 1597}, {"src": "img/brunch/wraps.jpg", "alt": "Container wraps", "w": 1600, "h": 1067, "nw": 2400, "nh": 1600}, {"src": "img/brunch/sandwich.jpg", "alt": "Sandwich wrap and business card", "w": 1067, "h": 1600, "nw": 1601, "nh": 2400}, {"src": "img/brunch/set.jpg", "alt": "Paper bag, drink and business card", "w": 1067, "h": 1600, "nw": 1601, "nh": 2400}]}], "ar": {"sector": "وجبات سريعة راقية، «كُل جيدًا، عِش جيدًا»", "desc": "شعار بخط مائل قديم الطراز وذيل طويل منساب يمنح Brunch صوتًا مريحًا وودودًا. الأخضر الداكن والتراكوتا والكريمي تُطبَّق على عبوات الطلبات الخارجية والأكياس والأكواب واللفافات وبطاقات العمل، مع استخدام الحروف الكبيرة نمطًا للعلامة.", "services": ["شعار", "تغليف", "قرطاسية", "نمط العلامة"], "sections": ["الشعار", "التغليف والقرطاسية"], "alts": [["شعار Brunch بخط مائل"], ["صينية ألمنيوم بنمط الحروف", "كيس طلبات خارجية وأكواب وعلب", "وعاء بلفافة مطبوعة", "لفافات للعلب", "شطيرة وبطاقة عمل", "كيس ورقي ومشروب وبطاقة عمل"]]}}, {"n": 6, "slug": "oxygen-gym", "name": "Oxygen Gym", "sector": "Gym & fitness brand", "desc": "A bold, athletic identity built on a strong OG monogram that joins an oxygen symbol with a flexed arm. Fresh green on deep black-green is applied to a lightning pattern, bags, bottles and apparel, with slogans such as “Breathe Oxygen, Feel Alive”.", "services": ["Logo & monogram", "Colorways", "Pattern", "Merchandise"], "bg": "#fff7e4", "ink": "#12302a", "accent": "#6fa83a", "tbg": "#fff7e4", "tfg": "#12302a", "lead": "img/oxygen-gym/p38.jpg", "pos": "30% 50%", "cover": "img/oxygen-gym/cover.png", "cw": 800, "ch": 345, "sections": [{"title": "Logo & colorways", "items": [{"src": "img/oxygen-gym/logo_green.jpg", "alt": "Oxygen Gym logo in green", "w": 1360, "h": 660, "nw": 1360, "nh": 660}, {"src": "img/oxygen-gym/p36.jpg", "alt": "Logo colorways", "w": 1600, "h": 900, "nw": 1920, "nh": 1080}]}, {"title": "Pattern", "items": [{"src": "img/oxygen-gym/p37.jpg", "alt": "Lightning pattern and colour names", "w": 1600, "h": 892, "nw": 1920, "nh": 1070}]}, {"title": "Merchandise", "items": [{"src": "img/oxygen-gym/p38.jpg", "alt": "Jacket and boxing glove", "w": 1600, "h": 900, "nw": 1920, "nh": 1080}, {"src": "img/oxygen-gym/p39.jpg", "alt": "Gym bags", "w": 1600, "h": 900, "nw": 1920, "nh": 1080}, {"src": "img/oxygen-gym/p40.jpg", "alt": "Kettlebell and training wear", "w": 1600, "h": 900, "nw": 1920, "nh": 1080}, {"src": "img/oxygen-gym/p41.jpg", "alt": "Bottle, pouch and tank top", "w": 1600, "h": 900, "nw": 1920, "nh": 1080}]}], "ar": {"sector": "علامة صالة رياضية ولياقة", "desc": "هوية رياضية جريئة مبنية على مونوغرام OG قوي يجمع رمز الأكسجين وذراعًا مفتولة. أخضر منعش على أخضر داكن يميل للأسود يُطبَّق على نمط البرق والحقائب والقوارير والملابس، مع شعارات مثل «تنفّس الأكسجين، اشعر بالحياة».", "services": ["شعار ومونوغرام", "تدرجات لونية", "نمط", "منتجات ترويجية"], "sections": ["الشعار والتدرجات اللونية", "النمط", "المنتجات الترويجية"], "alts": [["شعار Oxygen Gym بالأخضر", "تدرجات ألوان الشعار"], ["نمط البرق وأسماء الألوان"], ["سترة وقفاز ملاكمة", "حقائب رياضية", "كرة الأثقال وملابس التدريب", "قارورة وكيس وقميص رياضي"]]}}, {"n": 7, "slug": "big-box-food", "name": "Big Box Food", "sector": "Playful fast-food brand", "desc": "A loud and cheerful identity for a fast-food brand. A cap-wearing box character gives it a face, backed by a red, yellow and blue palette and a pattern of small, expressive characters. Mockups on the following pages are concept presentations.", "services": ["Logo & mascot", "Color palette & pattern", "Menu & business cards", "Storefront & stickers"], "bg": "#fedc00", "ink": "#282457", "accent": "#ff002c", "tbg": "#fedc00", "tfg": "#282457", "lead": "img/big-box-food/store.jpg", "pos": "50% 50%", "cover": "img/big-box-food/cover.png", "cw": 800, "ch": 298, "sections": [{"title": "Logo & mascot", "items": [{"src": "img/big-box-food/logo_v.jpg", "alt": "Big Box Food stacked logo", "w": 1251, "h": 1083, "nw": 1251, "nh": 1083}, {"src": "img/big-box-food/logo_h.jpg", "alt": "Big Box Food horizontal logo", "w": 1600, "h": 628, "nw": 1800, "nh": 706}]}, {"title": "Menu & business cards (concept)", "items": [{"src": "img/big-box-food/menu.jpg", "alt": "Menu concept", "w": 1600, "h": 1118, "nw": 2000, "nh": 1398}, {"src": "img/big-box-food/cards.jpg", "alt": "Business card concept", "w": 1600, "h": 1194, "nw": 2000, "nh": 1493}]}, {"title": "Storefront & stickers (concept)", "items": [{"src": "img/big-box-food/store.jpg", "alt": "Storefront concept", "w": 1200, "h": 896, "nw": 1200, "nh": 896}, {"src": "img/big-box-food/stickers.jpg", "alt": "Sticker set concept", "w": 1195, "h": 896, "nw": 1195, "nh": 896}]}], "ar": {"sector": "علامة وجبات سريعة مرحة", "desc": "هوية صاخبة ومبهجة لعلامة وجبات سريعة. شخصية علبة ترتدي قبعة تمنحها وجهًا، مع لوحة ألوان حمراء وصفراء وزرقاء ونمط من شخصيات صغيرة معبّرة. النماذج في الأسفل عروض تصورية.", "services": ["شعار وشخصية", "لوحة الألوان والنمط", "قائمة طعام وبطاقات عمل", "واجهة متجر وملصقات"], "sections": ["الشعار والشخصية", "قائمة الطعام وبطاقات العمل (تصور)", "واجهة المتجر والملصقات (تصور)"], "alts": [["شعار Big Box Food العمودي", "شعار Big Box Food الأفقي"], ["تصور قائمة الطعام", "تصور بطاقة العمل"], ["تصور واجهة المتجر", "تصور مجموعة الملصقات"]]}}, {"n": 8, "slug": "cafe-paresta", "name": "Café Parésta", "sector": "Cakes, crêpes & drinks", "desc": "A refined new identity for an existing café, serving since 2018. A monogram of interlocking P and C in warm amber sits on deep green, in stacked, horizontal and badge versions, applied to the grand-opening post, menu cover and business card.", "services": ["Logo versions", "Opening announcement", "Menu cover", "Business card"], "bg": "#033f3f", "ink": "#f7ebd5", "accent": "#f9a93b", "tbg": "#033f3f", "tfg": "#f7ebd5", "lead": "img/cafe-paresta/card1.jpg", "pos": "50% 50%", "cover": "img/cafe-paresta/cover.png", "cw": 800, "ch": 276, "sections": [{"title": "Logo versions", "items": [{"src": "img/cafe-paresta/stacked.jpg", "alt": "Stacked logo", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/cafe-paresta/vert.jpg", "alt": "Vertical logo", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/cafe-paresta/badge.jpg", "alt": "Badge logo", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/cafe-paresta/stamp.jpg", "alt": "Stamp logo", "w": 1599, "h": 1600, "nw": 1999, "nh": 2000}, {"src": "img/cafe-paresta/horiz.jpg", "alt": "Horizontal logo", "w": 1600, "h": 638, "nw": 2000, "nh": 797}]}, {"title": "Announcement & menu", "items": [{"src": "img/cafe-paresta/opening.jpg", "alt": "Grand-opening announcement", "w": 1280, "h": 1600, "nw": 1600, "nh": 2000}, {"src": "img/cafe-paresta/menu.jpg", "alt": "Menu cover", "w": 1131, "h": 1600, "nw": 1414, "nh": 2000}]}, {"title": "Business card", "items": [{"src": "img/cafe-paresta/card1.jpg", "alt": "Business card front", "w": 1600, "h": 978, "nw": 2000, "nh": 1222}, {"src": "img/cafe-paresta/card2.jpg", "alt": "Business card back", "w": 1600, "h": 978, "nw": 2000, "nh": 1222}]}], "ar": {"sector": "كعك وكريب ومشروبات", "desc": "هوية جديدة مصقولة لمقهى قائم منذ 2018. مونوغرام من حرفي P وC متشابكين بلون كهرماني دافئ على أخضر داكن، بنسخ عمودية وأفقية وشارة، يُطبَّق على منشور الافتتاح وغلاف القائمة وبطاقة العمل.", "services": ["نسخ الشعار", "إعلان الافتتاح", "غلاف القائمة", "بطاقة عمل"], "sections": ["نسخ الشعار", "الإعلان والقائمة", "بطاقة العمل"], "alts": [["الشعار المكدّس", "الشعار العمودي", "شعار الشارة", "شعار الختم", "الشعار الأفقي"], ["إعلان الافتتاح الكبير", "غلاف القائمة"], ["الوجه الأمامي لبطاقة العمل", "الوجه الخلفي لبطاقة العمل"]]}}, {"n": 9, "slug": "di3aya", "name": "Di3aya", "sector": "Social media & advertising agency", "desc": "An identity for an advertising agency, with a bilingual Latin and Arabic wordmark and a compact monogram. Navy and fresh teal, shaped around speech bubbles, run through business cards, a roll-up banner, lanyard, keychains and the agency’s social posts.", "services": ["Logo", "Color system", "Print & merchandise", "Social media"], "bg": "#04153a", "ink": "#eaf2f2", "accent": "#5dd8c4", "tbg": "#04153a", "tfg": "#eaf2f2", "lead": "img/di3aya/banner.jpg", "pos": "50% 45%", "cover": "img/di3aya/cover.png", "cw": 800, "ch": 330, "sections": [{"title": "Logo & colors", "items": [{"src": "img/di3aya/logo_h.jpg", "alt": "Horizontal logo", "w": 1600, "h": 822, "nw": 2000, "nh": 1028}, {"src": "img/di3aya/logo_v.jpg", "alt": "Vertical logo", "w": 958, "h": 1600, "nw": 1197, "nh": 2000}, {"src": "img/di3aya/palette.jpg", "alt": "Colour palette in speech-bubble shapes", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}, {"title": "Print & merchandise", "items": [{"src": "img/di3aya/cards.jpg", "alt": "Business cards", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/di3aya/banner.jpg", "alt": "Roll-up banners", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/di3aya/lanyard.jpg", "alt": "Lanyard and badge holder", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/di3aya/keys.jpg", "alt": "Keychains", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}, {"title": "Social media", "items": [{"src": "img/di3aya/soon.jpg", "alt": "Coming soon post", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/di3aya/eid.jpg", "alt": "Eid greeting post", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/di3aya/ramadan.jpg", "alt": "Ramadan greeting post", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}], "ar": {"sector": "وكالة وسائل تواصل اجتماعي وإعلان", "desc": "هوية لوكالة إعلانات، بكلمة مزدوجة باللاتينية والعربية ومونوغرام مضغوط. الكحلي والفيروزي المنعش، بأشكال مستوحاة من فقاعات الحوار، يمتدان عبر بطاقات العمل ولافتة الرول أب والشريط الحامل والميداليات ومنشورات الوكالة الاجتماعية.", "services": ["شعار", "نظام الألوان", "مطبوعات ومنتجات ترويجية", "وسائل التواصل الاجتماعي"], "sections": ["الشعار والألوان", "المطبوعات والمنتجات الترويجية", "وسائل التواصل الاجتماعي"], "alts": [["الشعار الأفقي", "الشعار العمودي", "لوحة الألوان بأشكال فقاعات الحوار"], ["بطاقات العمل", "لافتات رول أب", "شريط حامل وحافظة بطاقة", "ميداليات مفاتيح"], ["منشور «قريبًا»", "منشور تهنئة بالعيد", "منشور تهنئة برمضان"]]}}, {"n": 10, "slug": "tourkya", "name": "Tourkya", "sector": "Shoes & fashion store", "desc": "A confident, fashion-led identity with a thin-stroke TK monogram in deep red and cream. It appears on signage, the storefront, shopping bags and shoe boxes, along with a bilingual Latin and Arabic business card.", "services": ["Logo & monogram", "Signage & storefront", "Packaging", "Business card"], "bg": "#f9f5ec", "ink": "#3a0a05", "accent": "#a61204", "tbg": "#a61204", "tfg": "#f9f5ec", "lead": "img/tourkya/store.jpg", "pos": "50% 50%", "cover": "img/tourkya/cover.png", "cw": 800, "ch": 662, "sections": [{"title": "Logo & monogram", "items": [{"src": "img/tourkya/logo.jpg", "alt": "Tourkya logo", "w": 1599, "h": 1600, "nw": 1999, "nh": 2000}, {"src": "img/tourkya/tk_cream.jpg", "alt": "TK monogram, red on cream", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}, {"src": "img/tourkya/tk_red.jpg", "alt": "TK monogram, cream on red", "w": 1600, "h": 1600, "nw": 2000, "nh": 2000}]}, {"title": "Signage & storefront", "items": [{"src": "img/tourkya/fascia.jpg", "alt": "Fascia sign", "w": 1600, "h": 1066, "nw": 2000, "nh": 1333}, {"src": "img/tourkya/sign.jpg", "alt": "Projecting sign", "w": 1600, "h": 1066, "nw": 2000, "nh": 1333}, {"src": "img/tourkya/store.jpg", "alt": "Storefront", "w": 1600, "h": 1145, "nw": 2000, "nh": 1431}]}, {"title": "Packaging", "items": [{"src": "img/tourkya/bag.jpg", "alt": "Shopping bag", "w": 1066, "h": 1600, "nw": 1333, "nh": 2000}, {"src": "img/tourkya/box.jpg", "alt": "Shoe box", "w": 1600, "h": 1113, "nw": 2000, "nh": 1391}]}, {"title": "Business card", "items": [{"src": "img/tourkya/card.jpg", "alt": "Bilingual business card", "w": 1064, "h": 650, "nw": 1064, "nh": 650}]}], "ar": {"sector": "متجر أحذية وأزياء", "desc": "هوية أنيقة تتجه نحو الموضة، بمونوغرام TK بخطوط رفيعة بالأحمر الداكن والكريمي. يظهر على اللافتات وواجهة المتجر وأكياس التسوق وعلب الأحذية، إضافةً إلى بطاقة عمل مزدوجة باللاتينية والعربية.", "services": ["شعار ومونوغرام", "لافتات وواجهة متجر", "تغليف", "بطاقة عمل"], "sections": ["الشعار والمونوغرام", "اللافتات وواجهة المتجر", "التغليف", "بطاقة العمل"], "alts": [["شعار Tourkya", "مونوغرام TK أحمر على كريمي", "مونوغرام TK كريمي على أحمر"], ["لافتة الواجهة", "لافتة بارزة", "واجهة المتجر"], ["كيس تسوق", "علبة حذاء"], ["بطاقة عمل ثنائية اللغة"]]}}];
+const PROJECTS = [{"n":1,"slug":"yasmine","name":"Yasmine","sector":"Refined bedding & home fragrance","desc":"A soft, elegant identity for a brand of fine bedding and home fragrance. The logo is a woven, geometric Arabic-inspired motif, and the same motif becomes a pattern that wraps boxes, bedding and bottles, all in a calm dusty-rose palette.","services":["Logo & pattern","Stationery & packaging","Product mockups","Social media"],"bg":"#f4e9e5","ink":"#4a2f28","accent":"#b8735f","tbg":"#b8735f","tfg":"#ffffff","lead":"img/yasmine/box.jpg","pos":"50% 50%","cover":"img/yasmine/cover.png","cw":976,"ch":192,"sections":[{"title":"Identity & print","items":[{"src":"img/yasmine/logo.jpg","alt":"Yasmine logo with the woven geometric motif","w":1600,"h":1600,"nw":2000,"nh":2000},{"src":"img/yasmine/cards.jpg","alt":"Business cards with the pattern border","w":1600,"h":1067,"nw":2000,"nh":1334},{"src":"img/yasmine/thanks.jpg","alt":"Thank-you card","w":1600,"h":1131,"nw":2000,"nh":1414},{"src":"img/yasmine/catalog.jpg","alt":"Printed catalog and colour card","w":1600,"h":1245,"nw":2000,"nh":1556}]},{"title":"Products & packaging","items":[{"src":"img/yasmine/box.jpg","alt":"Gift box with the pattern band","w":1600,"h":1200,"nw":2000,"nh":1500},{"src":"img/yasmine/candle.jpg","alt":"Candle and bottle in linen pouches","w":1600,"h":1600,"nw":2000,"nh":2000},{"src":"img/yasmine/pillow.jpg","alt":"Pillows with the monogram","w":1600,"h":900,"nw":2000,"nh":1125},{"src":"img/yasmine/bed.jpg","alt":"Bedding with the pattern trim","w":1600,"h":1371,"nw":2000,"nh":1714}]},{"title":"Social media","items":[{"src":"img/yasmine/perfume.jpg","alt":"Perfume range post","w":1000,"h":1000,"nw":1000,"nh":1000},{"src":"img/yasmine/ramadan.jpg","alt":"Ramadan greeting post","w":1600,"h":1600,"nw":2000,"nh":2000},{"src":"img/yasmine/who.jpg","alt":"Brand introduction post","w":1600,"h":1600,"nw":2000,"nh":2000}]}],"ar":{"sector":"مفروشات راقية وعطور منزلية","desc":"هوية ناعمة وأنيقة لعلامة مفروشات فاخرة وعطور منزلية. الشعار زخرفة هندسية منسوجة مستوحاة من الفن العربي، وتتحول الزخرفة نفسها إلى نمط يلفّ العلب والمفارش والزجاجات، بلوحة ألوان هادئة من الوردي الترابي.","services":["شعار ونمط","قرطاسية وتغليف","نماذج المنتجات","وسائل التواصل الاجتماعي"],"sections":["الهوية والمطبوعات","المنتجات والتغليف","وسائل التواصل الاجتماعي"],"alts":[["شعار ياسمين بالزخرفة الهندسية المنسوجة","بطاقات عمل بإطار من النمط","بطاقة شكر","كتالوج مطبوع وبطاقة ألوان"],["علبة هدايا بشريط النمط","شمعة وزجاجة في أكياس كتّان","وسائد عليها الشعار","مفرش سرير بحاشية من النمط"],["منشور مجموعة العطور","منشور تهنئة رمضان","منشور تعريفي بالعلامة"]]},"tickerCover":"img/yasmine/cover.png","detailCover":"img/yasmine/detail-cover.png","dw":618,"dh":699},{"n":2,"slug":"rifah","name":"Rifah","sector":"Pastry & coffee shop","desc":"A warm identity for a shop serving traditional and modern sweets. The logo is the word Rifah in flowing Arabic calligraphy, and the word repeats into a ribbon pattern used on boxes, cups, bags, aprons and cards, in a terracotta and peach palette.","services":["Logo & wordmark","Pattern","Packaging & stationery","Apparel & props"],"bg":"#fee6ce","ink":"#5a2a1c","accent":"#d9532f","tbg":"#d9532f","tfg":"#fee6ce","lead":"img/rifah/set.jpg","pos":"50% 50%","cover":"img/rifah/cover.png","cw":239,"ch":800,"sections":[{"title":"Logo & pattern","items":[{"src":"img/rifah/logo.jpg","alt":"Rifah logo in Arabic calligraphy","w":750,"h":1220,"nw":750,"nh":1220},{"src":"img/rifah/band1.jpg","alt":"Ribbon pattern made from the word Rifah","w":1600,"h":128,"nw":2250,"nh":180},{"src":"img/rifah/band2.jpg","alt":"Ribbon pattern, second colourway","w":1600,"h":114,"nw":2250,"nh":160}]},{"title":"Packaging & stationery","items":[{"src":"img/rifah/pack.jpg","alt":"Cups, boxes and cards","w":1280,"h":1175,"nw":1280,"nh":1175},{"src":"img/rifah/set.jpg","alt":"Bags, apron and stationery set","w":1600,"h":1070,"nw":2250,"nh":1505},{"src":"img/rifah/scene.jpg","alt":"Card and ribbon on a table setting","w":1600,"h":578,"nw":2250,"nh":813}]}],"ar":{"sector":"محل حلويات ومقهى","desc":"هوية دافئة لمحل يقدّم الحلويات التقليدية والعصرية. الشعار هو كلمة «رفاه» بخط عربي متدفق، وتتكرر الكلمة لتشكّل نمط شريط يُستخدم على العلب والأكواب والأكياس والمآزر والبطاقات، بلوحة ألوان من التراكوتا والخوخي.","services":["شعار وكلمة مكتوبة","نمط","تغليف وقرطاسية","ملابس وإكسسوارات"],"sections":["الشعار والنمط","التغليف والقرطاسية"],"alts":[["شعار رفاه بالخط العربي","نمط شريط من كلمة رفاه","نمط الشريط بتدرج لوني ثانٍ"],["أكواب وعلب وبطاقات","أكياس ومئزر ومجموعة قرطاسية","بطاقة وشريط على طاولة تقديم"]]}},{"n":3,"slug":"excellence-sante","name":"Excellence Santé","sector":"Medical equipment supplier","desc":"A calm and trustworthy identity for a company that sells medical equipment. A heart-and-drop symbol in layered blues and teal is applied to stationery, uniforms, a delivery van, signage and an exhibition booth.","services":["Logo","Stationery","Uniforms & vehicle","Signage & exhibition"],"bg":"#edf4fa","ink":"#0f2a43","accent":"#0b4f8f","tbg":"#e3f0fa","tfg":"#0f2a43","lead":"img/excellence-sante/wall.jpg","pos":"50% 50%","cover":"img/excellence-sante/cover.png","cw":1000,"ch":556,"sections":[{"title":"Logo & palette","items":[{"src":"img/excellence-sante/logo.jpg","alt":"Excellence Santé logo","w":1600,"h":1600,"nw":2000,"nh":2000},{"src":"img/excellence-sante/palette.jpg","alt":"Colour palette","w":280,"h":477,"nw":280,"nh":477}]},{"title":"Stationery","items":[{"src":"img/excellence-sante/stationery.jpg","alt":"Letterhead, envelopes and cards","w":1600,"h":1600,"nw":2000,"nh":2000}]},{"title":"Uniforms, bags & caps","items":[{"src":"img/excellence-sante/uniform.jpg","alt":"Scrubs with the logo","w":991,"h":1387,"nw":991,"nh":1387},{"src":"img/excellence-sante/caps.jpg","alt":"Caps with the symbol","w":747,"h":996,"nw":747,"nh":996},{"src":"img/excellence-sante/bag.jpg","alt":"Carrier bag","w":1600,"h":1066,"nw":2000,"nh":1333}]},{"title":"Vehicle, signage & exhibition","items":[{"src":"img/excellence-sante/van.jpg","alt":"Delivery van livery","w":1600,"h":910,"nw":2000,"nh":1137},{"src":"img/excellence-sante/wall.jpg","alt":"Reception wall sign","w":1600,"h":1066,"nw":2000,"nh":1333},{"src":"img/excellence-sante/booth.jpg","alt":"Exhibition booth","w":1600,"h":1018,"nw":2000,"nh":1273}]}],"ar":{"sector":"مورّد معدات طبية","desc":"هوية هادئة وجديرة بالثقة لشركة تبيع المعدات الطبية. رمز يجمع القلب والقطرة بدرجات متراكبة من الأزرق والفيروزي، يُطبَّق على القرطاسية والزي الموحد وسيارة التوصيل واللافتات وجناح المعرض.","services":["شعار","قرطاسية","زي موحد ومركبة","لافتات ومعارض"],"sections":["الشعار والألوان","القرطاسية","الزي والأكياس والقبعات","المركبة واللافتات والمعرض"],"alts":[["شعار إكسلانس سانتي","لوحة الألوان"],["ورق رسمي وأظرف وبطاقات"],["زي طبي عليه الشعار","قبعات عليها الرمز","كيس حمل"],["تصميم سيارة التوصيل","لافتة جدار الاستقبال","جناح المعرض"]]},"tickerCover":"img/excellence-sante/cover.png","detailCover":"img/excellence-sante/detail-cover.png","dw":800,"dh":440},{"n":4,"slug":"qraya","name":"Qraya","sector":"Online learning platform for BAC students","desc":"A friendly, energetic identity for an online learning platform. A rounded wordmark, expressive emoji faces and a playful pattern make a bright orange and blue system, shown here on logo versions and on the social media posts of the BAC campaign.","services":["Logo","Brand identity","Social media","Platform UI"],"bg":"#f2f2f2","ink":"#1a2b3f","accent":"#ff6200","tbg":"#ff6200","tfg":"#ffffff","lead":"img/qraya/s3.jpg","pos":"50% 40%","cover":"img/qraya/cover.png","cw":800,"ch":267,"sections":[{"title":"Logo","items":[{"src":"img/qraya/logo_orange.jpg","alt":"Qraya wordmark","w":1389,"h":543,"nw":1389,"nh":543},{"src":"img/qraya/logos.jpg","alt":"Logo colour versions","w":1571,"h":1600,"nw":2160,"nh":2200}]},{"title":"Brand identity","items":[{"src":"img/qraya/brandblk0.jpg","alt":"Emoji faces","w":571,"h":335,"nw":571,"nh":335},{"src":"img/qraya/brandblk1.jpg","alt":"Colour palette","w":571,"h":440,"nw":571,"nh":440},{"src":"img/qraya/brandblk2.jpg","alt":"Supporting colours","w":571,"h":245,"nw":571,"nh":245},{"src":"img/qraya/brandblk3.jpg","alt":"Brand pattern","w":571,"h":272,"nw":571,"nh":272}]},{"title":"Social media","items":[{"src":"img/qraya/s1.jpg","alt":"BAC campaign post","w":1500,"h":1500,"nw":1500,"nh":1500},{"src":"img/qraya/s2.jpg","alt":"Teachers announcement post","w":1500,"h":1500,"nw":1500,"nh":1500},{"src":"img/qraya/s3.jpg","alt":"Online classes post","w":1500,"h":1500,"nw":1500,"nh":1500},{"src":"img/qraya/s4.jpg","alt":"Platform introduction post","w":1500,"h":1500,"nw":1500,"nh":1500},{"src":"img/qraya/s5.jpg","alt":"BAC 2025 post","w":1500,"h":1500,"nw":1500,"nh":1500},{"src":"img/qraya/s6.jpg","alt":"Subscription post","w":1500,"h":1500,"nw":1500,"nh":1500}]}],"ar":{"sector":"منصة تعليم إلكتروني لطلبة البكالوريا","desc":"هوية ودودة ومفعمة بالحيوية لمنصة تعليم إلكتروني. كلمة بحروف مستديرة، ووجوه تعبيرية، ونمط مرح، تشكّل نظامًا برتقاليًا وأزرق ساطعًا، يظهر هنا في نسخ الشعار ومنشورات حملة البكالوريا على وسائل التواصل.","services":["شعار","هوية العلامة","وسائل التواصل الاجتماعي","واجهة المنصة"],"sections":["الشعار","هوية العلامة","وسائل التواصل الاجتماعي"],"alts":[["كلمة Qraya","نسخ ألوان الشعار"],["وجوه تعبيرية","لوحة الألوان","ألوان مساندة","نمط العلامة"],["منشور حملة البكالوريا","منشور أساتذة المواد","منشور الدروس عن بُعد","منشور تقديم المنصة","منشور بكالوريا 2025","منشور الاشتراك"]]}},{"n":5,"slug":"brunch","name":"Brunch","sector":"Fast-casual food, “Eat Well, Live Well”","desc":"A retro script logo with a long, flowing tail gives Brunch an easy, friendly voice. Deep green, terracotta and cream are applied across takeaway packaging, bags, cups, wraps and business cards, with the oversized lettering used as a pattern.","services":["Logo","Packaging","Stationery","Brand pattern"],"bg":"#f5f0e1","ink":"#0b3f38","accent":"#e8572a","tbg":"#087266","tfg":"#f5f0e1","lead":"img/brunch/bag.jpg","pos":"50% 50%","cover":"img/brunch/cover.png","cw":800,"ch":370,"sections":[{"title":"Logo","items":[{"src":"img/brunch/logo.jpg","alt":"Brunch script logo","w":1600,"h":1600,"nw":2400,"nh":2400}]},{"title":"Packaging & stationery","items":[{"src":"img/brunch/tray.jpg","alt":"Foil tray with the lettering pattern","w":1600,"h":1068,"nw":2400,"nh":1602},{"src":"img/brunch/bag.jpg","alt":"Takeaway bag, cups and boxes","w":1600,"h":1067,"nw":2400,"nh":1600},{"src":"img/brunch/bowl.jpg","alt":"Bowl with a printed wrap","w":1600,"h":1065,"nw":2400,"nh":1597},{"src":"img/brunch/wraps.jpg","alt":"Container wraps","w":1600,"h":1067,"nw":2400,"nh":1600},{"src":"img/brunch/sandwich.jpg","alt":"Sandwich wrap and business card","w":1067,"h":1600,"nw":1601,"nh":2400},{"src":"img/brunch/set.jpg","alt":"Paper bag, drink and business card","w":1067,"h":1600,"nw":1601,"nh":2400}]}],"ar":{"sector":"وجبات سريعة راقية، «كُل جيدًا، عِش جيدًا»","desc":"شعار بخط مائل قديم الطراز وذيل طويل منساب يمنح Brunch صوتًا مريحًا وودودًا. الأخضر الداكن والتراكوتا والكريمي تُطبَّق على عبوات الطلبات الخارجية والأكياس والأكواب واللفافات وبطاقات العمل، مع استخدام الحروف الكبيرة نمطًا للعلامة.","services":["شعار","تغليف","قرطاسية","نمط العلامة"],"sections":["الشعار","التغليف والقرطاسية"],"alts":[["شعار Brunch بخط مائل"],["صينية ألمنيوم بنمط الحروف","كيس طلبات خارجية وأكواب وعلب","وعاء بلفافة مطبوعة","لفافات للعلب","شطيرة وبطاقة عمل","كيس ورقي ومشروب وبطاقة عمل"]]}},{"n":6,"slug":"oxygen-gym","name":"Oxygen Gym","sector":"Gym & fitness brand","desc":"A bold, athletic identity built on a strong OG monogram that joins an oxygen symbol with a flexed arm. Fresh green on deep black-green is applied to a lightning pattern, bags, bottles and apparel, with slogans such as “Breathe Oxygen, Feel Alive”.","services":["Logo & monogram","Colorways","Pattern","Merchandise"],"bg":"#fff7e4","ink":"#12302a","accent":"#6fa83a","tbg":"#fff7e4","tfg":"#12302a","lead":"img/oxygen-gym/p38.jpg","pos":"30% 50%","cover":"img/oxygen-gym/cover.png","cw":800,"ch":345,"sections":[{"title":"Logo & colorways","items":[{"src":"img/oxygen-gym/logo_green.jpg","alt":"Oxygen Gym logo in green","w":1360,"h":660,"nw":1360,"nh":660},{"src":"img/oxygen-gym/p36.jpg","alt":"Logo colorways","w":1600,"h":900,"nw":1920,"nh":1080}]},{"title":"Pattern","items":[{"src":"img/oxygen-gym/p37.jpg","alt":"Lightning pattern and colour names","w":1600,"h":892,"nw":1920,"nh":1070}]},{"title":"Merchandise","items":[{"src":"img/oxygen-gym/p38.jpg","alt":"Jacket and boxing glove","w":1600,"h":900,"nw":1920,"nh":1080},{"src":"img/oxygen-gym/p39.jpg","alt":"Gym bags","w":1600,"h":900,"nw":1920,"nh":1080},{"src":"img/oxygen-gym/p40.jpg","alt":"Kettlebell and training wear","w":1600,"h":900,"nw":1920,"nh":1080},{"src":"img/oxygen-gym/p41.jpg","alt":"Bottle, pouch and tank top","w":1600,"h":900,"nw":1920,"nh":1080}]}],"ar":{"sector":"علامة صالة رياضية ولياقة","desc":"هوية رياضية جريئة مبنية على مونوغرام OG قوي يجمع رمز الأكسجين وذراعًا مفتولة. أخضر منعش على أخضر داكن يميل للأسود يُطبَّق على نمط البرق والحقائب والقوارير والملابس، مع شعارات مثل «تنفّس الأكسجين، اشعر بالحياة».","services":["شعار ومونوغرام","تدرجات لونية","نمط","منتجات ترويجية"],"sections":["الشعار والتدرجات اللونية","النمط","المنتجات الترويجية"],"alts":[["شعار Oxygen Gym بالأخضر","تدرجات ألوان الشعار"],["نمط البرق وأسماء الألوان"],["سترة وقفاز ملاكمة","حقائب رياضية","كرة الأثقال وملابس التدريب","قارورة وكيس وقميص رياضي"]]}},{"n":7,"slug":"big-box-food","name":"Big Box Food","sector":"Playful fast-food brand","desc":"A loud and cheerful identity for a fast-food brand. A cap-wearing box character gives it a face, backed by a red, yellow and blue palette and a pattern of small, expressive characters. Mockups on the following pages are concept presentations.","services":["Logo & mascot","Color palette & pattern","Menu & business cards","Storefront & stickers"],"bg":"#ffffff","ink":"#282457","accent":"#ff002c","tbg":"#fedc00","tfg":"#282457","lead":"img/big-box-food/store.jpg","pos":"50% 50%","cover":"img/big-box-food/cover.png","cw":1000,"ch":380,"sections":[{"title":"Logo & mascot","items":[{"src":"img/big-box-food/logo_v.jpg","alt":"Big Box Food stacked logo","w":1251,"h":1083,"nw":1251,"nh":1083},{"src":"img/big-box-food/logo_h.jpg","alt":"Big Box Food horizontal logo","w":1600,"h":628,"nw":1800,"nh":706}]},{"title":"Menu & business cards (concept)","items":[{"src":"img/big-box-food/menu.jpg","alt":"Menu concept","w":1600,"h":1118,"nw":2000,"nh":1398},{"src":"img/big-box-food/cards.jpg","alt":"Business card concept","w":1600,"h":1194,"nw":2000,"nh":1493}]},{"title":"Storefront & stickers (concept)","items":[{"src":"img/big-box-food/store.jpg","alt":"Storefront concept","w":1200,"h":896,"nw":1200,"nh":896},{"src":"img/big-box-food/stickers.jpg","alt":"Sticker set concept","w":1195,"h":896,"nw":1195,"nh":896}]}],"ar":{"sector":"علامة وجبات سريعة مرحة","desc":"هوية صاخبة ومبهجة لعلامة وجبات سريعة. شخصية علبة ترتدي قبعة تمنحها وجهًا، مع لوحة ألوان حمراء وصفراء وزرقاء ونمط من شخصيات صغيرة معبّرة. النماذج في الأسفل عروض تصورية.","services":["شعار وشخصية","لوحة الألوان والنمط","قائمة طعام وبطاقات عمل","واجهة متجر وملصقات"],"sections":["الشعار والشخصية","قائمة الطعام وبطاقات العمل (تصور)","واجهة المتجر والملصقات (تصور)"],"alts":[["شعار Big Box Food العمودي","شعار Big Box Food الأفقي"],["تصور قائمة الطعام","تصور بطاقة العمل"],["تصور واجهة المتجر","تصور مجموعة الملصقات"]]},"tickerCover":"img/big-box-food/cover.png","detailCover":"img/big-box-food/detail-cover.png","dw":800,"dh":298,"colors":["#ff002c","#fedc00","#282457"],"ptBg":"#ffffff","cols":["#fedc00","#ff002c","#282457"]},{"n":8,"slug":"cafe-paresta","name":"Café Parésta","sector":"Cakes, crêpes & drinks","desc":"A refined new identity for an existing café, serving since 2018. A monogram of interlocking P and C in warm amber sits on deep green, in stacked, horizontal and badge versions, applied to the grand-opening post, menu cover and business card.","services":["Logo versions","Opening announcement","Menu cover","Business card"],"bg":"#033f3f","ink":"#f7ebd5","accent":"#f9a93b","tbg":"#033f3f","tfg":"#f7ebd5","lead":"img/cafe-paresta/card1.jpg","pos":"50% 50%","cover":"img/cafe-paresta/cover.png","cw":800,"ch":276,"sections":[{"title":"Logo versions","items":[{"src":"img/cafe-paresta/stacked.jpg","alt":"Stacked logo","w":1600,"h":1600,"nw":2000,"nh":2000},{"src":"img/cafe-paresta/vert.jpg","alt":"Vertical logo","w":1600,"h":1600,"nw":2000,"nh":2000},{"src":"img/cafe-paresta/badge.jpg","alt":"Badge logo","w":1600,"h":1600,"nw":2000,"nh":2000},{"src":"img/cafe-paresta/stamp.jpg","alt":"Stamp logo","w":1599,"h":1600,"nw":1999,"nh":2000},{"src":"img/cafe-paresta/horiz.jpg","alt":"Horizontal logo","w":1600,"h":638,"nw":2000,"nh":797}]},{"title":"Announcement & menu","items":[{"src":"img/cafe-paresta/opening.jpg","alt":"Grand-opening announcement","w":1280,"h":1600,"nw":1600,"nh":2000},{"src":"img/cafe-paresta/menu.jpg","alt":"Menu cover","w":1131,"h":1600,"nw":1414,"nh":2000}]},{"title":"Business card","items":[{"src":"img/cafe-paresta/card1.jpg","alt":"Business card front","w":1600,"h":978,"nw":2000,"nh":1222},{"src":"img/cafe-paresta/card2.jpg","alt":"Business card back","w":1600,"h":978,"nw":2000,"nh":1222}]}],"ar":{"sector":"كعك وكريب ومشروبات","desc":"هوية جديدة مصقولة لمقهى قائم منذ 2018. مونوغرام من حرفي P وC متشابكين بلون كهرماني دافئ على أخضر داكن، بنسخ عمودية وأفقية وشارة، يُطبَّق على منشور الافتتاح وغلاف القائمة وبطاقة العمل.","services":["نسخ الشعار","إعلان الافتتاح","غلاف القائمة","بطاقة عمل"],"sections":["نسخ الشعار","الإعلان والقائمة","بطاقة العمل"],"alts":[["الشعار المكدّس","الشعار العمودي","شعار الشارة","شعار الختم","الشعار الأفقي"],["إعلان الافتتاح الكبير","غلاف القائمة"],["الوجه الأمامي لبطاقة العمل","الوجه الخلفي لبطاقة العمل"]]}},{"n":9,"slug":"di3aya","name":"Di3aya","sector":"Social media & advertising agency","desc":"An identity for an advertising agency, with a bilingual Latin and Arabic wordmark and a compact monogram. Navy and fresh teal, shaped around speech bubbles, run through business cards, a roll-up banner, lanyard, keychains and the agency’s social posts.","services":["Logo","Color system","Print & merchandise","Social media"],"bg":"#04153a","ink":"#eaf2f2","accent":"#5dd8c4","tbg":"#04153a","tfg":"#eaf2f2","lead":"img/di3aya/banner.jpg","pos":"50% 45%","cover":"img/di3aya/cover.png","cw":800,"ch":330,"sections":[{"title":"Logo & colors","items":[{"src":"img/di3aya/logo_h.jpg","alt":"Horizontal logo","w":1600,"h":822,"nw":2000,"nh":1028},{"src":"img/di3aya/logo_v.jpg","alt":"Vertical logo","w":958,"h":1600,"nw":1197,"nh":2000},{"src":"img/di3aya/palette.jpg","alt":"Colour palette in speech-bubble shapes","w":1600,"h":1600,"nw":2000,"nh":2000}]},{"title":"Print & merchandise","items":[{"src":"img/di3aya/cards.jpg","alt":"Business cards","w":1600,"h":1600,"nw":2000,"nh":2000},{"src":"img/di3aya/banner.jpg","alt":"Roll-up banners","w":1600,"h":1600,"nw":2000,"nh":2000},{"src":"img/di3aya/lanyard.jpg","alt":"Lanyard and badge holder","w":1600,"h":1600,"nw":2000,"nh":2000},{"src":"img/di3aya/keys.jpg","alt":"Keychains","w":1600,"h":1600,"nw":2000,"nh":2000}]},{"title":"Social media","items":[{"src":"img/di3aya/soon.jpg","alt":"Coming soon post","w":1600,"h":1600,"nw":2000,"nh":2000},{"src":"img/di3aya/eid.jpg","alt":"Eid greeting post","w":1600,"h":1600,"nw":2000,"nh":2000},{"src":"img/di3aya/ramadan.jpg","alt":"Ramadan greeting post","w":1600,"h":1600,"nw":2000,"nh":2000}]}],"ar":{"sector":"وكالة وسائل تواصل اجتماعي وإعلان","desc":"هوية لوكالة إعلانات، بكلمة مزدوجة باللاتينية والعربية ومونوغرام مضغوط. الكحلي والفيروزي المنعش، بأشكال مستوحاة من فقاعات الحوار، يمتدان عبر بطاقات العمل ولافتة الرول أب والشريط الحامل والميداليات ومنشورات الوكالة الاجتماعية.","services":["شعار","نظام الألوان","مطبوعات ومنتجات ترويجية","وسائل التواصل الاجتماعي"],"sections":["الشعار والألوان","المطبوعات والمنتجات الترويجية","وسائل التواصل الاجتماعي"],"alts":[["الشعار الأفقي","الشعار العمودي","لوحة الألوان بأشكال فقاعات الحوار"],["بطاقات العمل","لافتات رول أب","شريط حامل وحافظة بطاقة","ميداليات مفاتيح"],["منشور «قريبًا»","منشور تهنئة بالعيد","منشور تهنئة برمضان"]]}},{"n":10,"slug":"tourkya","name":"Tourkya","sector":"Shoes & fashion store","desc":"A confident, fashion-led identity with a thin-stroke TK monogram in deep red and cream. It appears on signage, the storefront, shopping bags and shoe boxes, along with a bilingual Latin and Arabic business card.","services":["Logo & monogram","Signage & storefront","Packaging","Business card"],"bg":"#f9f5ec","ink":"#3a0a05","accent":"#a61204","tbg":"#a61204","tfg":"#f9f5ec","lead":"img/tourkya/store.jpg","pos":"50% 50%","cover":"img/tourkya/cover.png","cw":912,"ch":209,"sections":[{"title":"Logo & monogram","items":[{"src":"img/tourkya/logo.jpg","alt":"Tourkya logo","w":1599,"h":1600,"nw":1999,"nh":2000},{"src":"img/tourkya/tk_cream.jpg","alt":"TK monogram, red on cream","w":1600,"h":1600,"nw":2000,"nh":2000},{"src":"img/tourkya/tk_red.jpg","alt":"TK monogram, cream on red","w":1600,"h":1600,"nw":2000,"nh":2000}]},{"title":"Signage & storefront","items":[{"src":"img/tourkya/fascia.jpg","alt":"Fascia sign","w":1600,"h":1066,"nw":2000,"nh":1333},{"src":"img/tourkya/sign.jpg","alt":"Projecting sign","w":1600,"h":1066,"nw":2000,"nh":1333},{"src":"img/tourkya/store.jpg","alt":"Storefront","w":1600,"h":1145,"nw":2000,"nh":1431}]},{"title":"Packaging","items":[{"src":"img/tourkya/bag.jpg","alt":"Shopping bag","w":1066,"h":1600,"nw":1333,"nh":2000},{"src":"img/tourkya/box.jpg","alt":"Shoe box","w":1600,"h":1113,"nw":2000,"nh":1391}]},{"title":"Business card","items":[{"src":"img/tourkya/card.jpg","alt":"Bilingual business card","w":1064,"h":650,"nw":1064,"nh":650}]}],"ar":{"sector":"متجر أحذية وأزياء","desc":"هوية أنيقة تتجه نحو الموضة، بمونوغرام TK بخطوط رفيعة بالأحمر الداكن والكريمي. يظهر على اللافتات وواجهة المتجر وأكياس التسوق وعلب الأحذية، إضافةً إلى بطاقة عمل مزدوجة باللاتينية والعربية.","services":["شعار ومونوغرام","لافتات وواجهة متجر","تغليف","بطاقة عمل"],"sections":["الشعار والمونوغرام","اللافتات وواجهة المتجر","التغليف","بطاقة العمل"],"alts":[["شعار Tourkya","مونوغرام TK أحمر على كريمي","مونوغرام TK كريمي على أحمر"],["لافتة الواجهة","لافتة بارزة","واجهة المتجر"],["كيس تسوق","علبة حذاء"],["بطاقة عمل ثنائية اللغة"]]},"tickerCover":"img/tourkya/cover.png","detailCover":"img/tourkya/detail-cover.png","dw":434,"dh":636}];
 const SERVICES_DATA = [
   {
     id: "branding",
@@ -1418,12 +1578,26 @@ const loc = p => L === 'ar' ? p.ar : { sector: p.sector, desc: p.desc, services:
 
 /* ---------- home ---------- */
 function renderHome() {
-  $('#mosaic').setAttribute('aria-label', UI[L].tiles);
-  $('#mosaic').innerHTML = PROJECTS.map(p => `
-  <a class="tile" href="#${p.slug}" data-open="${p.slug}" style="background:${p.tbg};--tfg:${p.tfg}" aria-label="${p.name}, ${loc(p).sector}">
-    <img src="${p.cover}" width="${p.cw}" height="${p.ch}" alt="">
-    <span class="lab"><span>${pad(p.n)}</span><span>${p.name}</span></span>
-  </a>`).join('');
+  const ticker = $('#logoTickerTrack');
+  if (ticker) {
+    const makeGroup = (isAriaHidden = false) => `
+      <div class="logo-ticker-group" ${isAriaHidden ? 'aria-hidden="true"' : ''}>
+        ${PROJECTS.map(p => `
+          <a class="logo-ticker-item" href="#${p.slug}" data-open="${p.slug}" aria-label="${p.name}, ${loc(p).sector}" title="${p.name} — ${loc(p).sector}">
+            <img class="logo-ticker-img logo-${p.slug}" src="${p.tickerCover || p.cover}" width="${p.cw}" height="${p.ch}" alt="${p.name}" loading="eager">
+          </a>`).join('')}
+      </div>`;
+    ticker.innerHTML = makeGroup(false) + makeGroup(true) + makeGroup(true) + makeGroup(true);
+  }
+  const mosaic = $('#mosaic');
+  if (mosaic) {
+    mosaic.setAttribute('aria-label', UI[L].tiles);
+    mosaic.innerHTML = PROJECTS.map(p => `
+    <a class="tile" href="#${p.slug}" data-open="${p.slug}" style="background:${p.tbg};--tfg:${p.tfg}" aria-label="${p.name}, ${loc(p).sector}">
+      <img src="${p.detailCover || p.cover}" width="${p.dw || p.cw}" height="${p.dh || p.ch}" alt="">
+      <span class="lab"><span>${pad(p.n)}</span><span>${p.name}</span></span>
+    </a>`).join('');
+  }
   $('#cards').innerHTML = PROJECTS.map(p => { const l = loc(p); return `
   <a class="card" href="#${p.slug}" data-open="${p.slug}" style="--c:${p.bg}">
     <div class="ph"><img src="${p.lead}" alt="" loading="lazy" style="object-position:${p.pos}"></div>
@@ -1696,10 +1870,10 @@ function openProject(slug, push = true) {
         <p class="desc">${p.desc}</p>
         <dl>
           <div><dt class="mono">${U.made}</dt><dd>${p.services.map(s => `<span class="chip">${s}</span>`).join('')}</dd></div>
-          <div><dt class="mono">${U.cols}</dt><dd>${[p.bg, p.accent, p.ink].map(c => `<span class="sw" style="--sc:${c}"><i></i><bdi>${c}</bdi></span>`).join('')}</dd></div>
+          <div><dt class="mono">${U.cols}</dt><dd>${(p.cols || p.colors || [p.bg, p.accent, p.ink]).map(c => `<span class="sw" style="--sc:${c}"><i></i><bdi>${c}</bdi></span>`).join('')}</dd></div>
         </dl>
       </div>
-      <div class="pt" style="--tbg:${p.tbg}"><img src="${p.cover}" width="${p.cw}" height="${p.ch}" alt="${p.name}"></div>
+      <div class="pt" style="--tbg:${p.ptBg || p.tbg}"><img src="${p.detailCover || p.cover}" width="${p.dw || p.cw}" height="${p.dh || p.ch}" alt="${p.name}"></div>
     </div></section>
     <div class="gal in" id="gal" style="--pbg:${p.bg}"></div>
     <a class="next" href="#${nx.slug}" data-open="${nx.slug}" style="--nbg:${nx.tbg};--nfg:${nx.tfg}"><div class="in"><div><span class="mono">${U.next} · <span class="ltr">${pad(nx.n)}</span></span><h2>${nx.name}</h2></div><span class="arr" aria-hidden="true">${U.fwd}</span></div></a>
@@ -2048,7 +2222,7 @@ function updateThemeUI(theme) {
     themeToggle.setAttribute('title', label);
   }
   if (metaThemeColor) {
-    metaThemeColor.setAttribute('content', isDark ? '#0f1211' : '#f1f2ee');
+    metaThemeColor.setAttribute('content', isDark ? '#030208' : '#ffffff');
   }
 }
 
